@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 30 70 50 70" stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <Label fx:id="moreInfoLabel" style="-fx-font-size: 24" text="More Info">
+      <VBox.margin>
+         <Insets top="50" />
+      </VBox.margin>
+   </Label>
+   <VBox alignment="CENTER" maxHeight="350" minHeight="350" prefHeight="350" spacing="10" style="-fx-alignment: center;">
+      <Label style="-fx-font-size: 16" text="It will be easier to watch the following video" />
+      <Label layoutX="428" layoutY="63" onMousePressed="#youtubeLink" style="-fx-text-fill: cyan; -fx-font-size: 16" text="https://www.youtube.com/watch?v=xmm2EBBruCY" />
+   </VBox>
+   <VBox alignment="CENTER" prefHeight="100" prefWidth="1141" spacing="20">
+      <HBox alignment="BOTTOM_CENTER" prefHeight="0" prefWidth="1141" spacing="30">
+         <Button mnemonicParsing="false" onMousePressed="#prevButtons" text="Prev"/>
+         <Button mnemonicParsing="false" onMousePressed="#nextButtons" text="Next"/>
+      </HBox>
+      <Button mnemonicParsing="false" onMousePressed="#backButtonOfRules" text="Back"/>
+   </VBox>
+   <VBox.margin>
+      <Insets bottom="30" left="30" right="30" top="30" />
+   </VBox.margin>
+</VBox>

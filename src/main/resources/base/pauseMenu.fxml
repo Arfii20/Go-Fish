@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="15.0" stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <Region prefHeight="9" prefWidth="1281" />
+   <Label prefHeight="130.0" style="-fx-font-size: 72" text="PAUSED" />
+   <Region prefHeight="9" prefWidth="1281" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RESUME" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RESTART" />
+   <HBox alignment="CENTER" prefHeight="2.0" prefWidth="1281.0" spacing="15.0">
+      <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="SAVE"/>
+      <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="LOAD"/>
+   </HBox>
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RULES" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="OPTIONS" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="QUIT" />
+   <Region prefHeight="0" prefWidth="1281" />
+</VBox>

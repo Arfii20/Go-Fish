@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@dark_theme.css"
+      xmlns="http://javafx.com/javafx/17">
+   <Label text="Selfish" style="-fx-font-size: 72"/>
+   <Region prefHeight="0" prefWidth="1281"/>
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" text="START" prefWidth="150" styleClass="start-buttons"/>
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" text="LOAD" prefWidth="150" styleClass="start-buttons"/>
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" text="OPTIONS" prefWidth="150" styleClass="start-buttons"/>
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" text="RULES" prefWidth="150" styleClass="start-buttons"/>
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" text="QUIT" prefWidth="150" styleClass="start-buttons"/>
+</VBox>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane prefHeight="320" prefWidth="200" stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <Rectangle fx:id="gameCardRectangle" arcHeight="10" arcWidth="10" fill="#FFFFFF" height="320" width="200" />
+    <VBox alignment="CENTER">
+        <Label alignment="CENTER" textAlignment="CENTER" fx:id="displayGameCardLabel" style="-fx-text-fill: red; -fx-font-size: 25" textFill="red"/>
+        <Label alignment="CENTER" textAlignment="CENTER" fx:id="displayGameCardDescriptionLabel" style="-fx-text-fill: black; -fx-font-size: 14" textFill="black" maxWidth="160" wrapText="true"/>
+    </VBox>
+</StackPane>

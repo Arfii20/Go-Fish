@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
-public abstract class Deck implements Serializable {
+public class Deck implements Serializable {
     private List<Card> deck = new ArrayList<Card>();
     @Serial
     private static final long serialVersionUID = 5;

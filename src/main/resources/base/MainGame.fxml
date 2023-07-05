@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<?import javafx.scene.effect.Glow?>
+<BorderPane prefHeight="720" prefWidth="1280" stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="20"/>
+         </BorderPane.margin>
+         <Label fx:id="currentPlayerTopLabel" alignment="CENTER" prefHeight="43" prefWidth="797"
+                style="-fx-font-size: 28" textAlignment="JUSTIFY"/>
+      </HBox>
+   </top>
+   <bottom>
+      <VBox alignment="TOP_CENTER" prefHeight="27" prefWidth="1304" BorderPane.alignment="CENTER">
+         <Line fx:id="mainPageLine" endY="-0.20712202787399292" focusTraversable="true"
+               stroke="WHITE" style="-fx-fill: white;">
+            <effect>
+               <Glow/>
+            </effect>
+            <VBox.margin>
+               <Insets bottom="30"/>
+            </VBox.margin>
+         </Line>
+      </VBox>
+   </bottom>
+   <left>
+      <VBox fx:id="mainPageLeftVBox" alignment="CENTER" prefHeight="100" prefWidth="200" BorderPane.alignment="CENTER" style="-fx-padding: 10 0 50 0">
+         <BorderPane.margin>
+            <Insets right="10" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <center>
+       <HBox fx:id="mainHBox" alignment="BOTTOM_CENTER" prefHeight="100" prefWidth="200" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10" />
+         </BorderPane.margin>
+       </HBox>
+   </center>
+   <right>
+      <VBox fx:id="mainPageRightVBox" alignment="TOP_CENTER" prefHeight="200" prefWidth="100" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets right="20" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+</BorderPane>

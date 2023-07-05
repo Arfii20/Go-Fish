@@ -1,0 +1,213 @@
+/* Set default text color and background color for all nodes */
+* {
+    -fx-font-family: "Comic Sans MS";
+    -fx-text-fill: white;
+}
+
+.root {
+    -fx-text-fill: #FFF;
+    -fx-background-color: #1C1C1C;
+    -fx-background-image: url("background.jpg");
+    -fx-background-size: cover;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8), 5, 0, 0, 5);
+}
+
+/* Set background color for text fields */
+.text-field {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-font-size: 18;
+    -fx-text-fill: cyan;
+}
+
+/* Set text color for disabled nodes */
+.labeled:disabled {
+    -fx-text-fill: #7F7F7F;
+}
+
+/* Set text color for focused nodes */
+.labeled:focused {
+    -fx-text-fill: #FFF;
+}
+
+/* Set color for button text and background */
+.button {
+    -fx-text-fill: #FFF;
+    -fx-background-color: rgba(66, 66, 66, 0.3);
+    -fx-font-size: 20pt;
+    -fx-padding: 0px 10px 0px 10px;
+    -fx-background-radius: 10;
+}
+
+/* Set hover color for buttons */
+.button:hover {
+    -fx-background-color: #424242;
+    -fx-font-size: 20pt;
+    -fx-padding: 0px 10px 0px 10px;
+    -fx-background-radius: 10;
+}
+
+/*!* Set pressed color for buttons *!*/
+/*.button:pressed {*/
+/*    -fx-background-color: #2F2F2F;*/
+/*    -fx-font-size: 20pt;*/
+/*    -fx-padding: 0px 10px 0px 10px;*/
+/*    -fx-background-radius: 10;*/
+/*}*/
+
+/* Set color for selected items in lists */
+.list-cell:selected {
+    -fx-background-color: #2A2A2A;
+}
+
+/* Set color for progress bars */
+.progress-bar {
+    -fx-accent: #66BB6A;
+}
+
+/* Set color for combobox items */
+.combo-box .list-cell {
+    -fx-background-color: #3A3A3A;
+    -fx-text-fill: #FFF;
+}
+
+/* Set color for selected combobox items */
+.combo-box .list-cell:selected {
+    -fx-background-color: #2A2A2A;
+}
+
+.rectangle-with-background {
+    -fx-background-image: url('rectangle.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.radio-button {
+    -fx-background-color: rgba(66, 66, 66, 0.3);
+    -fx-padding: 0px;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 150px;
+    -fx-font-size: 20;
+}
+
+.radio-button:hover {
+    -fx-background-color: #424242;
+    -fx-text-fill: #FFF;
+    -fx-padding: 0px;
+    -fx-background-radius: 10;
+}
+
+.radio-button:selected {
+    -fx-background-color: #2F2F2F;
+    -fx-text-fill: #FFF;
+    -fx-padding: 0px;
+    -fx-background-radius: 10;
+}
+
+.radio-button:selected:hover {
+    -fx-background-color: #2F2F2F;
+    -fx-text-fill: #FFF;
+    -fx-padding: 0px;
+    -fx-background-radius: 10;
+}
+
+.radio-button .radio {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+
+.toggle-group {
+    -fx-spacing: 20px;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: #f9f9f9;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .content {
+    -fx-padding: 10;
+}
+
+.scroll-bar {
+    -fx-background-color: #dcdcdc;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #aaa;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #ccc;
+    -fx-shape: "M 0 0 L 5 5 L 0 10 z";
+}
+
+.scroll-bar .increment-arrow:hover,
+.scroll-bar .decrement-arrow:hover {
+    -fx-background-color: #bbb;
+}
+
+.start-buttons {
+    -fx-background-color: rgba(66, 66, 66, 0.3);
+    -fx-text-fill: #FFF;
+    -fx-font-size: 20pt;
+    -fx-padding: 0px 10px 0px 10px;
+    -fx-background-radius: 10;
+}
+
+/* Set hover color for buttons */
+.start-buttons:hover {
+    -fx-background-color: #424242;
+    -fx-font-size: 20pt;
+    -fx-padding: 0px 10px 0px 10px;
+    -fx-background-radius: 10;
+}
+
+/*!* Set pressed color for buttons *!*/
+/*.start-buttons:pressed {*/
+/*    -fx-background-color: #2F2F2F;*/
+/*    -fx-font-size: 20pt;*/
+/*    -fx-padding: 0px 10px 0px 10px;*/
+/*    -fx-background-radius: 10;*/
+/*}*/
+
+.slider .thumb {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15px;
+    -fx-background-insets: 0, 1, 2;
+}
+
+.slider .track {
+    -fx-background-color: #616161;
+    -fx-background-insets: 0;
+}
+
+.slider .track-background {
+    -fx-background-color: #9e9e9e;
+    -fx-background-insets: 0;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #999999;
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #444444;
+}
+
+.slider .track:hover {
+    -fx-background-color: #757575;
+}
