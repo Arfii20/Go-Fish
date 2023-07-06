@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="WelcomeVbox" alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <Region prefHeight="80.0" prefWidth="1240.0" />
+   <Label style="-fx-font-size: 96" text="Go Fish" />
+   <Region prefHeight="144.0" prefWidth="1240.0" />
+   <Label fx:id="pressAnyKeyLabel" style="-fx-font-size: 18" text="Press any key to continue" />
+   <Region prefHeight="50" prefWidth="200" />
+</VBox>

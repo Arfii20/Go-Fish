@@ -76,12 +76,6 @@
     -fx-background-color: #2A2A2A;
 }
 
-.rectangle-with-background {
-    -fx-background-image: url('rectangle.jpg');
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
-}
-
 .radio-button {
     -fx-background-color: rgba(66, 66, 66, 0.3);
     -fx-padding: 0px;

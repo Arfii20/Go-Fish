@@ -9,7 +9,7 @@
 <?import java.lang.Integer?>
 
 <VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20"
-      stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17"
+      stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1" style="-fx-padding: 20">
    <Region prefHeight="200" prefWidth="200" />
    <Label text="Please Select Number of Players" style="-fx-font-size: 36"/>

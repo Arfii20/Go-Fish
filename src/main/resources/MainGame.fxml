@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Line?>
 
 <?import javafx.scene.effect.Glow?>
-<BorderPane prefHeight="720" prefWidth="1280" stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="720" prefWidth="1280" stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>

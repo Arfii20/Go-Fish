@@ -6,20 +6,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    String name;
-    List<Card> cards;
+    private String name;
+    private List<Card> cards;
+    private int points;
 
     public Player(String name){
         this.name = name;
         this.cards = new ArrayList<>();
+        this.points = 0;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public List<Card> getCards() {
+        return cards;
     }
 
     public void addToHand(Card card) {
         this.cards.add(card);
+        if (cardCount(card.getValue()) == 4) {
+            points++;
+            this.clearCardFromHand(card.getValue());
+        }
     }
 
     public void removeCard(Card card) {
         this.cards.remove(card);
+    }
+
+    public void clearCardFromHand(int val) {
+        for (Card card: cards) {
+            if (card.getValue() == val) {
+                this.removeCard(card);
+            }
+        }
     }
 
     public int hasCard(Card cardIn) {
@@ -30,6 +52,20 @@ public class Player {
             }
         }
         return counter;
+    }
+
+    public int cardCount(int val) {
+        int count = 0;
+        for (Card card: cards) {
+            if (card.getValue() == val) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean cardFinished() {
+        return (cards.size() == 0);
     }
 
     @Override

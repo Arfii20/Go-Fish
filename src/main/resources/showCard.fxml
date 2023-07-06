@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.ScrollPane?>
-<StackPane prefHeight="720" prefWidth="1280" stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="720" prefWidth="1280" stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
      <VBox alignment="CENTER">
          <VBox.margin>
              <Insets bottom="20" />

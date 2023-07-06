@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" fillWidth="false" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20"
-      stylesheets="@dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+      stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <Region prefHeight="180" prefWidth="200" />
    <Label text="Add Player Name" style="-fx-font-size: 36"/>
    <TextField fx:id="getPlayerFromInput" prefHeight="30" prefWidth="400" />
