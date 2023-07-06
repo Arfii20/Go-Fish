@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 30 70 50 70" stylesheets="@../../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <Label fx:id="moreInfoLabel" style="-fx-font-size: 24" text="Rules">
+      <VBox.margin>
+         <Insets top="50" />
+      </VBox.margin>
+   </Label>
+   <VBox alignment="CENTER" maxHeight="350" minHeight="350" prefHeight="350" spacing="10" style="-fx-alignment: center;">
+      <Label style="-fx-font-size: 20" text="It will be easier to watch the following video" />
+      <Label layoutX="428" layoutY="63" onMousePressed="#youtubeLink" style="-fx-text-fill: cyan; -fx-font-size: 16; -fx-background-color: rgba(155, 155, 155, 0.5); -fx-padding: 2px" text="https://www.youtube.com/watch?v=xmm2EBBruCY" />
+   </VBox>
+   <Button mnemonicParsing="false" onMousePressed="#backButtonOfRules" text="Back" />
+   <VBox.margin>
+      <Insets bottom="30" left="30" right="30" top="30" />
+   </VBox.margin>
+</VBox>

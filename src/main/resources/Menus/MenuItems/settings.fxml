@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@../../base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <Label alignment="CENTER" style="-fx-font-size: 48" text="Settings" />
-   <VBox alignment="CENTER" prefHeight="325" prefWidth="1281" spacing="20" stylesheets="@base/dark_theme.css">
+   <VBox alignment="CENTER" prefHeight="325" prefWidth="1281" spacing="20" stylesheets="@../../base/dark_theme.css">
       <Region prefHeight="24" prefWidth="1281" />
       <AnchorPane prefHeight="3" prefWidth="1281">
          <Label alignment="CENTER" style="-fx-font-size: 24; -fx-text-fill: cyan" text="Save: " AnchorPane.leftAnchor="200" />
@@ -25,7 +25,7 @@
          <Slider fx:id="buttonVolumeSlider" layoutX="744" layoutY="15" maxWidth="300" prefHeight="14" prefWidth="300" AnchorPane.rightAnchor="200"/>
       </AnchorPane>
    </VBox>
-   <VBox alignment="CENTER" prefHeight="0" prefWidth="1281" spacing="20" stylesheets="@base/dark_theme.css">
+   <VBox alignment="CENTER" prefHeight="0" prefWidth="1281" spacing="20" stylesheets="@../../base/dark_theme.css">
       <Region prefHeight="19" prefWidth="1281" />
       <Button mnemonicParsing="false" onMousePressed="#backButtonOfLoad" prefHeight="47" prefWidth="120" text="Back" />
    </VBox>
