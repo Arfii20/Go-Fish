@@ -1,7 +1,6 @@
 package base;
 
 import base.gofish.GameEngine;
-import base.gofish.deck.Card;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -238,7 +237,7 @@ public class GameDriver extends Application {
 //        pauseGameXML.setController(this);
 //        pauseGameScene = new Scene(pauseGameXML.load(), 1200, 665);
 //
-//        FXMLLoader rulesMoreInfoXML = new FXMLLoader(getClass().getResource("/resources/Rules.fxml"));
+//        FXMLLoader rulesMoreInfoXML = new FXMLLoader(getClass().getResource("/resources/rules.fxml"));
 //        rulesMoreInfoXML.setController(this);
 //        rulesMoreInfoScene = new Scene(rulesMoreInfoXML.load());
 //
