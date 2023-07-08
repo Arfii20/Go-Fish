@@ -1,12 +1,10 @@
 package base.gofish;
 
+import base.gofish.deck.Card;
 import base.gofish.deck.Deck;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GameEngine {
     private Random random;
@@ -14,6 +12,8 @@ public class GameEngine {
     private boolean started;
     private boolean roundOn;
     private List<Player> players;
+    private Player currentPlayer;
+    private Map<String, Player> playerMap;
     private int totalPoints;
     private Player winner;
 
@@ -23,6 +23,7 @@ public class GameEngine {
     }
 
     public GameEngine(long seed) {
+        this.playerMap = new HashMap<>();
         this.players = new ArrayList<>();
         this.random = new Random(seed);
         this.deck = new Deck();
@@ -36,6 +37,11 @@ public class GameEngine {
         players.add(new Player("Player3"));
         players.add(new Player("Player4"));
         players.add(new Player("Player5"));
+
+        for (Player player : players) {
+            playerMap.put(player.toString(), player);
+        }
+
         return players.size();
     }
 
@@ -112,6 +118,7 @@ public class GameEngine {
                 player.addToHand(deck.draw());
             }
         }
+        this.currentPlayer = this.players.remove(0);
         this.roundOn = true;
     }
 
@@ -123,7 +130,23 @@ public class GameEngine {
                 break;
             }
         }
+        this.players.add(currentPlayer);
         return !(this.roundOn = !(handsClear && deck.isEmpty()));
+    }
+
+    public Card singleTurn(String playerIn, String cardIn) {
+        Player player = playerMap.get(playerIn);
+        Card card = deck.getCardMap().get(cardIn);
+        Card drawnCard = null;
+        if (player.hasCard(card)){
+            List<Card> cards = player.clearCardFromHand(card.getValue());
+            this.currentPlayer.addToHand(cards);
+        }
+        else {
+            drawnCard = deck.draw();
+            currentPlayer.addToHand(drawnCard);
+        }
+        return drawnCard;
     }
 
     public List<Player> sortedPlayers() {

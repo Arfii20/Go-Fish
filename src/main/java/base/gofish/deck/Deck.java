@@ -4,13 +4,11 @@ package base.gofish.deck;
 import java.io.Serial;
 import java.io.Serializable;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.List;
+import java.util.*;
 
 public class Deck implements Serializable {
-    private List<Card> deck = new ArrayList<Card>();
+    private List<Card> deck = new ArrayList<>();
+    private Map<String, Card> cardMap = new HashMap<>();
     @Serial
     private static final long serialVersionUID = 5;
 
@@ -20,8 +18,12 @@ public class Deck implements Serializable {
         for (Suit suit: Suit.values()) {
             count = 2;
             for (Name name: Name.values()) {
-                deck.add(new Card(suit, name, count++));
+                deck.add(new Card(suit.name() + "_" + name.name(), suit, name, count++));
             }
+        }
+
+        for (Card card : deck) {
+            cardMap.put(card.getFullName(), card);
         }
     }
 
@@ -47,5 +49,9 @@ public class Deck implements Serializable {
 
     public boolean isEmpty(){
         return deck.isEmpty();
+    }
+
+    public Map<String, Card> getCardMap() {
+        return this.cardMap;
     }
 }

@@ -32,26 +32,32 @@ public class Player implements Comparable<Player>{
         }
     }
 
-    public void removeCard(Card card) {
-        this.cards.remove(card);
+    public void addToHand(List<Card> cards) {
+        this.cards.addAll(cards);
+        if (this.cardCount(cards.get(0).getValue()) == 4) {
+            points++;
+            this.clearCardFromHand(cards.get(0).getValue());
+        }
     }
 
-    public void clearCardFromHand(int val) {
+    public List<Card> clearCardFromHand(int val) {
+        List<Card> tempCards = new ArrayList<>();
         for (Card card: cards) {
             if (card.getValue() == val) {
-                this.removeCard(card);
+                tempCards.add(card);
+                this.cards.remove(card);
             }
         }
+        return tempCards;
     }
 
-    public int hasCard(Card cardIn) {
-        int counter = 0;
+    public boolean hasCard(Card cardIn) {
         for (Card card: this.cards) {
             if (card.getValue() == cardIn.getValue()) {
-                counter++;
+                return true;
             }
         }
-        return counter;
+        return false;
     }
 
     public int cardCount(int val) {

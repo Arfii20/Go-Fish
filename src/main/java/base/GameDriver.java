@@ -225,11 +225,11 @@ public class GameDriver extends Application {
 //        displaySpaceCardXML.setController(this);
 //        displaySpaceCardScene = new Scene(displaySpaceCardXML.load(), 320, 200);
 //
-//        FXMLLoader displayGameCardXML = new FXMLLoader(getClass().getResource("/resources/displayGameCard.fxml"));
+//        FXMLLoader displayGameCardXML = new FXMLLoader(getClass().getResource("/resources/1displayCard.fxml"));
 //        displayGameCardXML.setController(this);
 //        displayGameCardScene = new Scene(displayGameCardXML.load(), 200, 320);
 //
-//        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/resources/gameOverScene.fxml"));
+//        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/resources/2gameOver.fxml"));
 //        gameOverXML.setController(this);
 //        gameOverScene = new Scene(gameOverXML.load());
 //
