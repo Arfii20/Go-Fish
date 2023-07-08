@@ -205,7 +205,7 @@ public class GameDriver extends Application {
 //        settingsXML.setController(this);
 //        settingsScene = new Scene(settingsXML.load());
 //
-//        FXMLLoader askPlayersXML = new FXMLLoader(getClass().getResource("/resources/AskPlayers.fxml"));
+//        FXMLLoader askPlayersXML = new FXMLLoader(getClass().getResource("/resources/3totalPoints.fxml"));
 //        askPlayersXML.setController(this);
 //        askPlayersScene = new Scene(askPlayersXML.load());
 //

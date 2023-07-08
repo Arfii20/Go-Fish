@@ -4,6 +4,7 @@ import base.gofish.deck.Deck;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -11,10 +12,10 @@ public class GameEngine {
     private Random random;
     private Deck deck;
     private boolean started;
+    private boolean roundOn;
     private List<Player> players;
     private int totalPoints;
     private Player winner;
-
 
 
     private GameEngine(){
@@ -26,7 +27,16 @@ public class GameEngine {
         this.random = new Random(seed);
         this.deck = new Deck();
         this.deck.shuffle(random);
-        this.totalPoints = 20;
+        this.totalPoints = 1000;
+    }
+
+    public int addPlayers(String name) {
+        players.add(new Player(name));
+        players.add(new Player("Player2"));
+        players.add(new Player("Player3"));
+        players.add(new Player("Player4"));
+        players.add(new Player("Player5"));
+        return players.size();
     }
 
     public void saveState(String path) {
@@ -91,12 +101,44 @@ public class GameEngine {
         return this.started;
     }
 
-    public boolean gameOver() {
-        for (Player player: players) {
-            if (player.getPoints() > this.totalPoints) {
+    public boolean isRoundOn(){
+        return this.roundOn;
+    }
+
+    public void roundStart() {
+        deck.shuffle(this.random);
+        for (int i = 0; i < 5; i++) {
+            for (Player player : players) {
+                player.addToHand(deck.draw());
+            }
+        }
+        this.roundOn = true;
+    }
+
+    public boolean roundOver() {
+        boolean handsClear = true;
+        for (Player player : players) {
+            if (!player.cardFinished()) {
+                handsClear = false;
+                break;
+            }
+        }
+        return !(this.roundOn = !(handsClear && deck.isEmpty()));
+    }
+
+    public List<Player> sortedPlayers() {
+        List<Player> tempPlayers = new ArrayList<>(players);
+        Collections.sort(tempPlayers);
+        return tempPlayers;
+    }
+
+    public Player getWinner() {
+        this.winner = null;
+        for (Player player : players) {
+            if (this.winner == null || player.getPoints() > this.winner.getPoints()) {
                 this.winner = player;
             }
         }
-        return false;
+        return this.winner;
     }
 }

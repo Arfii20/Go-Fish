@@ -18,7 +18,7 @@ public class Deck implements Serializable {
     public Deck(){
         int count;
         for (Suit suit: Suit.values()) {
-            count = 1;
+            count = 2;
             for (Name name: Name.values()) {
                 deck.add(new Card(suit, name, count++));
             }

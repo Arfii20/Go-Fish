@@ -5,7 +5,7 @@ import base.gofish.deck.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Comparable<Player>{
     private String name;
     private List<Card> cards;
     private int points;
@@ -71,5 +71,10 @@ public class Player {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    @Override
+    public int compareTo(Player playerIn) {
+        return Integer.compare(playerIn.getPoints(), this.getPoints());
     }
 }

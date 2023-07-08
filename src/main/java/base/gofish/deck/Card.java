@@ -30,6 +30,6 @@ public class Card implements Comparable<Card>, Serializable {
 
     @Override
     public int compareTo(Card cardIn) {
-        return Integer.compare(this.value, cardIn.value);
+        return Integer.compare(this.getValue(), cardIn.getValue());
     }
 }
