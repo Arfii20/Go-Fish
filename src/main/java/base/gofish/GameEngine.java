@@ -118,7 +118,6 @@ public class GameEngine {
                 player.addToHand(deck.draw());
             }
         }
-        this.currentPlayer = this.players.remove(0);
         this.roundOn = true;
     }
 
@@ -130,8 +129,18 @@ public class GameEngine {
                 break;
             }
         }
-        this.players.add(currentPlayer);
         return !(this.roundOn = !(handsClear && deck.isEmpty()));
+    }
+
+    public void startTurn() {
+        if (currentPlayer == null) {
+            this.currentPlayer = this.players.remove(0);
+        }
+    }
+
+    public void endTurn() {
+        this.players.add(this.currentPlayer);
+        this.currentPlayer = null;
     }
 
     public Card singleTurn(String playerIn, String cardIn) {
