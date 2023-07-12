@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" prefHeight="720" prefWidth="1280" stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <Label alignment="CENTER" prefHeight="100.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player2's Turn">
+    <Label fx:id="playerTurn" alignment="CENTER" prefHeight="100.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player2's Turn">
       <VBox.margin>
          <Insets bottom="10.0" top="30.0" />
       </VBox.margin></Label>
@@ -31,7 +31,7 @@
                               <Image url="@base/cardBack.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="4 Cards" />
+                        <Label fx:id="player2Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="4 Cards" />
                      </children>
                   </VBox>
                </children>
@@ -48,7 +48,7 @@
                               <Image url="@base/cardBack.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="3 Cards" />
+                        <Label fx:id="player3Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="3 Cards" />
                      </children>
                   </VBox>
                </children>
@@ -68,7 +68,7 @@
                               <Image url="@base/cardBack.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="7 Cards" />
+                        <Label fx:id="player4Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="7 Cards" />
                      </children>
                   </VBox>
                   <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player4" />
@@ -84,7 +84,7 @@
                               <Image url="@base/cardBack.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="2 Cards" />
+                        <Label fx:id="player5Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="2 Cards" />
                      </children>
                   </VBox>
                   <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player5" />
@@ -104,7 +104,7 @@
           <BorderPane prefHeight="528.0" prefWidth="680.0" BorderPane.alignment="CENTER">
               <center>
                   <AnchorPane maxHeight="-Infinity" maxWidth="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                  <Label alignment="CENTER" layoutX="-3.0" layoutY="-5.0" prefHeight="28.0" prefWidth="202.0" style="-fx-font-size: 20" text="20 cards left" />
+                  <Label fx:id="deckCards" alignment="CENTER" layoutX="-3.0" layoutY="-5.0" prefHeight="28.0" prefWidth="202.0" style="-fx-font-size: 20" text="20 cards left" />
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="30.0">
                       <Image url="@base/cardBack.png" />
                   </ImageView>
