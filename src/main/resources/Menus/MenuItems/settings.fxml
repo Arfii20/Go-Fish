@@ -2,8 +2,10 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
@@ -24,9 +26,17 @@
          <Label alignment="CENTER" style="-fx-font-size: 24; -fx-text-fill: cyan" text="Button Click Volume" AnchorPane.leftAnchor="200" />
          <Slider fx:id="buttonVolumeSlider" layoutX="744" layoutY="15" maxWidth="300" prefHeight="14" prefWidth="300" AnchorPane.rightAnchor="200" />
       </AnchorPane>
+      <AnchorPane prefHeight="3" prefWidth="1281">
+         <Label alignment="CENTER" style="-fx-font-size: 24; -fx-text-fill: cyan" text="Difficulty Level" AnchorPane.leftAnchor="200" />
+         <HBox prefHeight="47.0" prefWidth="450.0" spacing="10.0" AnchorPane.rightAnchor="200.0">
+            <RadioButton mnemonicParsing="false" text="Easy" />
+            <RadioButton mnemonicParsing="false" text="Medium" />
+            <RadioButton mnemonicParsing="false" text="Hard" />
+         </HBox>
+      </AnchorPane>
    </VBox>
    <VBox alignment="CENTER" prefHeight="0" prefWidth="1281" spacing="20" stylesheets="@../../base/dark_theme.css">
-      <Button mnemonicParsing="false" onMousePressed="#backButtonOfLoad" prefHeight="47" prefWidth="300.0" text="Restore to Default" />
+      <Button mnemonicParsing="false" onMousePressed="#restoreToDefault" prefHeight="47" prefWidth="300.0" text="Restore to Default" />
       <Button mnemonicParsing="false" onMousePressed="#backButtonOfLoad" prefHeight="47" prefWidth="120" text="Back" />
    </VBox>
 </VBox>

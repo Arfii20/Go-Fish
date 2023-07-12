@@ -51,8 +51,9 @@ public class GameDriver extends Application {
     // All the scenes
     private Scene OpeningScene;
     private Scene startMenuScene;
-    private Scene askPlayersScene;
-    private Scene enterPlayersScene;
+    private Scene playerNameScene;
+    private Scene totalPointsScene;
+
     private Scene loadGameMenuScene;
     private Scene saveGameMenuScene;
     private Scene mainGamePageScene;
@@ -61,7 +62,7 @@ public class GameDriver extends Application {
     private Scene showPlayersForSwapScene;
     private Scene rulesActionCardsScene;
     private Scene rulesSpaceCardsScene;
-    private Scene rulesMoreInfoScene;
+    private Scene rulesScene;
     private Scene pauseGameScene;
     private Scene settingsScene;
     private Scene showCardScene;
@@ -189,29 +190,35 @@ public class GameDriver extends Application {
         openingXML.setController(this);
         OpeningScene = new Scene(openingXML.load(), 1280, 720);
 
-//        FXMLLoader startMenuXML = new FXMLLoader(getClass().getResource("/resources/startMenu.fxml"));
-//        startMenuXML.setController(this);
-//        startMenuScene = new Scene(startMenuXML.load());
-//
-//        FXMLLoader loadGameMenuXML = new FXMLLoader(getClass().getResource("/resources/loadGame.fxml"));
-//        loadGameMenuXML.setController(this);
-//        loadGameMenuScene = new Scene(loadGameMenuXML.load());
-//
-//        FXMLLoader saveGameMenuXML = new FXMLLoader(getClass().getResource("/resources/saveGame.fxml"));
-//        saveGameMenuXML.setController(this);
-//        saveGameMenuScene = new Scene(saveGameMenuXML.load(), 1200, 665);
-//
-//        FXMLLoader settingsXML = new FXMLLoader(getClass().getResource("/resources/settings.fxml"));
-//        settingsXML.setController(this);
-//        settingsScene = new Scene(settingsXML.load());
-//
-//        FXMLLoader askPlayersXML = new FXMLLoader(getClass().getResource("/resources/3totalPoints.fxml"));
-//        askPlayersXML.setController(this);
-//        askPlayersScene = new Scene(askPlayersXML.load());
-//
-//        FXMLLoader enterPlayersXML = new FXMLLoader(getClass().getResource("/resources/2playerName.fxml"));
-//        enterPlayersXML.setController(this);
-//        enterPlayersScene = new Scene(enterPlayersXML.load());
+        FXMLLoader startMenuXML = new FXMLLoader(getClass().getResource("/Menus/startMenu.fxml"));
+        startMenuXML.setController(this);
+        startMenuScene = new Scene(startMenuXML.load());
+
+        FXMLLoader playerNameXML = new FXMLLoader(getClass().getResource("/PreGame/2playerName.fxml"));
+        playerNameXML.setController(this);
+        playerNameScene = new Scene(playerNameXML.load());
+
+        FXMLLoader totalPointsXML = new FXMLLoader(getClass().getResource("/PreGame/3totalPoints.fxml"));
+        totalPointsXML.setController(this);
+        totalPointsScene = new Scene(totalPointsXML.load());
+
+        // Start and Pause Menu items
+        FXMLLoader loadGameMenuXML = new FXMLLoader(getClass().getResource("/Menus/MenuItems/loadGame.fxml"));
+        loadGameMenuXML.setController(this);
+        loadGameMenuScene = new Scene(loadGameMenuXML.load());
+
+        FXMLLoader saveGameMenuXML = new FXMLLoader(getClass().getResource("/Menus/MenuItems/saveGame.fxml"));
+        saveGameMenuXML.setController(this);
+        saveGameMenuScene = new Scene(saveGameMenuXML.load());
+
+        FXMLLoader settingsXML = new FXMLLoader(getClass().getResource("/Menus/MenuItems/settings.fxml"));
+        settingsXML.setController(this);
+        settingsScene = new Scene(settingsXML.load());
+
+        FXMLLoader rulesXML = new FXMLLoader(getClass().getResource("/Menus/MenuItems/rules.fxml"));
+        rulesXML.setController(this);
+        rulesScene = new Scene(rulesXML.load());
+
 //
 //        FXMLLoader mainGamePageXML = new FXMLLoader(getClass().getResource("/resources/MainGame.fxml"));
 //        mainGamePageXML.setController(this);
@@ -237,10 +244,6 @@ public class GameDriver extends Application {
 //        pauseGameXML.setController(this);
 //        pauseGameScene = new Scene(pauseGameXML.load(), 1200, 665);
 //
-//        FXMLLoader rulesMoreInfoXML = new FXMLLoader(getClass().getResource("/resources/rules.fxml"));
-//        rulesMoreInfoXML.setController(this);
-//        rulesMoreInfoScene = new Scene(rulesMoreInfoXML.load());
-//
 //        FXMLLoader showPlayersForSwapXML = new FXMLLoader(getClass().getResource("/resources/showPlayersForSwap.fxml"));
 //        showPlayersForSwapXML.setController(this);
 //        showPlayersForSwapScene = new Scene(showPlayersForSwapXML.load(), 1200, 665);
@@ -260,7 +263,7 @@ public class GameDriver extends Application {
         window.setMinHeight(720);
 
         // Load the save location
-//        loadSaveLocation();
+        loadSaveLocation();
 
         // Fade Animation for the press any key to start
         FadeTransition fade = new FadeTransition();
@@ -525,7 +528,7 @@ public class GameDriver extends Application {
 //        List<Node> allButtons = new ArrayList<>();
 //        allButtons.addAll(OpeningScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(startMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(askPlayersScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(playerNameScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(enterPlayersScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(loadGameMenuScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(saveGameMenuScene.getRoot().lookupAll(".button"));
@@ -535,7 +538,7 @@ public class GameDriver extends Application {
 //        allButtons.addAll(showPlayersForSwapScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(rulesActionCardsScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(rulesSpaceCardsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesMoreInfoScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(rulesScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(pauseGameScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(settingsScene.getRoot().lookupAll(".button"));
 //        allButtons.addAll(showCardScene.getRoot().lookupAll(".button"));
@@ -756,8 +759,8 @@ public class GameDriver extends Application {
         if (pressedButton.getText().equals("START")){
             double width = window.getScene().getWidth();
             double height = window.getScene().getHeight();
-            ((VBox) askPlayersScene.getRoot()).setPrefSize(width, height);
-            window.setScene(askPlayersScene);
+            ((VBox) playerNameScene.getRoot()).setPrefSize(width, height);
+            window.setScene(playerNameScene);
         }
         else if (pressedButton.getText().equals("LOAD")){
             loadSaveFiles();
@@ -772,8 +775,8 @@ public class GameDriver extends Application {
         else if (pressedButton.getText().equals("RULES")){
             double width = window.getScene().getWidth();
             double height = window.getScene().getHeight();
-            ((VBox) rulesActionCardsScene.getRoot()).setPrefSize(width, height);
-            window.setScene(rulesActionCardsScene);
+            ((VBox) rulesScene.getRoot()).setPrefSize(width, height);
+            window.setScene(rulesScene);
         }
         else if (pressedButton.getText().equals("QUIT")){
             Platform.exit();
@@ -1107,8 +1110,8 @@ public class GameDriver extends Application {
 //        if (scene == actionCardsLabel.getScene()){
 //            double width = currentStage.getScene().getWidth();
 //            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesMoreInfoScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesMoreInfoScene);
+//            ((VBox) rulesScene.getRoot()).setPrefSize(width, height);
+//            currentStage.setScene(rulesScene);
 //        }
 //        if (scene == spaceCardsLabel.getScene()){
 //            double width = currentStage.getScene().getWidth();
@@ -1138,8 +1141,8 @@ public class GameDriver extends Application {
 //        if (scene == spaceCardsLabel.getScene()){
 //            double width = currentStage.getScene().getWidth();
 //            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesMoreInfoScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesMoreInfoScene);
+//            ((VBox) rulesScene.getRoot()).setPrefSize(width, height);
+//            currentStage.setScene(rulesScene);
 //        }
 //        if (scene == moreInfoLabel.getScene()){
 //            double width = currentStage.getScene().getWidth();
@@ -1149,7 +1152,11 @@ public class GameDriver extends Application {
 //        }
 //        event.consume();
 //    }
-//
+
+    public void restoreToDefault(MouseEvent event) {
+
+    }
+
     // Back Buttons
     public void backButtonOfRules(MouseEvent event){
         playButtonSoundEffect();

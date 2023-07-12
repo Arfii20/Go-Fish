@@ -78,30 +78,29 @@
 
 .radio-button {
     -fx-background-color: rgba(66, 66, 66, 0.3);
-    -fx-padding: 0px;
+    -fx-padding: 0px 35px 0px 0px;
     -fx-pref-height: 50px;
     -fx-pref-width: 150px;
     -fx-font-size: 20;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
 }
 
 .radio-button:hover {
     -fx-background-color: #424242;
     -fx-text-fill: #FFF;
-    -fx-padding: 0px;
     -fx-background-radius: 10;
 }
 
 .radio-button:selected {
     -fx-background-color: #2F2F2F;
     -fx-text-fill: #FFF;
-    -fx-padding: 0px;
     -fx-background-radius: 10;
 }
 
 .radio-button:selected:hover {
     -fx-background-color: #2F2F2F;
     -fx-text-fill: #FFF;
-    -fx-padding: 0px;
     -fx-background-radius: 10;
 }
 

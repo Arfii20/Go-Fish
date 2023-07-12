@@ -20,76 +20,60 @@
       <left>
           <VBox prefHeight="544.0" prefWidth="300.0" BorderPane.alignment="CENTER">
               <Region prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="CENTER" maxHeight="100.0" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                    <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player2" />
-                  <Region prefHeight="180.0" prefWidth="90.0" />
+              <HBox alignment="CENTER" maxHeight="100.0" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
+                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30"
+                         text="Player2"/>
+                  <Region prefHeight="180.0" prefWidth="90.0"/>
                   <VBox alignment="CENTER" minWidth="110.0" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="180.0" fitWidth="115.0">
-                           <image>
-                              <Image url="@base/cardBack.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="player2Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="4 Cards" />
-                     </children>
+                      <ImageView fitHeight="180.0" fitWidth="115.0">
+                          <Image url="@base/cardBack.png"/>
+                      </ImageView>
+                      <Label fx:id="player2Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
+                             style="-fx-font-size: 20" text="4 Cards"/>
                   </VBox>
-               </children>
-            </HBox>
+              </HBox>
               <Region prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player3" />
-                  <Region prefHeight="180.0" prefWidth="90.0" />
+              <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
+                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30"
+                         text="Player3"/>
+                  <Region prefHeight="180.0" prefWidth="90.0"/>
                   <VBox minWidth="110.0" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="180.0" fitWidth="115.0">
-                           <image>
-                              <Image url="@base/cardBack.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="player3Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="3 Cards" />
-                     </children>
+                      <ImageView fitHeight="180.0" fitWidth="115.0">
+                          <Image url="@base/cardBack.png"/>
+                      </ImageView>
+                      <Label fx:id="player3Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
+                             style="-fx-font-size: 20" text="3 Cards"/>
                   </VBox>
-               </children>
-            </HBox>
+              </HBox>
               <Region prefHeight="200.0" prefWidth="200.0" />
           </VBox>
       </left>
       <right>
           <VBox prefHeight="512.0" prefWidth="300.0" BorderPane.alignment="CENTER">
               <Region prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
-               <children>
+              <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
                   <VBox minWidth="110.0" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="180.0" fitWidth="115.0">
-                           <image>
-                              <Image url="@base/cardBack.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="player4Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="7 Cards" />
-                     </children>
+                      <ImageView fitHeight="180.0" fitWidth="115.0">
+                          <Image url="@base/cardBack.png"/>
+                      </ImageView>
+                      <Label fx:id="player4Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
+                             style="-fx-font-size: 20" text="7 Cards"/>
                   </VBox>
-                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player4" />
-               </children>
-            </HBox>
+                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30"
+                         text="Player4"/>
+              </HBox>
               <Region prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
-               <children>
+              <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
                   <VBox minWidth="110.0" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="180.0" fitWidth="115.0">
-                           <image>
-                              <Image url="@base/cardBack.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="player5Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 20" text="2 Cards" />
-                     </children>
+                      <ImageView fitHeight="180.0" fitWidth="115.0">
+                          <Image url="@base/cardBack.png"/>
+                      </ImageView>
+                      <Label fx:id="player5Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
+                             style="-fx-font-size: 20" text="2 Cards"/>
                   </VBox>
-                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player5" />
-               </children>
-            </HBox>
+                  <Label alignment="CENTER" prefHeight="69.0" prefWidth="500.0" style="-fx-font-size: 30"
+                         text="Player5"/>
+              </HBox>
               <Region prefHeight="200.0" prefWidth="200.0" />
           </VBox>
       </right>
@@ -139,31 +123,21 @@
                   <children>
                      <StackPane maxHeight="200.0" prefHeight="200.0" prefWidth="680.0">
                         <children>
-                           <ImageView fitHeight="180.0" fitWidth="130.0" translateX="-50.0">
-                              <image>
-                                 <Image url="@Cards/HEARTS/HEARTS_KING.png" />
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="180.0" fitWidth="130.0" translateX="-25.0">
-                              <image>
-                                 <Image url="@Cards/CLUBS/CLUBS_JACK.png" />
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="180.0" fitWidth="130.0">
-                              <image>
-                                 <Image url="@Cards/CLUBS/CLUBS_SIX.png" />
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="180.0" fitWidth="130.0" translateX="25.0">
-                              <image>
-                                 <Image url="@Cards/CLUBS/CLUBS_TEN.png" />
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="180.0" fitWidth="130.0" translateX="50.0">
-                              <image>
-                                 <Image url="@Cards/CLUBS/CLUBS_KING.png" />
-                              </image>
-                           </ImageView>
+                            <ImageView fitHeight="180.0" fitWidth="130.0" translateX="-50.0">
+                                <Image url="@Cards/HEARTS/HEARTS_KING.png"/>
+                            </ImageView>
+                            <ImageView fitHeight="180.0" fitWidth="130.0" translateX="-25.0">
+                                <Image url="@Cards/CLUBS/CLUBS_JACK.png"/>
+                            </ImageView>
+                            <ImageView fitHeight="180.0" fitWidth="130.0">
+                                <Image url="@Cards/CLUBS/CLUBS_SIX.png"/>
+                            </ImageView>
+                            <ImageView fitHeight="180.0" fitWidth="130.0" translateX="25.0">
+                                <Image url="@Cards/CLUBS/CLUBS_TEN.png"/>
+                            </ImageView>
+                            <ImageView fitHeight="180.0" fitWidth="130.0" translateX="50.0">
+                                <Image url="@Cards/CLUBS/CLUBS_KING.png"/>
+                            </ImageView>
                         </children>
                      </StackPane>
                   </children>
