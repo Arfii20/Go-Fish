@@ -17,7 +17,7 @@
       <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="LOAD"/>
    </HBox>
    <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RULES" />
-   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="OPTIONS" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="SETTINGS" />
    <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="QUIT" />
    <Region prefHeight="0" prefWidth="1281" />
 </VBox>

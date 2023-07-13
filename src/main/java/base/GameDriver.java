@@ -1,6 +1,8 @@
 package base;
 
 import base.gofish.GameEngine;
+import base.gofish.saveAndMusic.Music;
+import base.gofish.saveAndMusic.SavesLocation;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -43,10 +45,7 @@ public class GameDriver extends Application {
     private Stage pauseStage;
     private BoxBlur blur;
     private String saveLocation;
-    private Clip audioClip;
-    private Clip buttonClick;
-    private double musicVolume;
-    private double buttonVolume;
+
 
     // All the scenes
     private Scene OpeningScene;
@@ -168,8 +167,6 @@ public class GameDriver extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         window = stage;
-//        phase1 = false;
-//        twoPlayers = 0;
 
 //        blur = new BoxBlur();
 //        blur.setWidth(10);
@@ -178,12 +175,12 @@ public class GameDriver extends Application {
 
         Random random = new Random();
         long seed = random.nextLong();
-//        try {
-//            game = new GameEngine(seed, "io" + File.separator + "ActionCards.txt", "io" + File.separator + "SpaceCards.txt");
-//        }
-//        catch (GameException e){
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            game = new GameEngine(seed);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         // Load the FXML files and set the controller to this one. Also create scenes for the fxml files.
         FXMLLoader openingXML = new FXMLLoader(getClass().getResource("/PreGame/1openingScene.fxml"));
@@ -232,7 +229,7 @@ public class GameDriver extends Application {
 //        displaySpaceCardXML.setController(this);
 //        displaySpaceCardScene = new Scene(displaySpaceCardXML.load(), 320, 200);
 //
-//        FXMLLoader displayGameCardXML = new FXMLLoader(getClass().getResource("/resources/1displayCard.fxml"));
+//        FXMLLoader displayGameCardXML = new FXMLLoader(getClass().getResource("/resources/displayCard.fxml"));
 //        displayGameCardXML.setController(this);
 //        displayGameCardScene = new Scene(displayGameCardXML.load(), 200, 320);
 //
@@ -254,16 +251,15 @@ public class GameDriver extends Application {
         // Set title and first scene of the game
         window.setTitle("Go Fish");
         if (window.getScene() != null){
-            double sceneWidth = window.getScene().getWidth();
-            double sceneHeight = window.getScene().getHeight();
-            ((VBox) OpeningScene.getRoot()).setPrefSize(sceneWidth, sceneHeight);
+            sceneChangerVBox(OpeningScene);
+        } else {
+            window.setScene(OpeningScene);
         }
-        window.setScene(OpeningScene);
         window.setMinWidth(1280);
         window.setMinHeight(720);
 
         // Load the save location
-        loadSaveLocation();
+        saveLocation = SavesLocation.loadSaveLocation();
 
         // Fade Animation for the press any key to start
         FadeTransition fade = new FadeTransition();
@@ -283,10 +279,7 @@ public class GameDriver extends Application {
         // Press any key to set scene to get number of players from players
         OpeningScene.setOnKeyPressed(event -> {
             OpeningScene.setOnKeyPressed(null);
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) startMenuScene.getRoot()).setPrefSize(width, height);
-            window.setScene(startMenuScene);
+            sceneChangerVBox(startMenuScene);
         });
 
 //        // Add listener to the enter key so that player is added when enter pressed
@@ -335,17 +328,15 @@ public class GameDriver extends Application {
 //            }
 //        });
 //
-//        // Start Music
-//        getMusic();
-//        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            musicVolume = newValue.doubleValue() / 100;
-//            setMusicVolume(musicVolume);
-//        });
-//
-//        buttonVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            buttonVolume = newValue.doubleValue() / 100;
-//            setButtonVolume(buttonVolume);
-//        });
+        // Start Music
+        Music.getMusic(volumeSlider, buttonVolumeSlider);
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Music.setMusicVolume(newValue.doubleValue() / 100);
+        });
+
+        buttonVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Music.setButtonVolume(newValue.doubleValue() / 100);
+        });
 
         window.show();
     }
@@ -438,59 +429,37 @@ public class GameDriver extends Application {
 //        }
 //    }
 //
-//    // Load and Change locations
-    private void loadSaveLocation(){
-        try (
-                FileReader savedLocFile = new FileReader("./settings/saveLocation.txt");
-                BufferedReader savedLocStream = new BufferedReader(savedLocFile)
-        ){
-            saveLocation = savedLocStream.readLine();
-        }
-        catch (IOException e){
 
-            System.out.println("There was an error reading to the file");
-        }
-        if (saveLocation == null){
-            try (
-                    FileWriter saveFile = new FileWriter("./settings/saveLocation.txt");
-                    PrintWriter saveWriter = new PrintWriter(saveFile)
-            )
-            {
-                String userHome = System.getProperty("user.home");
-                String documentsFolder = userHome + File.separator + "Documents" + File.separator + "Selfish" + File.separator;
-                saveWriter.println(documentsFolder);
-                saveLocation = documentsFolder;
-                File file = new File(documentsFolder);
-                if (!file.exists()){
-                    boolean success = file.mkdirs();
-                    if (!success){
-                        throw new IOException("Error making the folder");
-                    }
-                    else {
-                        System.out.println("folder made successfully");
-                    }
-                }
-            }
-            catch (IOException e){
-                try (
-                        FileWriter saveFile = new FileWriter("saveLocation.txt");
-                        PrintWriter saveWriter = new PrintWriter(saveFile)
-                )
-                {
-                    File currentFile = new File("");
-                    String absolutePath = currentFile.getAbsolutePath() + File.separator;
-                    saveWriter.println(absolutePath);
-                    saveLocation = absolutePath;
-                }
-                catch (IOException ev){
-                    System.out.println("There was an error writing to the file");
-                }
-            }
-        }
-    }
+
+//    // Add Button clicks
+//    private void addListeners(){
+//        List<Node> allButtons = new ArrayList<>();
+//        allButtons.addAll(OpeningScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(startMenuScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(playerNameScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(enterPlayersScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(loadGameMenuScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(saveGameMenuScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(mainGamePageScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(displayGameCardScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(displaySpaceCardScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(showPlayersForSwapScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(rulesActionCardsScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(rulesSpaceCardsScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(rulesScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(pauseGameScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(settingsScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(showCardScene.getRoot().lookupAll(".button"));
+//        allButtons.addAll(gameOverScene.getRoot().lookupAll(".button"));
+//        for (Node button : allButtons) {
+//            addButtonSoundEffect((Button) button);
+//        }
+//    }
+//
+
 
     public void changeLoc(){
-        playButtonSoundEffect();
+        Music.playButtonSoundEffect();
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folder");
         directoryChooser.setInitialDirectory(new File(saveLocation));
@@ -523,158 +492,6 @@ public class GameDriver extends Application {
         }
     }
 
-//    // Add Button clicks
-//    private void addListeners(){
-//        List<Node> allButtons = new ArrayList<>();
-//        allButtons.addAll(OpeningScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(startMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(playerNameScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(enterPlayersScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(loadGameMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(saveGameMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(mainGamePageScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(displayGameCardScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(displaySpaceCardScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(showPlayersForSwapScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesActionCardsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesSpaceCardsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(pauseGameScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(settingsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(showCardScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(gameOverScene.getRoot().lookupAll(".button"));
-//        for (Node button : allButtons) {
-//            addButtonSoundEffect((Button) button);
-//        }
-//    }
-//
-//    private void addButtonSoundEffect(Button button) {
-//        if (buttonClick == null) {
-//            File file = new File("./bin/resources/click1.wav");
-//            try {
-//                buttonClick = AudioSystem.getClip();
-//                buttonClick.open(AudioSystem.getAudioInputStream(file));
-//            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | IllegalArgumentException e) {
-//                System.out.println("Cannot Play sound");
-//                buttonClick = null;
-//            }
-//        }
-//        if (buttonClick != null) {
-//            button.setOnAction(event -> buttonClick.start());
-//        }
-//    }
-//
-    private void playButtonSoundEffect() {
-        if (buttonClick == null) {
-            File file = new File("./bin/resources/click1.wav");
-            try {
-                buttonClick = AudioSystem.getClip();
-                buttonClick.open(AudioSystem.getAudioInputStream(file));
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | IllegalArgumentException e) {
-                System.out.println("Cannot Play sound");
-                buttonClick = null;
-            }
-        }
-        if (buttonClick != null) {
-            setButtonVolume(buttonVolume);
-            buttonClick.setFramePosition(0);
-            buttonClick.start();
-        }
-    }
-
-    public void setButtonVolume(double percent){
-        if (buttonClick != null) {
-            FloatControl volumeClick = (FloatControl) buttonClick.getControl(FloatControl.Type.MASTER_GAIN);
-            float dB = (float) (Math.log(percent) / Math.log(10.0) * 20.0);
-            volumeClick.setValue(dB);
-        }
-    }
-
-    // Playing and Handling music
-    public void getMusic() {
-        loadVolume();
-        if (audioClip == null){
-            File file = new File("./bin/resources/track.wav");
-            try {
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-                audioClip = AudioSystem.getClip();
-                audioClip.open(audioStream);
-                audioClip.loop(audioClip.LOOP_CONTINUOUSLY);
-            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | IllegalArgumentException e) {
-                System.out.println("Cannot Play sound");
-                audioClip = null;
-            }
-        }
-        else {
-            if (musicVolume > 0) {
-                audioClip.start();
-            }
-        }
-        if (audioClip != null) {
-            setMusicVolume(musicVolume);
-        }
-    }
-
-    public void saveVolume() {
-        try (
-                FileWriter saveMusicFile = new FileWriter("./settings/musicVolume.txt");
-                PrintWriter saveMusicWriter = new PrintWriter(saveMusicFile)
-        )
-        {
-            saveMusicWriter.println(musicVolume);
-        }
-        catch (IOException e){
-            System.out.println("There was an error writing to the file");
-        }
-        try (
-                FileWriter saveButtonFile = new FileWriter("./settings/buttonVolume.txt");
-                PrintWriter saveButtonWriter = new PrintWriter(saveButtonFile)
-        )
-        {
-            saveButtonWriter.println(buttonVolume);
-        }
-        catch (IOException e){
-            System.out.println("There was an error writing to the file");
-        }
-    }
-
-    public void loadVolume() {
-        try (
-                FileReader savedLocFile = new FileReader("./settings/musicVolume.txt");
-                BufferedReader savedLocStream = new BufferedReader(savedLocFile)
-        ){
-            musicVolume = Double.parseDouble(savedLocStream.readLine());
-        }
-        catch (IOException e){
-            System.out.println("There was an error reading to the music volume file");
-            musicVolume = 1.0;
-        }
-        try (
-                FileReader savedLocFile = new FileReader("./settings/buttonVolume.txt");
-                BufferedReader savedLocStream = new BufferedReader(savedLocFile)
-        ){
-            buttonVolume = Double.parseDouble(savedLocStream.readLine());
-        }
-        catch (IOException e){
-            System.out.println("There was an error reading to the button volume file");
-            buttonVolume = 1.0;
-        }
-        volumeSlider.setValue(musicVolume*100);
-        buttonVolumeSlider.setValue(buttonVolume*100);
-    }
-
-    public void setMusicVolume(double percent){
-        if (audioClip != null) {
-            FloatControl volume = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
-            float dB = (float) (Math.log(percent) / Math.log(10.0) * 20.0);
-            volume.setValue(dB);
-            if (musicVolume > 0) {
-                audioClip.start();
-            } else {
-                audioClip.stop();
-            }
-        }
-    }
 
     // The rotating display of space and action cards
 //    private void displayCard(Card card){
@@ -754,29 +571,20 @@ public class GameDriver extends Application {
 
     // Start and Pause Menus
     public void startMenu(MouseEvent event){
-        playButtonSoundEffect();
+        Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
         if (pressedButton.getText().equals("START")){
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) playerNameScene.getRoot()).setPrefSize(width, height);
-            window.setScene(playerNameScene);
+            sceneChangerVBox(playerNameScene);
         }
         else if (pressedButton.getText().equals("LOAD")){
             loadSaveFiles();
         }
-        else if (pressedButton.getText().equals("OPTIONS")){
+        else if (pressedButton.getText().equals("SETTINGS")){
             changeLocLabel.setText(saveLocation);
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) settingsScene.getRoot()).setPrefSize(width, height);
-            window.setScene(settingsScene);
+            sceneChangerVBox(settingsScene);
         }
         else if (pressedButton.getText().equals("RULES")){
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) rulesScene.getRoot()).setPrefSize(width, height);
-            window.setScene(rulesScene);
+            sceneChangerVBox(rulesScene);
         }
         else if (pressedButton.getText().equals("QUIT")){
             Platform.exit();
@@ -785,17 +593,15 @@ public class GameDriver extends Application {
     }
 
     public void pauseMenu(MouseEvent event) throws IOException {
-        playButtonSoundEffect();
+        Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
         Stage overlayStage = (Stage) pressedButton.getScene().getWindow();
         if (pressedButton.getText().equals("RESUME")){
             mainGamePageScene.getRoot().requestFocus();
-            mainGamePageScene.getRoot().setEffect(null);
-            overlayStage.close();
+            sceneChangerVBox(mainGamePageScene);
         }
         if (pressedButton.getText().equals("RESTART")){
             mainGamePageScene.getRoot().requestFocus();
-            mainGamePageScene.getRoot().setEffect(null);
             overlayStage.close();
             this.start(window);
         }
@@ -807,14 +613,10 @@ public class GameDriver extends Application {
             loadSaveFiles();
         }
         else if (pressedButton.getText().equals("RULES")){
-            double width = overlayStage.getScene().getWidth();
-            double height = overlayStage.getScene().getHeight();
-            ((VBox) rulesActionCardsScene.getRoot()).setPrefSize(width, height);
-            overlayStage.setScene(rulesActionCardsScene);
+            sceneChangerVBox(rulesScene);
         }
-        else if (pressedButton.getText().equals("OPTIONS")){
-            ((VBox) settingsScene.getRoot()).setPrefSize(1200, 665);
-            overlayStage.setScene(settingsScene);
+        else if (pressedButton.getText().equals("SETTINGS")){
+            sceneChangerVBox(settingsScene);
         }
         else if (pressedButton.getText().equals("QUIT")){
             try {
@@ -898,16 +700,6 @@ public class GameDriver extends Application {
             }
         }
         catch (Exception e){
-            //     Region region1 = new Region();
-            //     region1.setPrefSize(53, 300);
-
-            //     Label label = new Label("No Saved Games Available");
-            //     label.setStyle("-fx-font-size: 18; -fx-text-fill: red");
-
-            //     Region region2 = new Region();
-            //     region2.setPrefSize(53, 300);
-
-            //     loadGameVbox.getChildren().addAll(region1, label, region2);
             System.out.println("There was error reading the files");
         }
         if (!foundSomething){
@@ -923,10 +715,7 @@ public class GameDriver extends Application {
             loadGameVbox.getChildren().addAll(region1, label, region2);
             System.out.println("There was no saved file");
         }
-        double width = window.getScene().getWidth();
-        double height = window.getScene().getHeight();
-        ((VBox) loadGameMenuScene.getRoot()).setPrefSize(width, height);
-        window.setScene(loadGameMenuScene);
+        sceneChangerVBox(loadGameMenuScene);
     }
 
     public void loadGame(MouseEvent event){}
@@ -994,7 +783,7 @@ public class GameDriver extends Application {
 //    }
 
     public void deleteSavedGame(MouseEvent event){
-        playButtonSoundEffect();
+        Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
         HBox parentBox = (HBox) pressedButton.getParent();
         String fileName = pressedButton.getId();
@@ -1009,7 +798,7 @@ public class GameDriver extends Application {
     }
 
     private void saveGame(){
-        loadSaveLocation();
+        saveLocation = SavesLocation.loadSaveLocation();
         File folder = new File(saveLocation);
         File[] listOfFiles = folder.listFiles();
         saveGameVbox.getChildren().clear();
@@ -1095,104 +884,30 @@ public class GameDriver extends Application {
 
     // Rules and tutorial
     public void youtubeLink(){
-        playButtonSoundEffect();
+        Music.playButtonSoundEffect();
         try {
             Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=hRpXLSMdve0"));
         } catch (IOException | URISyntaxException e){
             e.printStackTrace();
         }
     }
-//
-//    public void prevButtons(MouseEvent event){
-//        playButtonSoundEffect();
-//        Scene scene = ((Node) event.getTarget()).getScene();
-//        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        if (scene == actionCardsLabel.getScene()){
-//            double width = currentStage.getScene().getWidth();
-//            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesScene);
-//        }
-//        if (scene == spaceCardsLabel.getScene()){
-//            double width = currentStage.getScene().getWidth();
-//            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesActionCardsScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesActionCardsScene);
-//        }
-//        if (scene == moreInfoLabel.getScene()){
-//            double width = currentStage.getScene().getWidth();
-//            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesSpaceCardsScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesSpaceCardsScene);
-//        }
-//        event.consume();
-//    }
-//
-//    public void nextButtons(MouseEvent event){
-//        playButtonSoundEffect();
-//        Scene scene = ((Node) event.getTarget()).getScene();
-//        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        if (scene == actionCardsLabel.getScene()){
-//            double width = currentStage.getScene().getWidth();
-//            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesSpaceCardsScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesSpaceCardsScene);
-//        }
-//        if (scene == spaceCardsLabel.getScene()){
-//            double width = currentStage.getScene().getWidth();
-//            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesScene);
-//        }
-//        if (scene == moreInfoLabel.getScene()){
-//            double width = currentStage.getScene().getWidth();
-//            double height = currentStage.getScene().getHeight();
-//            ((VBox) rulesActionCardsScene.getRoot()).setPrefSize(width, height);
-//            currentStage.setScene(rulesActionCardsScene);
-//        }
-//        event.consume();
-//    }
 
     public void restoreToDefault(MouseEvent event) {
 
     }
 
-    // Back Buttons
-    public void backButtonOfRules(MouseEvent event){
-        playButtonSoundEffect();
-        if (game.isStarted()){
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) startMenuScene.getRoot()).setPrefSize(width, height);
-            window.setScene(pauseGameScene);
-        }
-        else {
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) startMenuScene.getRoot()).setPrefSize(width, height);
-            window.setScene(startMenuScene);
-        }
-        event.consume();
+    public void backButton(){
+        Music.playButtonSoundEffect();
+        sceneChangerVBox(game.isStarted() ? pauseGameScene : startMenuScene);
+        Music.saveVolume();
     }
 
-    public void backButtonOfLoad(){
-        playButtonSoundEffect();
-        if (game.isStarted()){
-            pauseStage.setScene(pauseGameScene);
-        }
-        else {
-            double width = window.getScene().getWidth();
-            double height = window.getScene().getHeight();
-            ((VBox) startMenuScene.getRoot()).setPrefSize(width, height);
-            window.setScene(startMenuScene);
-        }
-        saveVolume();
+    public void sceneChangerVBox(Scene scene) {
+        double width = window.getScene().getWidth();
+        double height = window.getScene().getHeight();
+        ((VBox) scene.getRoot()).setPrefSize(width, height);
+        window.setScene(scene);
     }
-//
-//    public void backButtonOfSave(){
-//        playButtonSoundEffect();
-//        pauseStage.setScene(pauseGameScene);
-//    }
 
     // Pop up messages
     private void showPopupMessage(String message, Color textColor, double duration){

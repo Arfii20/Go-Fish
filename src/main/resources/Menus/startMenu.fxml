@@ -8,9 +8,9 @@
 <VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <Label style="-fx-font-size: 72" text="Go Fish" />
    <Region prefHeight="0" prefWidth="1281" />
-   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="150" styleClass="start-buttons" text="START" />
-   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="150" styleClass="start-buttons" text="LOAD" />
-   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="150" styleClass="start-buttons" text="OPTIONS" />
-   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="150" styleClass="start-buttons" text="RULES" />
-   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="150" styleClass="start-buttons" text="QUIT" />
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="200" styleClass="start-buttons" text="START" />
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="200" styleClass="start-buttons" text="LOAD" />
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="200" styleClass="start-buttons" text="RULES" />
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="200" styleClass="start-buttons" text="SETTINGS" />
+   <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="200" styleClass="start-buttons" text="QUIT" />
 </VBox>

@@ -15,7 +15,7 @@
       <Label style="-fx-font-size: 20" text="It will be easier to watch the following video" />
       <Label layoutX="428" layoutY="63" onMousePressed="#youtubeLink" style="-fx-text-fill: cyan; -fx-font-size: 16; -fx-background-color: rgba(155, 155, 155, 0.5); -fx-padding: 2px" text="https://www.youtube.com/watch?v=xmm2EBBruCY" />
    </VBox>
-   <Button mnemonicParsing="false" onMousePressed="#backButtonOfRules" text="Back" />
+   <Button mnemonicParsing="false" onMousePressed="#backButton" prefHeight="47" prefWidth="120" text="Back" />
    <VBox.margin>
       <Insets bottom="30" left="30" right="30" top="30" />
    </VBox.margin>

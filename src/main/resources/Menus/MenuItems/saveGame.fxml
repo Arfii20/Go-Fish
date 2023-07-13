@@ -21,7 +21,7 @@
    </AnchorPane>
    <VBox alignment="CENTER" prefHeight="0" prefWidth="1281" spacing="22" stylesheets="@../../base/dark_theme.css">
       <Region prefHeight="19" prefWidth="1281" />
-      <Button mnemonicParsing="false" onMousePressed="#backButtonOfLoad" prefHeight="47" prefWidth="120" text="Back"/>
+      <Button mnemonicParsing="false" onMousePressed="#backButton" prefHeight="47" prefWidth="120" text="Back"/>
    </VBox>
    <VBox.margin>
       <Insets left="30" right="30"/>

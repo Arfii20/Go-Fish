@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" stylesheets="@base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <Label fx:id="playerTurn" alignment="CENTER" prefHeight="100.0" prefWidth="500.0" style="-fx-font-size: 30" text="Player2's Turn">
       <VBox.margin>
          <Insets bottom="10.0" top="30.0" />
@@ -26,7 +26,7 @@
                   <Region prefHeight="180.0" prefWidth="90.0"/>
                   <VBox alignment="CENTER" minWidth="110.0" prefHeight="200.0" prefWidth="200.0">
                       <ImageView fitHeight="180.0" fitWidth="115.0">
-                          <Image url="@base/cardBack.png"/>
+                          <Image url="@../base/cardBack.png"/>
                       </ImageView>
                       <Label fx:id="player2Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
                              style="-fx-font-size: 20" text="4 Cards"/>
@@ -39,7 +39,7 @@
                   <Region prefHeight="180.0" prefWidth="90.0"/>
                   <VBox minWidth="110.0" prefHeight="200.0" prefWidth="100.0">
                       <ImageView fitHeight="180.0" fitWidth="115.0">
-                          <Image url="@base/cardBack.png"/>
+                          <Image url="@../base/cardBack.png"/>
                       </ImageView>
                       <Label fx:id="player3Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
                              style="-fx-font-size: 20" text="3 Cards"/>
@@ -54,7 +54,7 @@
               <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
                   <VBox minWidth="110.0" prefHeight="200.0" prefWidth="100.0">
                       <ImageView fitHeight="180.0" fitWidth="115.0">
-                          <Image url="@base/cardBack.png"/>
+                          <Image url="@../base/cardBack.png"/>
                       </ImageView>
                       <Label fx:id="player4Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
                              style="-fx-font-size: 20" text="7 Cards"/>
@@ -66,7 +66,7 @@
               <HBox alignment="CENTER" minHeight="230.0" prefHeight="100.0" prefWidth="200.0">
                   <VBox minWidth="110.0" prefHeight="200.0" prefWidth="100.0">
                       <ImageView fitHeight="180.0" fitWidth="115.0">
-                          <Image url="@base/cardBack.png"/>
+                          <Image url="@../base/cardBack.png"/>
                       </ImageView>
                       <Label fx:id="player5Cards" alignment="CENTER" prefHeight="69.0" prefWidth="500.0"
                              style="-fx-font-size: 20" text="2 Cards"/>
@@ -90,25 +90,25 @@
                   <AnchorPane maxHeight="-Infinity" maxWidth="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                   <Label fx:id="deckCards" alignment="CENTER" layoutX="-3.0" layoutY="-5.0" prefHeight="28.0" prefWidth="202.0" style="-fx-font-size: 20" text="20 cards left" />
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="30.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="35.0" translateY="5.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="40.0" translateY="10.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="45.0" translateY="15.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="50.0" translateY="20.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="55.0" translateY="25.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   <ImageView fitHeight="180.0" fitWidth="115.0" rotate="-90.0" translateX="60.0" translateY="30.0">
-                      <Image url="@base/cardBack.png" />
+                      <Image url="@../base/cardBack.png" />
                   </ImageView>
                   </AnchorPane>
               </center>
@@ -124,19 +124,19 @@
                      <StackPane maxHeight="200.0" prefHeight="200.0" prefWidth="680.0">
                         <children>
                             <ImageView fitHeight="180.0" fitWidth="130.0" translateX="-50.0">
-                                <Image url="@Cards/HEARTS/HEARTS_KING.png"/>
+                                <Image url="@../Cards/HEARTS/HEARTS_KING.png"/>
                             </ImageView>
                             <ImageView fitHeight="180.0" fitWidth="130.0" translateX="-25.0">
-                                <Image url="@Cards/CLUBS/CLUBS_JACK.png"/>
+                                <Image url="@../Cards/CLUBS/CLUBS_JACK.png"/>
                             </ImageView>
                             <ImageView fitHeight="180.0" fitWidth="130.0">
-                                <Image url="@Cards/CLUBS/CLUBS_SIX.png"/>
+                                <Image url="@../Cards/CLUBS/CLUBS_SIX.png"/>
                             </ImageView>
                             <ImageView fitHeight="180.0" fitWidth="130.0" translateX="25.0">
-                                <Image url="@Cards/CLUBS/CLUBS_TEN.png"/>
+                                <Image url="@../Cards/CLUBS/CLUBS_TEN.png"/>
                             </ImageView>
                             <ImageView fitHeight="180.0" fitWidth="130.0" translateX="50.0">
-                                <Image url="@Cards/CLUBS/CLUBS_KING.png"/>
+                                <Image url="@../Cards/CLUBS/CLUBS_KING.png"/>
                             </ImageView>
                         </children>
                      </StackPane>
