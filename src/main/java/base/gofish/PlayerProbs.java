@@ -2,10 +2,10 @@ package base.gofish;
 
 import java.util.*;
 
-public class playerProbs {
+public class PlayerProbs {
     private final List<Player> playerList;
     private Map<Integer, Map<Player, Double>> numberProbabilities;
-    public playerProbs(List<Player> playersIn) {
+    public PlayerProbs(List<Player> playersIn) {
         this.playerList = playersIn;
     }
 
@@ -61,7 +61,7 @@ public class playerProbs {
         }
     }
 
-    public Player randomPlayer(Player curr) {
+    public Player getRandomPlayer(Player curr) {
         Random random = new Random();
         int randint = random.nextInt(0, playerList.size());
         Player player;

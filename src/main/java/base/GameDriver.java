@@ -17,6 +17,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -38,10 +39,7 @@ public class GameDriver extends Application {
     private ArrayList<String> names = new ArrayList<String>();
     private static Stage window;
     private GameEngine game;
-    private int playerNum;
     private Timeline timeline;
-    private boolean phase1;
-    private int twoPlayers;
     private Stage pauseStage;
     private BoxBlur blur;
     private String saveLocation;
@@ -52,13 +50,14 @@ public class GameDriver extends Application {
     private Scene startMenuScene;
     private Scene playerNameScene;
     private Scene totalPointsScene;
+    private Scene difficultyLevelScene;
 
     private Scene loadGameMenuScene;
     private Scene saveGameMenuScene;
     private Scene mainGamePageScene;
     private Scene displayGameCardScene;
     private Scene displaySpaceCardScene;
-    private Scene showPlayersForSwapScene;
+
     private Scene rulesActionCardsScene;
     private Scene rulesSpaceCardsScene;
     private Scene rulesScene;
@@ -67,97 +66,46 @@ public class GameDriver extends Application {
     private Scene showCardScene;
     private Scene gameOverScene;
 
-    // welcome Scene Elements
-    @FXML
-    private VBox WelcomeVbox;
+    // <--------------- welcome Scene Elements --------------->
     @FXML
     private Label pressAnyKeyLabel;
 
-    // Add player number elements
+    // <--------------------- Max points --------------------->
     @FXML
-    private ComboBox<Integer> playerNoCombobox;
+    private ComboBox<Integer> pointsCombobox;
     @FXML
-    private Button setPlayerNumbers;
+    private Button setMaxValueButton;
 
-    // Add Player Elements
+    // <------------------- Player number -------------------->
     @FXML
     private TextField getPlayerFromInput;
     @FXML
     private Label playerAdded;
 
-    // Main Body Elements
-    private Label topLeftInstructions;
+    // <--------------------- Settings ---------------------->
     @FXML
-    private Label currentPlayerTopLabel;
+    private Label changeLocLabel;
     @FXML
-    private HBox mainHBox;
-    @FXML
-    private VBox mainPageLeftVBox;
-    @FXML
-    private VBox mainPageRightVBox;
-    @FXML
-    private Line mainPageLine;
+    private Slider volumeSlider, buttonVolumeSlider;
 
-    // Show Deck scene elements
-    private ToggleGroup group;
-    @FXML
-    private HBox addCardHBox;
-    @FXML
-    private HBox addNamesHBox;
-    @FXML
-    private Label addNamesLabel;
-    @FXML
-    private HBox addBreathTravel;
-    @FXML
-    private ScrollPane scrollPaneOfShowCardDeck;
-
-    // Display Space Card
-    @FXML
-    private Label displaySpaceCardLabel;
-    @FXML
-    private Label displaySpaceCardDescriptionLabel;
-
-    // Display Game Card
-    @FXML
-    private Label displayGameCardLabel;
-    @FXML
-    private Label displayGameCardDescriptionLabel;
-
-    // Game Over Scene elements
-    @FXML
-    private Label winnerLabel;
-    @FXML
-    private Button restartGameButton;
-
-    // Rules Scene
-    @FXML
-    private Label actionCardsLabel;
-    @FXML
-    private Label spaceCardsLabel;
-    @FXML
-    private Label moreInfoLabel;
-
-    // Swap with player
-    @FXML
-    private HBox playerNamesForSwap;
-
-    // Load game elements
+    // <-------------------- Load Game --------------------->
     @FXML
     private VBox loadGameVbox;
 
-    // Save game elements
+    // <-------------------- Save Game --------------------->
     @FXML
     private VBox saveGameVbox;
     @FXML
     private Label saveGameLocation;
 
-    // Settings elements
+    // <-------------------- Game Over--------------------->
     @FXML
-    private Label changeLocLabel;
+    private Label winnerLabel;
     @FXML
-    private Slider volumeSlider;
-    @FXML
-    private Slider buttonVolumeSlider;
+    private Button restartGameButton;
+
+
+
 
     public static void main(String[] args){
         launch();
@@ -168,10 +116,10 @@ public class GameDriver extends Application {
     public void start(Stage stage) throws IOException {
         window = stage;
 
-//        blur = new BoxBlur();
-//        blur.setWidth(10);
-//        blur.setHeight(10);
-//        blur.setIterations(1);
+        blur = new BoxBlur();
+        blur.setWidth(10);
+        blur.setHeight(10);
+        blur.setIterations(1);
 
         Random random = new Random();
         long seed = random.nextLong();
@@ -199,6 +147,10 @@ public class GameDriver extends Application {
         totalPointsXML.setController(this);
         totalPointsScene = new Scene(totalPointsXML.load());
 
+        FXMLLoader difficultyLevelXML = new FXMLLoader(getClass().getResource("/PreGame/4difficultyLevel.fxml"));
+        difficultyLevelXML.setController(this);
+        difficultyLevelScene = new Scene(difficultyLevelXML.load());
+
         // Start and Pause Menu items
         FXMLLoader loadGameMenuXML = new FXMLLoader(getClass().getResource("/Menus/MenuItems/loadGame.fxml"));
         loadGameMenuXML.setController(this);
@@ -216,34 +168,19 @@ public class GameDriver extends Application {
         rulesXML.setController(this);
         rulesScene = new Scene(rulesXML.load());
 
-//
+
 //        FXMLLoader mainGamePageXML = new FXMLLoader(getClass().getResource("/resources/MainGame.fxml"));
 //        mainGamePageXML.setController(this);
 //        mainGamePageScene = new Scene(mainGamePageXML.load());
-//
-//        FXMLLoader showCardXML = new FXMLLoader(getClass().getResource("/resources/showCard.fxml"));
-//        showCardXML.setController(this);
-//        showCardScene = new Scene(showCardXML.load(), 1200, 665);
-//
-//        FXMLLoader displaySpaceCardXML = new FXMLLoader(getClass().getResource("/resources/displaySpaceCard.fxml"));
-//        displaySpaceCardXML.setController(this);
-//        displaySpaceCardScene = new Scene(displaySpaceCardXML.load(), 320, 200);
-//
-//        FXMLLoader displayGameCardXML = new FXMLLoader(getClass().getResource("/resources/displayCard.fxml"));
-//        displayGameCardXML.setController(this);
-//        displayGameCardScene = new Scene(displayGameCardXML.load(), 200, 320);
-//
+
 //        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/resources/2gameOver.fxml"));
 //        gameOverXML.setController(this);
 //        gameOverScene = new Scene(gameOverXML.load());
 //
 //        FXMLLoader pauseGameXML = new FXMLLoader(getClass().getResource("/resources/pauseMenu.fxml"));
 //        pauseGameXML.setController(this);
-//        pauseGameScene = new Scene(pauseGameXML.load(), 1200, 665);
+//        pauseGameScene = new Scene(pauseGameXML.load());
 //
-//        FXMLLoader showPlayersForSwapXML = new FXMLLoader(getClass().getResource("/resources/showPlayersForSwap.fxml"));
-//        showPlayersForSwapXML.setController(this);
-//        showPlayersForSwapScene = new Scene(showPlayersForSwapXML.load(), 1200, 665);
 
 //        // Add button click
 //        addListeners();
@@ -271,32 +208,24 @@ public class GameDriver extends Application {
         fade.setToValue(1);
         fade.play();
 
-//        // Binding the line length to main window size
-//        BorderPane mainPageRoot = ((BorderPane) mainGamePageScene.getRoot());
-//        mainPageLine.startXProperty().bind(mainPageRoot.widthProperty().multiply(0.05));
-//        mainPageLine.endXProperty().bind(mainPageRoot.widthProperty().multiply(0.95));
-
         // Press any key to set scene to get number of players from players
         OpeningScene.setOnKeyPressed(event -> {
             OpeningScene.setOnKeyPressed(null);
             sceneChangerVBox(startMenuScene);
         });
 
-//        // Add listener to the enter key so that player is added when enter pressed
-//        getPlayerFromInput.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER){
-//                addPlayers();
-//            }
-//        });
+        // Add listener to the enter key so that player is added when enter pressed
+        getPlayerFromInput.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                addPlayers();
+            }
+        });
 
-//        // Get number of players and set scene to get player names from players
-//        setPlayerNumbers.setOnAction(actionEvent -> {
-//            playerNum = playerNoCombobox.getValue();
-//            double width = window.getScene().getWidth();
-//            double height = window.getScene().getHeight();
-//            ((VBox) enterPlayersScene.getRoot()).setPrefSize(width, height);
-//            window.setScene(enterPlayersScene);
-//        });
+        // Get number of players and set scene to get player names from players
+        setMaxValueButton.setOnAction(actionEvent -> {
+            game.setMaxPoints(this.pointsCombobox.getValue());
+            sceneChangerVBox(difficultyLevelScene);
+        });
 
 //        // Add listener on escape key for pausing the game
 //        pauseStage = new Stage();
@@ -346,116 +275,34 @@ public class GameDriver extends Application {
     }
 
     // Add players to the game
-//    public void addPlayers(){
-//        if(getPlayerFromInput.getText().isEmpty()){
-//            getPlayerFromInput.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 5px;");
-//            return;
-//        }
-//        else if (this.names.contains(getPlayerFromInput.getText())){
-//            getPlayerFromInput.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 5px;");
-//            playerAdded.setText(getPlayerFromInput.getText() + " already added");
-//            playerAdded.setVisible(true);
-//            playerAdded.setTextFill(Color.RED);
-//            getPlayerFromInput.clear();
-//            FadeTransition fadeIn = new FadeTransition(Duration.millis(600), playerAdded);
-//            fadeIn.setFromValue(0);
-//            fadeIn.setToValue(1);
-//
-//            FadeTransition fadeOut = new FadeTransition(Duration.millis(600), playerAdded);
-//            fadeOut.setFromValue(1);
-//            fadeOut.setToValue(0);
-//
-//            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-//            fadeSequence.play();
-//            getPlayerFromInput.requestFocus();
-//            playerAdded.setTextFill(Color.WHITE);
-//            return;
-//        }
-//        else {
-//            getPlayerFromInput.setStyle("-fx-border-width: 2px; -fx-border-radius: 5px;");
-//            if (playerNum != 1){
-//                game.addPlayer(getPlayerFromInput.getText());
-//                names.add(getPlayerFromInput.getText());
-//                playerNum -= 1;
-//                playerAdded.setText(getPlayerFromInput.getText() + " Joined");
-//                playerAdded.setVisible(true);
-//                getPlayerFromInput.clear();
-//                FadeTransition fadeIn = new FadeTransition(Duration.millis(600), playerAdded);
-//                fadeIn.setFromValue(0);
-//                fadeIn.setToValue(1);
-//
-//                FadeTransition fadeOut = new FadeTransition(Duration.millis(600), playerAdded);
-//                fadeOut.setFromValue(1);
-//                fadeOut.setToValue(0);
-//
-//                SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-//                fadeSequence.play();
-//                getPlayerFromInput.requestFocus();
-//            }
-//            else {
-//                getPlayerFromInput.setDisable(true);
-//                game.addPlayer(getPlayerFromInput.getText());
-//                playerAdded.setText(getPlayerFromInput.getText() + " Joined");
-//                getPlayerFromInput.clear();
-//                playerAdded.setVisible(true);
-//
-//                FadeTransition fadeIn = new FadeTransition(Duration.millis(400), playerAdded);
-//                fadeIn.setFromValue(0);
-//                fadeIn.setToValue(1);
-//
-//                FadeTransition fadeOut = new FadeTransition(Duration.millis(400), playerAdded);
-//                fadeOut.setFromValue(1);
-//                fadeOut.setToValue(0);
-//
-//                SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-//                fadeSequence.setOnFinished(event -> {
-//                    game.startGame();
-//                    System.out.println(game.getAllPlayers());
-//                    game.startTurn();
-//                    showPopupMessage("First player to reach the spaceship wins. Unless everyone dies of course", Color.CYAN, 3);
-//                    addToBorderPaneLeftVBox();
-//                    addToBorderPaneRightVBox();
-//                    addColumnsDependingOnPlayer();
-//                    topLeftInstructions.setText("Pick a card from the Game Deck by clicking the deck below");
-//                    double width = window.getScene().getWidth();
-//                    double height = window.getScene().getHeight();
-//                    ((BorderPane) mainGamePageScene.getRoot()).setPrefSize(width, height);
-//                    window.setScene(mainGamePageScene);
-//                    currentPlayerTopLabel.setTextFill(Color.CYAN);
-//                    currentPlayerTopLabel.setText("Current Player: " + game.getCurrentPlayer().toString());
-//                });
-//                fadeSequence.play();
-//            }
-//        }
-//    }
-//
+    public void addPlayers(){
+        if(getPlayerFromInput.getText().isEmpty()){
+            getPlayerFromInput.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 5px;");
+        }
+        else {
+            getPlayerFromInput.setStyle("-fx-border-width: 2px; -fx-border-radius: 5px;");
+            getPlayerFromInput.setDisable(true);
+            game.addPlayers(getPlayerFromInput.getText());
 
+            playerAdded.setText("Welcome to the game " + getPlayerFromInput.getText());
+            getPlayerFromInput.clear();
+            playerAdded.setVisible(true);
 
-//    // Add Button clicks
-//    private void addListeners(){
-//        List<Node> allButtons = new ArrayList<>();
-//        allButtons.addAll(OpeningScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(startMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(playerNameScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(enterPlayersScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(loadGameMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(saveGameMenuScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(mainGamePageScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(displayGameCardScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(displaySpaceCardScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(showPlayersForSwapScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesActionCardsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesSpaceCardsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(rulesScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(pauseGameScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(settingsScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(showCardScene.getRoot().lookupAll(".button"));
-//        allButtons.addAll(gameOverScene.getRoot().lookupAll(".button"));
-//        for (Node button : allButtons) {
-//            addButtonSoundEffect((Button) button);
-//        }
-//    }
-//
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), playerAdded);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(800), playerAdded);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
+            fadeSequence.setOnFinished(event -> sceneChangerVBox(totalPointsScene));
+            fadeSequence.play();
+        }
+    }
+
+    public void totalPoints(MouseEvent event) {}
 
 
     public void changeLoc(){

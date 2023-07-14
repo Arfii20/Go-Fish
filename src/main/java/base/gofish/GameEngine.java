@@ -2,6 +2,7 @@ package base.gofish;
 
 import base.gofish.deck.Card;
 import base.gofish.deck.Deck;
+import javafx.util.Pair;
 
 import java.io.*;
 import java.util.*;
@@ -14,8 +15,10 @@ public class GameEngine {
     private List<Player> players;
     private Player currentPlayer;
     private Map<String, Player> playerMap;
-    private int totalPoints;
+    private int maxPoints;
     private Player winner;
+    private PlayerProbs playerProbabilities;
+    private int difficulty;
 
 
     private GameEngine(){
@@ -28,10 +31,11 @@ public class GameEngine {
         this.random = new Random(seed);
         this.deck = new Deck();
         this.deck.shuffle(random);
-        this.totalPoints = 1000;
+        this.maxPoints = 1000;
+        this.difficulty = 2;
     }
 
-    public int addPlayers(String name) {
+    public void addPlayers(String name) {
         players.add(new Player(name));
         players.add(new Player("Player2"));
         players.add(new Player("Player3"));
@@ -42,7 +46,23 @@ public class GameEngine {
             playerMap.put(player.toString(), player);
         }
 
-        return players.size();
+        playerProbabilities = new PlayerProbs(players);
+    }
+
+    public void setMaxPoints(int points) {
+        this.maxPoints = points;
+    }
+
+    public int getMaxPoints() {
+        return this.maxPoints;
+    }
+    
+    public void setDifficulty(int diff){
+        this.difficulty = diff;
+    }
+
+    public int getDifficulty() {
+        return this.difficulty;
     }
 
     public void saveState(String path) {
@@ -144,8 +164,8 @@ public class GameEngine {
     }
 
     public Card singleTurn(String playerIn, String cardIn) {
-        Player player = playerMap.get(playerIn);
-        Card card = deck.getCardMap().get(cardIn);
+        Player player = this.playerMap.get(playerIn);
+        Card card = this.deck.getCardMap().get(cardIn);
         Card drawnCard = null;
         if (player.hasCard(card)){
             List<Card> cards = player.clearCardFromHand(card.getValue());
@@ -156,6 +176,40 @@ public class GameEngine {
             currentPlayer.addToHand(drawnCard);
         }
         return drawnCard;
+    }
+
+    private Pair<Player, Card> getPlayerCardForBots() {
+        Player player;
+        for (Card card : this.currentPlayer.getCards()) {
+            if (this.currentPlayer.cardCount(card.getValue()) == 3) {
+                player = this.getPlayerAccDifficulty(card);
+                if (player != null) return new Pair<>(player, card);
+            }
+        }
+        for (Card card : this.currentPlayer.getCards()) {
+            if (this.currentPlayer.cardCount(card.getValue()) == 2) {
+                player = this.getPlayerAccDifficulty(card);
+                if (player != null && player.cardCount(card.getValue()) == 2) return new Pair<>(player, card);
+            }
+        }
+        for (Card card : this.currentPlayer.getCards()) {
+            if (this.currentPlayer.cardCount(card.getValue()) == 1) {
+                player = this.getPlayerAccDifficulty(card);
+                if (player != null) return new Pair<>(player, card);
+            }
+        }
+        return new Pair<>(this.playerProbabilities.getRandomPlayer(this.currentPlayer), this.currentPlayer.getRandomCard(random));
+    }
+
+    private Player getPlayerAccDifficulty(Card card) {
+        Player player;
+        player = switch (this.difficulty) {
+            case 1 -> playerProbabilities.getRandomPlayer(this.currentPlayer);
+            case 2 -> random.nextInt(67, 70) == 69 ? playerProbabilities.getPlayerFalse(card.getValue(), this.currentPlayer) : playerProbabilities.getPlayer(card.getValue(), this.currentPlayer);
+            case 3 -> playerProbabilities.getPlayer(card.getValue(), this.currentPlayer);
+            default -> null;
+        };
+        return player;
     }
 
     public List<Player> sortedPlayers() {

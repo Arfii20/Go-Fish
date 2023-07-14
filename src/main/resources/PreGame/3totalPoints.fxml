@@ -11,7 +11,7 @@
 <VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <Region prefHeight="200" prefWidth="200" />
    <Label style="-fx-font-size: 36" text="Enter Maximum points for the game" />
-    <ComboBox fx:id="playerNoCombobox" prefHeight="29" prefWidth="559" style="-fx-border-color: transparent;">
+    <ComboBox fx:id="pointsCombobox" prefHeight="29" prefWidth="559" style="-fx-border-color: transparent;">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <Integer fx:value="10" />
@@ -31,5 +31,5 @@
     </ComboBox>
    <Label style="-fx-font-size: 18; -fx-text-fill: red;" text="You can end the game anytime between rounds" />
    <Region prefHeight="100" prefWidth="200" />
-   <Button fx:id="setPlayerNumbers1" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 24" text="Done" />
+   <Button fx:id="setMaxValueButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 24" text="Done"/>
 </VBox>

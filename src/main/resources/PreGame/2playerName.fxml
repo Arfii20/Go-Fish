@@ -9,7 +9,7 @@
    <Region prefHeight="180" prefWidth="200" />
    <Label style="-fx-font-size: 36" text="Enter Your Name" />
    <TextField fx:id="getPlayerFromInput" prefHeight="30" prefWidth="400" style="-fx-background-color: RGB(100,100,100,0.5);" />
-   <Label fx:id="playerAdded" style="-fx-font-size: 18" visible="false" />
+   <Label fx:id="playerAdded" style="-fx-font-size: 24; -fx-text-fill: cyan" visible="false" />
    <Region prefHeight="82.0" prefWidth="200" />
    <Label style="-fx-font-size: 24; -fx-text-fill: cyan" text="Press ENTER to Join" />
    <Region prefHeight="4.0" prefWidth="200" />

@@ -13,7 +13,7 @@ public class Music {
 
     public static void playButtonSoundEffect() {
         if (buttonClick == null) {
-            File file = new File("./src/main/resources/base/click1.wav");
+            File file = new File("./src/main/resources/base/click2.wav");
             try {
                 buttonClick = AudioSystem.getClip();
                 buttonClick.open(AudioSystem.getAudioInputStream(file));
@@ -35,7 +35,12 @@ public class Music {
         if (buttonClick != null) {
             FloatControl volumeClick = (FloatControl) buttonClick.getControl(FloatControl.Type.MASTER_GAIN);
             float dB = (float) (Math.log(percent) / Math.log(10.0) * 20.0);
-            volumeClick.setValue(dB);
+            try {
+                volumeClick.setValue(dB);
+            }
+            catch (IllegalArgumentException e) {
+                // Do nothing
+            }
         }
     }
 
@@ -94,7 +99,12 @@ public class Music {
         if (audioClip != null) {
             FloatControl volume = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
             float dB = (float) (Math.log(percent) / Math.log(10.0) * 20.0);
-            volume.setValue(dB);
+            try {
+                volume.setValue(dB);
+            }
+            catch (IllegalArgumentException e) {
+                // Do nothing
+            }
             if (musicVolume > 0) {
                 audioClip.start();
             } else {

@@ -4,6 +4,7 @@ import base.gofish.deck.Card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Player implements Comparable<Player>{
     private String name;
@@ -22,6 +23,10 @@ public class Player implements Comparable<Player>{
 
     public List<Card> getCards() {
         return cards;
+    }
+
+    public Card getRandomCard(Random random) {
+        return this.cards.get(random.nextInt(0, this.cards.size()));
     }
 
     public void addToHand(Card card) {
