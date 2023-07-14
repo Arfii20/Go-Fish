@@ -51,10 +51,12 @@ public class GameDriver extends Application {
     private Scene playerNameScene;
     private Scene totalPointsScene;
     private Scene difficultyLevelScene;
-
+    private Scene mainPageScene;
     private Scene loadGameMenuScene;
     private Scene saveGameMenuScene;
-    private Scene mainGamePageScene;
+    private Scene preGameScene;
+
+
     private Scene displayGameCardScene;
     private Scene displaySpaceCardScene;
 
@@ -81,6 +83,10 @@ public class GameDriver extends Application {
     private TextField getPlayerFromInput;
     @FXML
     private Label playerAdded;
+
+    // <------------------- Player number -------------------->
+    @FXML
+    private RadioButton easyRadio, mediumRadio, hardRadio;
 
     // <--------------------- Settings ---------------------->
     @FXML
@@ -168,22 +174,22 @@ public class GameDriver extends Application {
         rulesXML.setController(this);
         rulesScene = new Scene(rulesXML.load());
 
+        FXMLLoader mainPageXML = new FXMLLoader(getClass().getResource("/MidGame/mainPage.fxml"));
+        mainPageXML.setController(this);
+        mainPageScene = new Scene(mainPageXML.load());
 
-//        FXMLLoader mainGamePageXML = new FXMLLoader(getClass().getResource("/resources/MainGame.fxml"));
-//        mainGamePageXML.setController(this);
-//        mainGamePageScene = new Scene(mainGamePageXML.load());
+        FXMLLoader preGameXML = new FXMLLoader(getClass().getResource("/MidGame/mainPage.fxml"));
+        preGameXML.setController(this);
+        preGameScene = new Scene(preGameXML.load());
 
 //        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/resources/2gameOver.fxml"));
 //        gameOverXML.setController(this);
 //        gameOverScene = new Scene(gameOverXML.load());
-//
+
 //        FXMLLoader pauseGameXML = new FXMLLoader(getClass().getResource("/resources/pauseMenu.fxml"));
 //        pauseGameXML.setController(this);
 //        pauseGameScene = new Scene(pauseGameXML.load());
-//
 
-//        // Add button click
-//        addListeners();
 
         // Set title and first scene of the game
         window.setTitle("Go Fish");
@@ -258,6 +264,17 @@ public class GameDriver extends Application {
 //        });
 //
         // Start Music
+        // ToggleGroup of levels
+        ToggleGroup difficultyPageToggle = new ToggleGroup();
+        easyRadio.setToggleGroup(difficultyPageToggle);
+        mediumRadio.setToggleGroup(difficultyPageToggle);
+        hardRadio.setToggleGroup(difficultyPageToggle);
+
+        easyRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
+        mediumRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
+        hardRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
+
+        // Music and Button clicks
         Music.getMusic(volumeSlider, buttonVolumeSlider);
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Music.setMusicVolume(newValue.doubleValue() / 100);
@@ -268,6 +285,25 @@ public class GameDriver extends Application {
         });
 
         window.show();
+    }
+
+    private void handleDifficultySelection(ToggleGroup toggleGroup) {
+        RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+        if (selectedRadioButton != null) {
+            String selectedValue = selectedRadioButton.getText();
+            int difficulty = switch (selectedValue) {
+                case "Easy" -> 1;
+                case "Medium" -> 2;
+                case "Hard" -> 3;
+                default -> -1;
+            };
+            game.setDifficulty(difficulty);
+            sceneChangerVBox(preGameScene);
+            showPopupMessage("LET THE GAME BEGIN", Color.CYAN, 3);
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(ev -> sceneChangerVBox(mainPageScene));
+            delay.play();
+        }
     }
 
     public void restartGame() throws IOException {
@@ -444,11 +480,11 @@ public class GameDriver extends Application {
         Button pressedButton = (Button) event.getSource();
         Stage overlayStage = (Stage) pressedButton.getScene().getWindow();
         if (pressedButton.getText().equals("RESUME")){
-            mainGamePageScene.getRoot().requestFocus();
-            sceneChangerVBox(mainGamePageScene);
+            mainPageScene.getRoot().requestFocus();
+            sceneChangerVBox(mainPageScene);
         }
         if (pressedButton.getText().equals("RESTART")){
-            mainGamePageScene.getRoot().requestFocus();
+            mainPageScene.getRoot().requestFocus();
             overlayStage.close();
             this.start(window);
         }
@@ -796,6 +832,6 @@ public class GameDriver extends Application {
             timeline.play();
         });
 
-        popup.show(pauseStage);
+        popup.show(window);
     }
 }

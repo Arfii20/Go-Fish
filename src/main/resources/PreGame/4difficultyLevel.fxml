@@ -4,9 +4,10 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <Label style="-fx-font-size: 36" text="Choose Difficulty Level" />
-   <RadioButton mnemonicParsing="false" text="Easy" />
-   <RadioButton mnemonicParsing="false" text="Medium" />
-   <RadioButton mnemonicParsing="false" text="Hard" />
+   <RadioButton fx:id="easyRadio" mnemonicParsing="false" text="Easy" />
+   <RadioButton fx:id="mediumRadio" mnemonicParsing="false" text="Medium" />
+   <RadioButton fx:id="hardRadio" mnemonicParsing="false" text="Hard" />
 </VBox>
