@@ -123,6 +123,10 @@ public class GameEngine {
         return deck;
     }
 
+    public void setStarted(boolean start){
+        this.started = start;
+    }
+
     public boolean isStarted(){
         return this.started;
     }

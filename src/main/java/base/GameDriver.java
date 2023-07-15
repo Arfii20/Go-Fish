@@ -93,6 +93,8 @@ public class GameDriver extends Application {
     private Label changeLocLabel;
     @FXML
     private Slider volumeSlider, buttonVolumeSlider;
+    @FXML
+    private RadioButton easyRadioSetting, mediumRadioSetting, hardRadioSetting;
 
     // <-------------------- Load Game --------------------->
     @FXML
@@ -145,6 +147,10 @@ public class GameDriver extends Application {
         startMenuXML.setController(this);
         startMenuScene = new Scene(startMenuXML.load());
 
+        FXMLLoader pauseGameXML = new FXMLLoader(getClass().getResource("/Menus/pauseMenu.fxml"));
+        pauseGameXML.setController(this);
+        pauseGameScene = new Scene(pauseGameXML.load());
+
         FXMLLoader playerNameXML = new FXMLLoader(getClass().getResource("/PreGame/2playerName.fxml"));
         playerNameXML.setController(this);
         playerNameScene = new Scene(playerNameXML.load());
@@ -156,6 +162,10 @@ public class GameDriver extends Application {
         FXMLLoader difficultyLevelXML = new FXMLLoader(getClass().getResource("/PreGame/4difficultyLevel.fxml"));
         difficultyLevelXML.setController(this);
         difficultyLevelScene = new Scene(difficultyLevelXML.load());
+
+        FXMLLoader preGameXML = new FXMLLoader(getClass().getResource("/PreGame/5preGame.fxml"));
+        preGameXML.setController(this);
+        preGameScene = new Scene(preGameXML.load());
 
         // Start and Pause Menu items
         FXMLLoader loadGameMenuXML = new FXMLLoader(getClass().getResource("/Menus/MenuItems/loadGame.fxml"));
@@ -178,23 +188,17 @@ public class GameDriver extends Application {
         mainPageXML.setController(this);
         mainPageScene = new Scene(mainPageXML.load());
 
-        FXMLLoader preGameXML = new FXMLLoader(getClass().getResource("/MidGame/mainPage.fxml"));
-        preGameXML.setController(this);
-        preGameScene = new Scene(preGameXML.load());
 
 //        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/resources/2gameOver.fxml"));
 //        gameOverXML.setController(this);
 //        gameOverScene = new Scene(gameOverXML.load());
 
-//        FXMLLoader pauseGameXML = new FXMLLoader(getClass().getResource("/resources/pauseMenu.fxml"));
-//        pauseGameXML.setController(this);
-//        pauseGameScene = new Scene(pauseGameXML.load());
 
 
         // Set title and first scene of the game
         window.setTitle("Go Fish");
         if (window.getScene() != null){
-            sceneChangerVBox(OpeningScene);
+            sceneChanger(OpeningScene);
         } else {
             window.setScene(OpeningScene);
         }
@@ -217,7 +221,7 @@ public class GameDriver extends Application {
         // Press any key to set scene to get number of players from players
         OpeningScene.setOnKeyPressed(event -> {
             OpeningScene.setOnKeyPressed(null);
-            sceneChangerVBox(startMenuScene);
+            sceneChanger(startMenuScene);
         });
 
         // Add listener to the enter key so that player is added when enter pressed
@@ -230,7 +234,7 @@ public class GameDriver extends Application {
         // Get number of players and set scene to get player names from players
         setMaxValueButton.setOnAction(actionEvent -> {
             game.setMaxPoints(this.pointsCombobox.getValue());
-            sceneChangerVBox(difficultyLevelScene);
+            sceneChanger(difficultyLevelScene);
         });
 
 //        // Add listener on escape key for pausing the game
@@ -241,20 +245,18 @@ public class GameDriver extends Application {
 //        pauseStage.setScene(pauseGameScene);
 //        pauseStage.setOpacity(0.9);
 
-//        mainGamePageScene.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ESCAPE){
-//                mainGamePageScene.getRoot().setEffect(blur);
-//                pauseStage.show();
-//            }
-//        });
-//
-//        pauseGameScene.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ESCAPE){
-//                mainGamePageScene.getRoot().setEffect(null);
-//                pauseStage.hide();
-//            }
-//        });
-//
+        mainPageScene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE){
+                sceneChanger(pauseGameScene);
+            }
+        });
+
+        pauseGameScene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE){
+                sceneChanger(mainPageScene);
+            }
+        });
+
 //        showCardScene.setOnKeyPressed(event -> {
 //            if (event.getCode() == KeyCode.ESCAPE){
 //                Stage overlayStage = (Stage) showCardScene.getWindow();
@@ -262,14 +264,13 @@ public class GameDriver extends Application {
 //                overlayStage.close();
 //            }
 //        });
-//
+
         // Start Music
         // ToggleGroup of levels
         ToggleGroup difficultyPageToggle = new ToggleGroup();
         easyRadio.setToggleGroup(difficultyPageToggle);
         mediumRadio.setToggleGroup(difficultyPageToggle);
         hardRadio.setToggleGroup(difficultyPageToggle);
-
         easyRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
         mediumRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
         hardRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
@@ -298,11 +299,27 @@ public class GameDriver extends Application {
                 default -> -1;
             };
             game.setDifficulty(difficulty);
-            sceneChangerVBox(preGameScene);
-            showPopupMessage("LET THE GAME BEGIN", Color.CYAN, 3);
+            sceneChanger(preGameScene);
+            showPopupMessage("LET THE GAME BEGIN", 40, 50, Color.CYAN, 3);
             PauseTransition delay = new PauseTransition(Duration.seconds(3));
-            delay.setOnFinished(ev -> sceneChangerVBox(mainPageScene));
+            delay.setOnFinished(ev -> {
+                game.setStarted(true);
+                sceneChanger(mainPageScene);
+            });
             delay.play();
+        }
+    }
+
+    private void handleDifficultySelectionForSettings(ToggleGroup toggleGroup) {
+        RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+        if (selectedRadioButton != null) {
+            String selectedValue = selectedRadioButton.getText();
+            game.setDifficulty(switch (selectedValue) {
+                case "Easy" -> 1;
+                case "Medium" -> 2;
+                case "Hard" -> 3;
+                default -> -1;
+            });
         }
     }
 
@@ -333,7 +350,7 @@ public class GameDriver extends Application {
             fadeOut.setToValue(0);
 
             SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-            fadeSequence.setOnFinished(event -> sceneChangerVBox(totalPointsScene));
+            fadeSequence.setOnFinished(event -> sceneChanger(totalPointsScene));
             fadeSequence.play();
         }
     }
@@ -457,17 +474,17 @@ public class GameDriver extends Application {
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
         if (pressedButton.getText().equals("START")){
-            sceneChangerVBox(playerNameScene);
+            sceneChanger(playerNameScene);
         }
         else if (pressedButton.getText().equals("LOAD")){
             loadSaveFiles();
         }
         else if (pressedButton.getText().equals("SETTINGS")){
             changeLocLabel.setText(saveLocation);
-            sceneChangerVBox(settingsScene);
+            sceneChanger(settingsScene);
         }
         else if (pressedButton.getText().equals("RULES")){
-            sceneChangerVBox(rulesScene);
+            sceneChanger(rulesScene);
         }
         else if (pressedButton.getText().equals("QUIT")){
             Platform.exit();
@@ -481,7 +498,7 @@ public class GameDriver extends Application {
         Stage overlayStage = (Stage) pressedButton.getScene().getWindow();
         if (pressedButton.getText().equals("RESUME")){
             mainPageScene.getRoot().requestFocus();
-            sceneChangerVBox(mainPageScene);
+            sceneChanger(mainPageScene);
         }
         if (pressedButton.getText().equals("RESTART")){
             mainPageScene.getRoot().requestFocus();
@@ -496,10 +513,10 @@ public class GameDriver extends Application {
             loadSaveFiles();
         }
         else if (pressedButton.getText().equals("RULES")){
-            sceneChangerVBox(rulesScene);
+            sceneChanger(rulesScene);
         }
         else if (pressedButton.getText().equals("SETTINGS")){
-            sceneChangerVBox(settingsScene);
+            sceneChanger(settingsScene);
         }
         else if (pressedButton.getText().equals("QUIT")){
             try {
@@ -598,7 +615,7 @@ public class GameDriver extends Application {
             loadGameVbox.getChildren().addAll(region1, label, region2);
             System.out.println("There was no saved file");
         }
-        sceneChangerVBox(loadGameMenuScene);
+        sceneChanger(loadGameMenuScene);
     }
 
     public void loadGame(MouseEvent event){}
@@ -781,11 +798,11 @@ public class GameDriver extends Application {
 
     public void backButton(){
         Music.playButtonSoundEffect();
-        sceneChangerVBox(game.isStarted() ? pauseGameScene : startMenuScene);
+        sceneChanger(game.isStarted() ? pauseGameScene : startMenuScene);
         Music.saveVolume();
     }
 
-    public void sceneChangerVBox(Scene scene) {
+    public void sceneChanger(Scene scene) {
         double width = window.getScene().getWidth();
         double height = window.getScene().getHeight();
         ((VBox) scene.getRoot()).setPrefSize(width, height);
@@ -793,14 +810,14 @@ public class GameDriver extends Application {
     }
 
     // Pop up messages
-    private void showPopupMessage(String message, Color textColor, double duration){
+    private void showPopupMessage(String message, int fontSize, int moveY, Color textColor, double duration){
         Label label = new Label(message);
         label.setTextFill(textColor);
-        label.setFont(new Font(25));
+        label.setFont(new Font(fontSize));
         label.setPadding(new Insets(10));
         label.setStyle("-fx-font-family: 'MV Boli';");
         label.setTranslateX(0);
-        label.setTranslateY(150);
+        label.setTranslateY(150 + moveY);
 
         Popup popup = new Popup();
         popup.getContent().add(label);

@@ -10,14 +10,14 @@
    <Region prefHeight="9" prefWidth="1281" />
    <Label prefHeight="130.0" style="-fx-font-size: 72" text="PAUSED" />
    <Region prefHeight="9" prefWidth="1281" />
-   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RESUME" />
-   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RESTART" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="200" text="RESUME" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="200" text="RESTART" />
    <HBox alignment="CENTER" prefHeight="2.0" prefWidth="1281.0" spacing="15.0">
       <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="SAVE"/>
       <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="LOAD"/>
    </HBox>
-   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="RULES" />
-   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="SETTINGS" />
-   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="150" text="QUIT" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="200" text="RULES" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="200" text="SETTINGS" />
+   <Button mnemonicParsing="false" onMousePressed="#pauseMenu" prefWidth="200" text="QUIT" />
    <Region prefHeight="0" prefWidth="1281" />
 </VBox>
