@@ -26,12 +26,12 @@
          <Label alignment="CENTER" style="-fx-font-size: 24; -fx-text-fill: cyan" text="Button Click Volume" AnchorPane.leftAnchor="200" />
          <Slider fx:id="buttonVolumeSlider" layoutX="744" layoutY="15" maxWidth="300" prefHeight="14" prefWidth="300" AnchorPane.rightAnchor="200" />
       </AnchorPane>
-      <AnchorPane prefHeight="3" prefWidth="1281">
+      <AnchorPane fx:id="difficultyAnchorPane" prefHeight="3" prefWidth="1281">
          <Label alignment="CENTER" style="-fx-font-size: 24; -fx-text-fill: cyan" text="Difficulty Level" AnchorPane.leftAnchor="200" />
          <HBox prefHeight="47.0" prefWidth="450.0" spacing="10.0" AnchorPane.rightAnchor="200.0">
-            <RadioButton mnemonicParsing="false" text="Easy" />
-            <RadioButton mnemonicParsing="false" text="Medium" />
-            <RadioButton mnemonicParsing="false" text="Hard" />
+            <RadioButton fx:id="easyRadioSettings" mnemonicParsing="false" text="Easy" />
+            <RadioButton fx:id="mediumRadioSettings" mnemonicParsing="false" text="Medium" />
+            <RadioButton fx:id="hardRadioSettings" mnemonicParsing="false" text="Hard" />
          </HBox>
       </AnchorPane>
    </VBox>

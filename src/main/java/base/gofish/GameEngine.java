@@ -17,6 +17,7 @@ public class GameEngine {
     private Map<String, Player> playerMap;
     private int maxPoints;
     private Player winner;
+    private Player realPlayer;
     private PlayerProbs playerProbabilities;
     private int difficulty;
 
@@ -36,17 +37,19 @@ public class GameEngine {
     }
 
     public void addPlayers(String name) {
-        players.add(new Player(name));
-        players.add(new Player("Player2"));
-        players.add(new Player("Player3"));
-        players.add(new Player("Player4"));
-        players.add(new Player("Player5"));
+        this.players.add(new Player(name));
+        this.players.add(new Player("Player2"));
+        this.players.add(new Player("Player3"));
+        this.players.add(new Player("Player4"));
+        this.players.add(new Player("Player5"));
 
-        for (Player player : players) {
-            playerMap.put(player.toString(), player);
+        this.realPlayer = players.get(0);
+
+        for (Player player : this.players) {
+            this.playerMap.put(player.toString(), player);
         }
 
-        playerProbabilities = new PlayerProbs(players);
+        this.playerProbabilities = new PlayerProbs(players);
     }
 
     public void setMaxPoints(int points) {
@@ -119,12 +122,16 @@ public class GameEngine {
         return loadGame;
     }
 
-    public Deck getGameDeck(){
+    public Deck getDeck(){
         return deck;
     }
 
     public void setStarted(boolean start){
         this.started = start;
+    }
+
+    public void setRoundOn(boolean roundOn){
+        this.roundOn = roundOn;
     }
 
     public boolean isStarted(){
@@ -182,7 +189,7 @@ public class GameEngine {
         return drawnCard;
     }
 
-    private Pair<Player, Card> getPlayerCardForBots() {
+    public Pair<Player, Card> getPlayerCardForBots() {
         Player player;
         for (Card card : this.currentPlayer.getCards()) {
             if (this.currentPlayer.cardCount(card.getValue()) == 3) {
@@ -220,6 +227,14 @@ public class GameEngine {
         List<Player> tempPlayers = new ArrayList<>(players);
         Collections.sort(tempPlayers);
         return tempPlayers;
+    }
+
+    public Player getRealPlayer() {
+        return this.realPlayer;
+    }
+
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
     }
 
     public Player getWinner() {

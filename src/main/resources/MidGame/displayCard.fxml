@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="320" prefWidth="200" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-    <Rectangle fx:id="gameCardRectangle" arcHeight="10" arcWidth="10" fill="#FFFFFF" height="320" width="200" />
-    <VBox alignment="CENTER">
-        <Label alignment="CENTER" textAlignment="CENTER" fx:id="displayGameCardLabel" style="-fx-text-fill: red; -fx-font-size: 25" textFill="red"/>
-        <Label alignment="CENTER" textAlignment="CENTER" fx:id="displayGameCardDescriptionLabel" style="-fx-text-fill: black; -fx-font-size: 14" textFill="black" maxWidth="160" wrapText="true"/>
-    </VBox>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane prefHeight="290.0" prefWidth="200" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/19"
+           xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fx:id="displayCardImage" fitHeight="290.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../Cards/SPADES/SPADES_ACE.png"/>
+   </ImageView>
 </StackPane>

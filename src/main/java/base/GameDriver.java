@@ -1,6 +1,8 @@
 package base;
 
 import base.gofish.GameEngine;
+import base.gofish.Player;
+import base.gofish.deck.Card;
 import base.gofish.saveAndMusic.Music;
 import base.gofish.saveAndMusic.SavesLocation;
 import javafx.animation.*;
@@ -13,21 +15,20 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
 
-import javax.sound.sampled.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URI;
@@ -47,25 +48,23 @@ public class GameDriver extends Application {
 
     // All the scenes
     private Scene OpeningScene;
-    private Scene startMenuScene;
     private Scene playerNameScene;
     private Scene totalPointsScene;
     private Scene difficultyLevelScene;
-    private Scene mainPageScene;
+
+    private Scene startMenuScene;
+    private Scene pauseGameScene;
+
     private Scene loadGameMenuScene;
     private Scene saveGameMenuScene;
+    private Scene rulesScene;
+    private Scene settingsScene;
     private Scene preGameScene;
 
+    private Scene displayCard;
+    private Scene mainPageScene;
 
-    private Scene displayGameCardScene;
-    private Scene displaySpaceCardScene;
-
-    private Scene rulesActionCardsScene;
-    private Scene rulesSpaceCardsScene;
-    private Scene rulesScene;
-    private Scene pauseGameScene;
-    private Scene settingsScene;
-    private Scene showCardScene;
+    private Scene leaderboardScene;
     private Scene gameOverScene;
 
     // <--------------- welcome Scene Elements --------------->
@@ -92,9 +91,11 @@ public class GameDriver extends Application {
     @FXML
     private Label changeLocLabel;
     @FXML
+    private AnchorPane difficultyAnchorPane;
+    @FXML
     private Slider volumeSlider, buttonVolumeSlider;
     @FXML
-    private RadioButton easyRadioSetting, mediumRadioSetting, hardRadioSetting;
+    private RadioButton easyRadioSettings, mediumRadioSettings, hardRadioSettings;
 
     // <-------------------- Load Game --------------------->
     @FXML
@@ -106,7 +107,11 @@ public class GameDriver extends Application {
     @FXML
     private Label saveGameLocation;
 
-    // <-------------------- Game Over--------------------->
+    // <------------------- Display Card ------------------->
+    @FXML
+    private ImageView displayCardImage;
+
+    // <-------------------- Game Over---------------------->
     @FXML
     private Label winnerLabel;
     @FXML
@@ -184,16 +189,23 @@ public class GameDriver extends Application {
         rulesXML.setController(this);
         rulesScene = new Scene(rulesXML.load());
 
+        // MidGame
+        FXMLLoader displayCardXML = new FXMLLoader(getClass().getResource("/MidGame/displayCard.fxml"));
+        displayCardXML.setController(this);
+        displayCard = new Scene(displayCardXML.load());
+
         FXMLLoader mainPageXML = new FXMLLoader(getClass().getResource("/MidGame/mainPage.fxml"));
         mainPageXML.setController(this);
         mainPageScene = new Scene(mainPageXML.load());
 
+        // PostGame
+        FXMLLoader leaderboardXML = new FXMLLoader(getClass().getResource("/PostGame/1leaderboard.fxml"));
+        leaderboardXML.setController(this);
+        leaderboardScene = new Scene(leaderboardXML.load());
 
-//        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/resources/2gameOver.fxml"));
-//        gameOverXML.setController(this);
-//        gameOverScene = new Scene(gameOverXML.load());
-
-
+        FXMLLoader gameOverXML = new FXMLLoader(getClass().getResource("/PostGame/2gameOver.fxml"));
+        gameOverXML.setController(this);
+        gameOverScene = new Scene(gameOverXML.load());
 
         // Set title and first scene of the game
         window.setTitle("Go Fish");
@@ -253,7 +265,7 @@ public class GameDriver extends Application {
 
         pauseGameScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE){
-                sceneChanger(mainPageScene);
+                sceneChanger(game.isRoundOn() ? mainPageScene : leaderboardScene);
             }
         });
 
@@ -265,8 +277,7 @@ public class GameDriver extends Application {
 //            }
 //        });
 
-        // Start Music
-        // ToggleGroup of levels
+        // ToggleGroup of Difficulty
         ToggleGroup difficultyPageToggle = new ToggleGroup();
         easyRadio.setToggleGroup(difficultyPageToggle);
         mediumRadio.setToggleGroup(difficultyPageToggle);
@@ -274,6 +285,15 @@ public class GameDriver extends Application {
         easyRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
         mediumRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
         hardRadio.setOnAction(e -> handleDifficultySelection(difficultyPageToggle));
+
+        // ToggleGroup of Difficulty
+        ToggleGroup settingsPageToggle = new ToggleGroup();
+        easyRadioSettings.setToggleGroup(settingsPageToggle);
+        mediumRadioSettings.setToggleGroup(settingsPageToggle);
+        hardRadioSettings.setToggleGroup(settingsPageToggle);
+        easyRadioSettings.setOnAction(e -> handleDifficultySelectionForSettings(settingsPageToggle));
+        mediumRadioSettings.setOnAction(e -> handleDifficultySelectionForSettings(settingsPageToggle));
+        hardRadioSettings.setOnAction(e -> handleDifficultySelectionForSettings(settingsPageToggle));
 
         // Music and Button clicks
         Music.getMusic(volumeSlider, buttonVolumeSlider);
@@ -300,11 +320,13 @@ public class GameDriver extends Application {
             };
             game.setDifficulty(difficulty);
             sceneChanger(preGameScene);
+            switchDifficulty();
             showPopupMessage("LET THE GAME BEGIN", 40, 50, Color.CYAN, 3);
             PauseTransition delay = new PauseTransition(Duration.seconds(3));
             delay.setOnFinished(ev -> {
                 game.setStarted(true);
                 sceneChanger(mainPageScene);
+                displayCard(game.getDeck().draw());
             });
             delay.play();
         }
@@ -321,6 +343,16 @@ public class GameDriver extends Application {
                 default -> -1;
             });
         }
+        switchDifficulty();
+    }
+
+    private void switchDifficulty() {
+        switch(game.getDifficulty()) {
+            case 1 -> easyRadioSettings.setSelected(true);
+            case 2 -> mediumRadioSettings.setSelected(true);
+            case 3 -> hardRadioSettings.setSelected(true);
+        }
+        System.out.println("Difficulty changed to " + game.getDifficulty());
     }
 
     public void restartGame() throws IOException {
@@ -354,9 +386,6 @@ public class GameDriver extends Application {
             fadeSequence.play();
         }
     }
-
-    public void totalPoints(MouseEvent event) {}
-
 
     public void changeLoc(){
         Music.playButtonSoundEffect();
@@ -393,33 +422,33 @@ public class GameDriver extends Application {
     }
 
 
-    // The rotating display of space and action cards
-//    private void displayCard(Card card){
-//        mainGamePageScene.getRoot().setEffect(blur);
-//        displaySpaceCardLabel.setText(card.toString());
-//        displaySpaceCardDescriptionLabel.setText(card.getDescription());
-//
-//        Stage overlayStage = new Stage();
-//        overlayStage.initStyle(StageStyle.UNDECORATED);
-//        overlayStage.initModality(Modality.APPLICATION_MODAL);
-//        overlayStage.initStyle(StageStyle.TRANSPARENT);
-//        overlayStage.setScene(displaySpaceCardScene);
-//        overlayStage.setOpacity(0.95);
-//        overlayStage.show();
-//
-//        displaySpaceCardScene.setFill(null);
-//        ParallelTransition parallel = getParallelTransition(displaySpaceCardScene);
-//        parallel.setOnFinished(e -> {
-//            PauseTransition delay = new PauseTransition(Duration.seconds(3));
-//            delay.setOnFinished(ev -> {
-//                window.requestFocus();
-//                mainGamePageScene.getRoot().setEffect(null);
-//                overlayStage.close();
-//            });
-//            delay.play();
-//        });
-//        parallel.play();
-//    }
+    // The rotating display of cards
+    private void displayCard(Card card){
+        mainPageScene.getRoot().setEffect(blur);
+//        displayCardImage.setImage(new Image("../Cards/" + card.getType() + "/" + card.getFullName() + ".png"));
+        displayCardImage.setImage(new Image("D:\\Languages\\GitHub\\Go-Fish\\src\\main\\resources\\Cards\\" + card.getType() + "\\" + card.getFullName() + ".png"));
+
+        Stage overlayStage = new Stage();
+        overlayStage.initStyle(StageStyle.UNDECORATED);
+        overlayStage.initModality(Modality.APPLICATION_MODAL);
+        overlayStage.initStyle(StageStyle.TRANSPARENT);
+        overlayStage.setScene(displayCard);
+        overlayStage.setOpacity(0.95);
+        overlayStage.show();
+
+        displayCard.setFill(null);
+        ParallelTransition parallel = getParallelTransition(displayCard);
+        parallel.setOnFinished(e -> {
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(ev -> {
+                window.requestFocus();
+                mainPageScene.getRoot().setEffect(null);
+                overlayStage.close();
+            });
+            delay.play();
+        });
+        parallel.play();
+    }
 
     private ParallelTransition getParallelTransition(Scene scene){
         RotateTransition rotate = new RotateTransition();
@@ -427,7 +456,7 @@ public class GameDriver extends Application {
         rotate.setDuration(Duration.millis(750));
         rotate.setCycleCount(1);
         rotate.setInterpolator(Interpolator.LINEAR);
-        rotate.setFromAngle(360);
+        rotate.setFromAngle(0);
         rotate.setToAngle(360);
         rotate.setAxis(Rotate.Y_AXIS);
 
@@ -473,21 +502,16 @@ public class GameDriver extends Application {
     public void startMenu(MouseEvent event){
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
-        if (pressedButton.getText().equals("START")){
-            sceneChanger(playerNameScene);
-        }
-        else if (pressedButton.getText().equals("LOAD")){
-            loadSaveFiles();
-        }
-        else if (pressedButton.getText().equals("SETTINGS")){
-            changeLocLabel.setText(saveLocation);
-            sceneChanger(settingsScene);
-        }
-        else if (pressedButton.getText().equals("RULES")){
-            sceneChanger(rulesScene);
-        }
-        else if (pressedButton.getText().equals("QUIT")){
-            Platform.exit();
+        switch (pressedButton.getText()) {
+            case "START" -> sceneChanger(playerNameScene);
+            case "LOAD" -> loadSaveFiles();
+            case "SETTINGS" -> {
+                changeLocLabel.setText(saveLocation);
+                difficultyAnchorPane.setVisible(game.isStarted());
+                sceneChanger(settingsScene);
+            }
+            case "RULES" -> sceneChanger(rulesScene);
+            case "QUIT" -> Platform.exit();
         }
         event.consume();
     }
@@ -495,40 +519,54 @@ public class GameDriver extends Application {
     public void pauseMenu(MouseEvent event) throws IOException {
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
-        Stage overlayStage = (Stage) pressedButton.getScene().getWindow();
-        if (pressedButton.getText().equals("RESUME")){
-            mainPageScene.getRoot().requestFocus();
-            sceneChanger(mainPageScene);
-        }
-        if (pressedButton.getText().equals("RESTART")){
-            mainPageScene.getRoot().requestFocus();
-            overlayStage.close();
-            this.start(window);
-        }
-        if (pressedButton.getText().equals("SAVE")){
-            saveGame();
-            overlayStage.requestFocus();
-        }
-        else if (pressedButton.getText().equals("LOAD")){
-            loadSaveFiles();
-        }
-        else if (pressedButton.getText().equals("RULES")){
-            sceneChanger(rulesScene);
-        }
-        else if (pressedButton.getText().equals("SETTINGS")){
-            sceneChanger(settingsScene);
-        }
-        else if (pressedButton.getText().equals("QUIT")){
-            try {
-                game.saveState(saveLocation + "save.obj");
-                showPopupMessage("Game Saved");
+        switch (pressedButton.getText()) {
+            case "RESUME" -> {
+                mainPageScene.getRoot().requestFocus();
+                sceneChanger(game.isRoundOn() ? mainPageScene : leaderboardScene);
             }
-            catch (Exception e){
-                System.out.println("There was an error saving the game");
+            case "RESTART" -> {
+                mainPageScene.getRoot().requestFocus();
+                this.start(window);
             }
-            PauseTransition delay = new PauseTransition(Duration.seconds(2));
-            delay.setOnFinished(e -> Platform.exit());
-            delay.play();
+            case "SAVE" -> {
+                saveGame();
+            }
+            case "LOAD" -> loadSaveFiles();
+            case "RULES" -> sceneChanger(rulesScene);
+            case "SETTINGS" -> {
+                difficultyAnchorPane.setVisible(game.isStarted());
+                sceneChanger(settingsScene);
+            }
+            case "QUIT" -> {
+                try {
+                    game.saveState(saveLocation + "save.obj");
+                    showPopupMessage("Game Saved");
+                } catch (Exception e) {
+                    System.out.println("There was an error saving the game");
+                }
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> Platform.exit());
+                delay.play();
+            }
+        }
+        event.consume();
+    }
+
+    public void leaderboardMenu(MouseEvent event) {
+        Music.playButtonSoundEffect();
+        Button pressedButton = (Button) event.getSource();
+        String text = pressedButton.getText();
+        switch (text) {
+            case "Start Next Round" -> {
+                game.setRoundOn(true);
+                sceneChanger(mainPageScene);
+            }
+            case "End Game" -> {
+                Player winner = game.getWinner();
+                winnerLabel.setText(winner + " has won");
+                sceneChanger(gameOverScene);
+            }
+            case "Main Menu" -> sceneChanger(pauseGameScene);
         }
         event.consume();
     }
@@ -793,7 +831,15 @@ public class GameDriver extends Application {
     }
 
     public void restoreToDefault(MouseEvent event) {
+        buttonVolumeSlider.setValue(50.0);
+        volumeSlider.setValue(50.0);
+        Music.saveVolume();
 
+        game.setDifficulty(2);
+        switchDifficulty();
+
+        saveLocation = SavesLocation.defaultSaveLocation();
+        changeLocLabel.setText(saveLocation);
     }
 
     public void backButton(){
