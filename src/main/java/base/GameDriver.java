@@ -44,6 +44,7 @@ public class GameDriver extends Application {
     private Stage pauseStage;
     private BoxBlur blur;
     private String saveLocation;
+    private Label deckCardsLeft;
 
 
     // All the scenes
@@ -111,6 +112,18 @@ public class GameDriver extends Application {
     @FXML
     private ImageView displayCardImage;
 
+    // <-------------------- Main Page --------------------->
+    @FXML
+    private Label mainPlayerLabel, playerTurn;
+    @FXML
+    private Label player2Cards, player3Cards, player4Cards, player5Cards;
+    @FXML
+    private StackPane mainPlayerCardImages;
+    @FXML
+    private VBox centerDeck;
+    @FXML
+    private BorderPane mainBorderPane;
+
     // <-------------------- Game Over---------------------->
     @FXML
     private Label winnerLabel;
@@ -119,12 +132,11 @@ public class GameDriver extends Application {
 
 
 
-
+    // <-----------------------------------  Start Restart ------------------------------------->
     public static void main(String[] args){
         launch();
     }
 
-    // Start and Restart
     @Override
     public void start(Stage stage) throws IOException {
         window = stage;
@@ -308,56 +320,10 @@ public class GameDriver extends Application {
         window.show();
     }
 
-    private void handleDifficultySelection(ToggleGroup toggleGroup) {
-        RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
-        if (selectedRadioButton != null) {
-            String selectedValue = selectedRadioButton.getText();
-            int difficulty = switch (selectedValue) {
-                case "Easy" -> 1;
-                case "Medium" -> 2;
-                case "Hard" -> 3;
-                default -> -1;
-            };
-            game.setDifficulty(difficulty);
-            sceneChanger(preGameScene);
-            switchDifficulty();
-            showPopupMessage("LET THE GAME BEGIN", 40, 50, Color.CYAN, 3);
-            PauseTransition delay = new PauseTransition(Duration.seconds(3));
-            delay.setOnFinished(ev -> {
-                game.setStarted(true);
-                sceneChanger(mainPageScene);
-                displayCard(game.getDeck().draw());
-            });
-            delay.play();
-        }
-    }
-
-    private void handleDifficultySelectionForSettings(ToggleGroup toggleGroup) {
-        RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
-        if (selectedRadioButton != null) {
-            String selectedValue = selectedRadioButton.getText();
-            game.setDifficulty(switch (selectedValue) {
-                case "Easy" -> 1;
-                case "Medium" -> 2;
-                case "Hard" -> 3;
-                default -> -1;
-            });
-        }
-        switchDifficulty();
-    }
-
-    private void switchDifficulty() {
-        switch(game.getDifficulty()) {
-            case 1 -> easyRadioSettings.setSelected(true);
-            case 2 -> mediumRadioSettings.setSelected(true);
-            case 3 -> hardRadioSettings.setSelected(true);
-        }
-        System.out.println("Difficulty changed to " + game.getDifficulty());
-    }
-
     public void restartGame() throws IOException {
         this.start(window);
     }
+
 
     // Add players to the game
     public void addPlayers(){
@@ -365,11 +331,13 @@ public class GameDriver extends Application {
             getPlayerFromInput.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 5px;");
         }
         else {
+            String name = getPlayerFromInput.getText();
             getPlayerFromInput.setStyle("-fx-border-width: 2px; -fx-border-radius: 5px;");
             getPlayerFromInput.setDisable(true);
-            game.addPlayers(getPlayerFromInput.getText());
+            game.addPlayers(name);
+            mainPlayerLabel.setText(name);
 
-            playerAdded.setText("Welcome to the game " + getPlayerFromInput.getText());
+            playerAdded.setText("Welcome to the game " + name);
             getPlayerFromInput.clear();
             playerAdded.setVisible(true);
 
@@ -387,46 +355,10 @@ public class GameDriver extends Application {
         }
     }
 
-    public void changeLoc(){
-        Music.playButtonSoundEffect();
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select Folder");
-        directoryChooser.setInitialDirectory(new File(saveLocation));
-        File selectedDirectory;
-        try{
-            selectedDirectory = directoryChooser.showDialog(new Stage());
-        }
-        catch (Exception e) {
-            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-            selectedDirectory = directoryChooser.showDialog(new Stage());
-        }
-
-        if (selectedDirectory != null){
-            System.out.println("Selected folder: " + selectedDirectory.getAbsolutePath());
-            changeLocLabel.setText(selectedDirectory.getAbsolutePath() + File.separator);
-            saveGameLocation.setText(selectedDirectory.getAbsolutePath() + File.separator);
-            try (
-                    FileWriter saveFile = new FileWriter("./settings/saveLocation.txt");
-                    PrintWriter saveWriter = new PrintWriter(saveFile)
-            )
-            {
-                saveWriter.println(selectedDirectory.getAbsolutePath() + File.separator);
-            }
-            catch (IOException e){
-                System.out.println("There was an error writing to the file");
-            }
-            saveLocation = selectedDirectory.getAbsolutePath() + File.separator;
-        } else {
-            System.out.println("No folder selected.");
-        }
-    }
-
-
     // The rotating display of cards
     private void displayCard(Card card){
         mainPageScene.getRoot().setEffect(blur);
-//        displayCardImage.setImage(new Image("../Cards/" + card.getType() + "/" + card.getFullName() + ".png"));
-        displayCardImage.setImage(new Image("D:\\Languages\\GitHub\\Go-Fish\\src\\main\\resources\\Cards\\" + card.getType() + "\\" + card.getFullName() + ".png"));
+        displayCardImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + card.getType() + "/" + card.getFullName() + ".png"))));
 
         Stage overlayStage = new Stage();
         overlayStage.initStyle(StageStyle.UNDECORATED);
@@ -450,55 +382,57 @@ public class GameDriver extends Application {
         parallel.play();
     }
 
-    private ParallelTransition getParallelTransition(Scene scene){
-        RotateTransition rotate = new RotateTransition();
-        rotate.setNode(scene.getRoot());
-        rotate.setDuration(Duration.millis(750));
-        rotate.setCycleCount(1);
-        rotate.setInterpolator(Interpolator.LINEAR);
-        rotate.setFromAngle(0);
-        rotate.setToAngle(360);
-        rotate.setAxis(Rotate.Y_AXIS);
+    private void distributeCards() {
+        ImageView cardImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png"))));
+        cardImageView.setFitHeight(180.0);
+        cardImageView.setFitWidth(115.0);
 
-        ScaleTransition scale = new ScaleTransition();
-        scale.setNode(scene.getRoot());
-        scale.setDuration(Duration.millis(750));
-        scale.setCycleCount(1);
-        scale.setFromX(0);
-        scale.setFromY(0);
-        scale.setToX(1);
-        scale.setToY(1);
+        centerDeck.getChildren().add(cardImageView);
 
-        return new ParallelTransition(rotate, scale);
+        // Create a TranslateTransition to animate the card movement
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(1), cardImageView);
+        transition.setFromX(0); // Starting X position (the middle)
+        transition.setFromY(0); // Starting Y position (the middle)
+        transition.setToX(50);  // Target X position for Player 2's card
+        transition.setToY(100); // Target Y position for Player 2's card
+
+        // Play the animation
+        transition.play();
     }
 
+    private void addDeck() {
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setMaxHeight(Double.POSITIVE_INFINITY);
+        anchorPane.setMaxWidth(200);
+        anchorPane.setPrefWidth(200);
 
-//    private void showErrorInShowCard(String message){
-//        addNamesLabel.setText(message);
-//        addNamesLabel.setStyle("-fx-text-fill: red; -fx-font-size: 22");
-//
-//        PauseTransition delay = new PauseTransition(Duration.seconds(1));
-//        delay.setOnFinished(e -> {
-//            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), addNamesLabel);
-//            fadeIn.setFromValue(1);
-//            fadeIn.setToValue(0);
-//            fadeIn.setOnFinished(ev -> {
-//                addNamesLabel.setText("If it applies to any player, select the player");
-//                addNamesLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22");
-//            });
-//
-//            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), addNamesLabel);
-//            fadeOut.setFromValue(0);
-//            fadeOut.setToValue(1);
-//            fadeOut.setDelay(Duration.millis(10));
-//
-//            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-//            fadeSequence.play();
-//        });
-//        delay.play();
-//    }
+        deckCardsLeft = new Label("20 cards left");
+        deckCardsLeft.setAlignment(javafx.geometry.Pos.CENTER);
+        deckCardsLeft.setLayoutX(-3);
+        deckCardsLeft.setLayoutY(-5);
+        deckCardsLeft.setPrefHeight(28);
+        deckCardsLeft.setPrefWidth(202);
+        deckCardsLeft.setStyle("-fx-font-size: 20");
 
-    // Start and Pause Menus
+        anchorPane.getChildren().add(deckCardsLeft);
+
+        String imageUrl = "/base/cardBack.png";
+
+        for (int i = 0; i < 7; i++) {
+            ImageView imageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageUrl))));
+            imageView.setFitHeight(180);
+            imageView.setFitWidth(115);
+            imageView.setRotate(-90);
+            imageView.setTranslateX(30 + (i * 5));
+            imageView.setTranslateY(5 + (i * 5));
+
+            anchorPane.getChildren().add(imageView);
+        }
+
+        centerDeck.getChildren().add(anchorPane);
+    }
+
+    // <---------------------------------------  Menus ---------------------------------------->
     public void startMenu(MouseEvent event){
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
@@ -571,7 +505,14 @@ public class GameDriver extends Application {
         event.consume();
     }
 
-    // Loading and saving
+    public void backButton(){
+        Music.playButtonSoundEffect();
+        sceneChanger(game.isStarted() ? pauseGameScene : startMenuScene);
+        Music.saveVolume();
+    }
+
+
+    // <--------------------------------- Loading and saving ---------------------------------->
     private void loadSaveFiles(){
         File folder = new File(saveLocation);
         File[] listOfFiles = folder.listFiles();
@@ -656,7 +597,7 @@ public class GameDriver extends Application {
         sceneChanger(loadGameMenuScene);
     }
 
-    public void loadGame(MouseEvent event){}
+    public void loadGame(MouseEvent event){
 //        playButtonSoundEffect();
 //        Button pressedButton = (Button) event.getSource();
 //        HBox parentBox = (HBox) pressedButton.getParent();
@@ -718,7 +659,7 @@ public class GameDriver extends Application {
 //            showPopupMessage("Game Loaded");
 //        }
 //        event.consume();
-//    }
+    }
 
     public void deleteSavedGame(MouseEvent event){
         Music.playButtonSoundEffect();
@@ -820,7 +761,8 @@ public class GameDriver extends Application {
         }
     }
 
-    // Rules and tutorial
+
+    // <--------------------------------- Rules and Settings ---------------------------------->
     public void youtubeLink(){
         Music.playButtonSoundEffect();
         try {
@@ -842,12 +784,92 @@ public class GameDriver extends Application {
         changeLocLabel.setText(saveLocation);
     }
 
-    public void backButton(){
+    public void changeLoc(){
         Music.playButtonSoundEffect();
-        sceneChanger(game.isStarted() ? pauseGameScene : startMenuScene);
-        Music.saveVolume();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Folder");
+        directoryChooser.setInitialDirectory(new File(saveLocation));
+        File selectedDirectory;
+        try{
+            selectedDirectory = directoryChooser.showDialog(new Stage());
+        }
+        catch (Exception e) {
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            selectedDirectory = directoryChooser.showDialog(new Stage());
+        }
+
+        if (selectedDirectory != null){
+            System.out.println("Selected folder: " + selectedDirectory.getAbsolutePath());
+            changeLocLabel.setText(selectedDirectory.getAbsolutePath() + File.separator);
+            saveGameLocation.setText(selectedDirectory.getAbsolutePath() + File.separator);
+            try (
+                    FileWriter saveFile = new FileWriter("./settings/saveLocation.txt");
+                    PrintWriter saveWriter = new PrintWriter(saveFile)
+            )
+            {
+                saveWriter.println(selectedDirectory.getAbsolutePath() + File.separator);
+            }
+            catch (IOException e){
+                System.out.println("There was an error writing to the file");
+            }
+            saveLocation = selectedDirectory.getAbsolutePath() + File.separator;
+        } else {
+            System.out.println("No folder selected.");
+        }
     }
 
+
+    // <-------------------------------- Difficulty Selection --------------------------------->
+    private void handleDifficultySelection(ToggleGroup toggleGroup) {
+        RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+        if (selectedRadioButton != null) {
+            String selectedValue = selectedRadioButton.getText();
+            int difficulty = switch (selectedValue) {
+                case "Easy" -> 1;
+                case "Medium" -> 2;
+                case "Hard" -> 3;
+                default -> -1;
+            };
+            game.setDifficulty(difficulty);
+            sceneChanger(preGameScene);
+            switchDifficulty();
+            showPopupMessage("LET THE GAME BEGIN", 40, 50, Color.CYAN, 3);
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(ev -> {
+                game.setStarted(true);
+                sceneChanger(mainPageScene);
+                distributeCards();
+//                addDeck();
+            });
+            delay.play();
+        }
+    }
+
+    private void handleDifficultySelectionForSettings(ToggleGroup toggleGroup) {
+        RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+        if (selectedRadioButton != null) {
+            String selectedValue = selectedRadioButton.getText();
+            game.setDifficulty(switch (selectedValue) {
+                case "Easy" -> 1;
+                case "Medium" -> 2;
+                case "Hard" -> 3;
+                default -> -1;
+            });
+        }
+        switchDifficulty();
+    }
+
+    private void switchDifficulty() {
+        switch(game.getDifficulty()) {
+            case 1 -> easyRadioSettings.setSelected(true);
+            case 2 -> mediumRadioSettings.setSelected(true);
+            case 3 -> hardRadioSettings.setSelected(true);
+        }
+        System.out.println("Difficulty changed to " + game.getDifficulty());
+    }
+
+
+    // <-------------------------------------- Random ---------------------------------------->
     public void sceneChanger(Scene scene) {
         double width = window.getScene().getWidth();
         double height = window.getScene().getHeight();
@@ -855,7 +877,53 @@ public class GameDriver extends Application {
         window.setScene(scene);
     }
 
-    // Pop up messages
+    private void showErrorInLabel(Label label, String message){
+        label.setText(message);
+        label.setStyle("-fx-text-fill: red; -fx-font-size: 22");
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+        delay.setOnFinished(e -> {
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), label);
+            fadeIn.setFromValue(1);
+            fadeIn.setToValue(0);
+            fadeIn.setOnFinished(ev -> {
+                label.setText("If it applies to any player, select the player");
+                label.setStyle("-fx-text-fill: white; -fx-font-size: 22");
+            });
+
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), label);
+            fadeOut.setFromValue(0);
+            fadeOut.setToValue(1);
+            fadeOut.setDelay(Duration.millis(10));
+
+            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
+            fadeSequence.play();
+        });
+        delay.play();
+    }
+
+    private ParallelTransition getParallelTransition(Scene scene){
+        RotateTransition rotate = new RotateTransition();
+        rotate.setNode(scene.getRoot());
+        rotate.setDuration(Duration.millis(750));
+        rotate.setCycleCount(1);
+        rotate.setInterpolator(Interpolator.LINEAR);
+        rotate.setFromAngle(0);
+        rotate.setToAngle(360);
+        rotate.setAxis(Rotate.Y_AXIS);
+
+        ScaleTransition scale = new ScaleTransition();
+        scale.setNode(scene.getRoot());
+        scale.setDuration(Duration.millis(750));
+        scale.setCycleCount(1);
+        scale.setFromX(0);
+        scale.setFromY(0);
+        scale.setToX(1);
+        scale.setToY(1);
+
+        return new ParallelTransition(rotate, scale);
+    }
+
     private void showPopupMessage(String message, int fontSize, int moveY, Color textColor, double duration){
         Label label = new Label(message);
         label.setTextFill(textColor);
