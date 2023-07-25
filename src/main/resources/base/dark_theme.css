@@ -204,3 +204,8 @@
 .slider .track:hover {
     -fx-background-color: #757575;
 }
+
+.imageView-hover-border:hover {
+    -fx-border-color: cyan;
+    -fx-border-width: 2;
+}

@@ -3,6 +3,7 @@ package base.gofish;
 import base.gofish.deck.Card;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +23,7 @@ public class Player implements Comparable<Player>{
     }
 
     public List<Card> getCards() {
+        Collections.sort(cards);
         return cards;
     }
 
@@ -51,6 +53,7 @@ public class Player implements Comparable<Player>{
             if (card.getValue() == val) {
                 tempCards.add(card);
                 this.cards.remove(card);
+                break;
             }
         }
         return tempCards;

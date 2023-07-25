@@ -189,6 +189,15 @@ public class GameEngine {
         return drawnCard;
     }
 
+    public List<Card> singleTurnForPlayer(String playerIn, String cardIn) {
+        Player player = this.playerMap.get(playerIn);
+        Card card = this.deck.getCardMap().get(cardIn);
+        if (player.hasCard(card)){
+            return player.clearCardFromHand(card.getValue());
+        }
+        return null;
+    }
+
     public Pair<Player, Card> getPlayerCardForBots() {
         Player player;
         for (Card card : this.currentPlayer.getCards()) {

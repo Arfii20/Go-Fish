@@ -46,6 +46,7 @@ public class GameDriver extends Application {
     private BoxBlur blur;
     private String saveLocation;
     private Label deckCardsLeft;
+    private Label playerSelected;
 
 
     // All the scenes
@@ -258,6 +259,7 @@ public class GameDriver extends Application {
 
         // Get number of players and set scene to get player names from players
         setMaxValueButton.setOnAction(actionEvent -> {
+            Music.playButtonSoundEffect();
             game.setMaxPoints(this.pointsCombobox.getValue());
             sceneChanger(difficultyLevelScene);
         });
@@ -386,8 +388,8 @@ public class GameDriver extends Application {
     private void distributeCards() {
         SequentialTransition sequentialTransition = new SequentialTransition();
         ImageView cardImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png"))));
-        cardImageView.setFitHeight(180.0);
-        cardImageView.setFitWidth(115.0);
+        cardImageView.setFitHeight(180);
+        cardImageView.setFitWidth(115);
         centerDeck.getChildren().add(cardImageView);
         playerTurn.setText("Distributing");
 
@@ -453,23 +455,51 @@ public class GameDriver extends Application {
         }
     }
 
+    public void playerSelected(MouseEvent event) {
+        if (game.getCurrentPlayer() == game.getRealPlayer()){
+            if (playerSelected != null) {
+                playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30");
+                playerSelected = (Label) event.getSource();
+                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30");
+            }
+            else {
+                playerSelected = (Label) event.getSource();
+                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30");
+            }
+        }
+    }
+
     private void addCardImages() {
         mainPlayerCardImages.getChildren().clear();
+        mainPlayerCardImages.setAlignment(Pos.CENTER);
+
         List<Card> cards = this.game.getCurrentPlayer().getCards();
         int totalImages = cards.size();
 
         for (int i = 0; i < totalImages; i++) {
+            Card finalCard = cards.get(i);
+
             ImageView imageView = new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png")))));
-            imageView.setFitHeight(180.0);
-            imageView.setFitWidth(130.0);
-            imageView.setTranslateX((i - (totalImages - 1) / 2.0) * 25.0);
+            imageView.setFitHeight(180);
+            imageView.setFitWidth(130);
+            imageView.setTranslateX((i - (totalImages - 1) / 2) * 25);
+            imageView.setOnMouseEntered(e -> {
+                imageView.setFitHeight(200);
+                imageView.setFitWidth(140);
+            });
+            imageView.setOnMouseExited(e -> {
+                imageView.setFitHeight(180);
+                imageView.setFitWidth(130);
+            });
+            imageView.setOnMousePressed(e -> {
+                imageViewAction(finalCard);
+            });
 
             RotateTransition rotate1 = new RotateTransition(Duration.seconds(0.5), imageView);
             rotate1.setAxis(Rotate.Y_AXIS);
             rotate1.setFromAngle(180);
             rotate1.setToAngle(270);
             rotate1.setInterpolator(Interpolator.LINEAR);
-            Card finalCard = cards.get(i);
             rotate1.setOnFinished(e -> {
                 imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + finalCard.getType() + "/" + finalCard.getFullName() + ".png"))));
                 RotateTransition rotate2 = new RotateTransition(Duration.seconds(0.5), imageView);
@@ -482,6 +512,33 @@ public class GameDriver extends Application {
             rotate1.play();
 
             mainPlayerCardImages.getChildren().add(imageView);
+        }
+    }
+    
+    private void imageViewAction(Card finalCard) {
+        if (playerSelected == null) {
+            this.showPopupMessage("Please select a Player", 35, 0, Color.CYAN, 2);
+        }
+        else {
+            List<Card> card = this.game.singleTurnForPlayer(playerSelected.getText(), finalCard.getFullName());
+            if (card == null) {
+                this.showPopupMessage("WRONG! GO FISH", 35, 0, Color.CYAN, 2);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(ev -> {
+                    Card card1 = this.game.getDeck().draw();
+                    this.game.getCurrentPlayer().addToHand(card1);
+                    this.displayCard(card1);
+                    this.addCardImages();
+                });
+                delay.play();
+            }
+            else {
+                this.game.getCurrentPlayer().addToHand(card);
+                this.showPopupMessage("You received " + card.size() + " Cards from " + playerSelected, 35, 0, Color.CYAN, 2);
+                this.addCardImages();
+            }
+            playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30");
+            this.playerSelected = null;
         }
     }
 
@@ -529,6 +586,7 @@ public class GameDriver extends Application {
         game.roundStart();
         game.startTurn();
     }
+
 
     // <---------------------------------------  Menus ---------------------------------------->
     public void startMenu(MouseEvent event){
@@ -871,8 +929,8 @@ public class GameDriver extends Application {
     }
 
     public void restoreToDefault(MouseEvent event) {
-        buttonVolumeSlider.setValue(50.0);
-        volumeSlider.setValue(50.0);
+        buttonVolumeSlider.setValue(50);
+        volumeSlider.setValue(50);
         Music.saveVolume();
 
         game.setDifficulty(2);
@@ -919,6 +977,7 @@ public class GameDriver extends Application {
 
     // <-------------------------------- Difficulty Selection --------------------------------->
     private void handleDifficultySelection(ToggleGroup toggleGroup) {
+        Music.playButtonSoundEffect();
         RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
         if (selectedRadioButton != null) {
             String selectedValue = selectedRadioButton.getText();
@@ -943,6 +1002,7 @@ public class GameDriver extends Application {
     }
 
     private void handleDifficultySelectionForSettings(ToggleGroup toggleGroup) {
+        Music.playButtonSoundEffect();
         RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
         if (selectedRadioButton != null) {
             String selectedValue = selectedRadioButton.getText();
