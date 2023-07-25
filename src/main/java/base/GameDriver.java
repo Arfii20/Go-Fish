@@ -35,6 +35,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class GameDriver extends Application {
     private ArrayList<String> names = new ArrayList<String>();
@@ -383,30 +384,124 @@ public class GameDriver extends Application {
     }
 
     private void distributeCards() {
+        SequentialTransition sequentialTransition = new SequentialTransition();
         ImageView cardImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png"))));
         cardImageView.setFitHeight(180.0);
         cardImageView.setFitWidth(115.0);
-
         centerDeck.getChildren().add(cardImageView);
+        playerTurn.setText("Distributing");
 
-        // Create a TranslateTransition to animate the card movement
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(1), cardImageView);
-        transition.setFromX(0); // Starting X position (the middle)
-        transition.setFromY(0); // Starting Y position (the middle)
-        transition.setToX(50);  // Target X position for Player 2's card
-        transition.setToY(100); // Target Y position for Player 2's card
+        for (int i = 0; i < 25; i++) {
+            double targetX, targetY;
+            switch (i % 5) {
+                case 0 -> {
+                    targetX = 0;
+                    targetY = 240;
+                }
+                case 1 -> {
+                    targetX = -380;
+                    targetY = 170;
+                }
+                case 2 -> {
+                    targetX = -380;
+                    targetY = -65;
+                }
+                case 3 -> {
+                    targetX = 380;
+                    targetY = -65;
+                }
+                default -> {
+                    targetX = 380;
+                    targetY = 170;
+                }
+            }
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), cardImageView);
+            transition.setFromX(0);
+            transition.setFromY(0);
+            transition.setToX(targetX);
+            transition.setToY(targetY);
+            if (i == 24) {
+                transition.setOnFinished(e -> {
+                    centerDeck.getChildren().remove(cardImageView);
+                    cardNumberChanger(5, 1);
+                    playerTurn.setText("Your Turn");
+                    PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+                    delay.setOnFinished(ev -> {
+                        this.addDeck();
+                        this.addCardImages();
+                    });
+                    delay.play();
+                });
+            }
+            else {
+                int finalI = i;
+                transition.setOnFinished(e -> {
+                    cardNumberChanger(finalI % 5 + 1, 1);
+                });
+            }
+            sequentialTransition.getChildren().add(transition);
+        }
+        sequentialTransition.play();
+    }
 
-        // Play the animation
-        transition.play();
+    private void cardNumberChanger(int player, int cardNumber) {
+        switch (player) {
+            case 2 -> player2Cards.setText((Integer.parseInt(player2Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
+            case 3 -> player3Cards.setText((Integer.parseInt(player3Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
+            case 4 -> player4Cards.setText((Integer.parseInt(player4Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
+            case 5 -> player5Cards.setText((Integer.parseInt(player5Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
+        }
+    }
+
+    private void addCardImages() {
+        mainPlayerCardImages.getChildren().clear();
+        List<Card> cards = this.game.getCurrentPlayer().getCards();
+        int totalImages = cards.size();
+
+        for (int i = 0; i < totalImages; i++) {
+            ImageView imageView = new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png")))));
+            imageView.setFitHeight(180.0);
+            imageView.setFitWidth(130.0);
+            imageView.setTranslateX((i - (totalImages - 1) / 2.0) * 25.0);
+
+            RotateTransition rotate1 = new RotateTransition(Duration.seconds(0.5), imageView);
+            rotate1.setAxis(Rotate.Y_AXIS);
+            rotate1.setFromAngle(180);
+            rotate1.setToAngle(270);
+            rotate1.setInterpolator(Interpolator.LINEAR);
+            Card finalCard = cards.get(i);
+            rotate1.setOnFinished(e -> {
+                imageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + finalCard.getType() + "/" + finalCard.getFullName() + ".png"))));
+                RotateTransition rotate2 = new RotateTransition(Duration.seconds(0.5), imageView);
+                rotate2.setAxis(Rotate.Y_AXIS);
+                rotate2.setFromAngle(270);
+                rotate2.setToAngle(360);
+                rotate2.setInterpolator(Interpolator.LINEAR);
+                rotate2.play();
+            });
+            rotate1.play();
+
+            mainPlayerCardImages.getChildren().add(imageView);
+        }
     }
 
     private void addDeck() {
+        Region region1 = new Region();
+        region1.setPrefSize(222, 200);
+        BorderPane.setAlignment(region1, Pos.CENTER);
+        mainBorderPane.setLeft(region1);
+
+        Region region2 = new Region();
+        region2.setPrefSize(222, 200);
+        BorderPane.setAlignment(region2, Pos.CENTER);
+        mainBorderPane.setRight(region2);
+
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setMaxHeight(Double.POSITIVE_INFINITY);
         anchorPane.setMaxWidth(200);
         anchorPane.setPrefWidth(200);
 
-        deckCardsLeft = new Label("20 cards left");
+        deckCardsLeft = new Label("27 cards left");
         deckCardsLeft.setAlignment(javafx.geometry.Pos.CENTER);
         deckCardsLeft.setLayoutX(-3);
         deckCardsLeft.setLayoutY(-5);
@@ -423,13 +518,16 @@ public class GameDriver extends Application {
             imageView.setFitHeight(180);
             imageView.setFitWidth(115);
             imageView.setRotate(-90);
-            imageView.setTranslateX(30 + (i * 5));
-            imageView.setTranslateY(5 + (i * 5));
+            imageView.setTranslateX(30 + (i * 3));
+            imageView.setTranslateY(5 + (i * 3));
 
             anchorPane.getChildren().add(imageView);
         }
 
         centerDeck.getChildren().add(anchorPane);
+
+        game.roundStart();
+        game.startTurn();
     }
 
     // <---------------------------------------  Menus ---------------------------------------->
@@ -839,7 +937,6 @@ public class GameDriver extends Application {
                 game.setStarted(true);
                 sceneChanger(mainPageScene);
                 distributeCards();
-//                addDeck();
             });
             delay.play();
         }

@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cde70aa8-c8b5-46d9-9cdd-96e41bcb3a97" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings/musicVolume.txt" beforeDir="false" afterPath="$PROJECT_DIR$/settings/musicVolume.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/MidGame/mainPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/MidGame/mainPage.fxml" afterDir="false" />
     </list>
@@ -43,6 +42,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Languages/GitHub/Go-Fish&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -84,6 +84,10 @@
       <workItem from="1689552687969" duration="39000" />
       <workItem from="1689552740167" duration="118000" />
       <workItem from="1689552977809" duration="20054000" />
+      <workItem from="1690044339766" duration="2463000" />
+      <workItem from="1690106348852" duration="1410000" />
+      <workItem from="1690109976110" duration="607000" />
+      <workItem from="1690217125901" duration="9519000" />
     </task>
     <servers />
   </component>
