@@ -403,23 +403,23 @@ public class GameDriver extends Application {
             switch (i % 5) {
                 case 0 -> {
                     targetX = 0;
-                    targetY = 240;
+                    targetY = 260;
                 }
                 case 1 -> {
                     targetX = -380;
-                    targetY = 170;
+                    targetY = 190;
                 }
                 case 2 -> {
                     targetX = -380;
-                    targetY = -65;
+                    targetY = -45;
                 }
                 case 3 -> {
                     targetX = 380;
-                    targetY = -65;
+                    targetY = -45;
                 }
                 default -> {
                     targetX = 380;
-                    targetY = 170;
+                    targetY = 190;
                 }
             }
             TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), cardImageView);
@@ -594,34 +594,6 @@ public class GameDriver extends Application {
         game.startTurn();
     }
 
-    private void addLeaderboard() {
-        List<Player> players = this.game.getSortedPlayers();
-
-        for (Player player : players) {
-            AnchorPane anchorPane = new AnchorPane();
-            anchorPane.setMaxWidth(800);
-            anchorPane.setPrefHeight(44);
-
-            Label nameLabel = new Label(player.toString());
-            nameLabel.setLayoutX(446);
-            nameLabel.setLayoutY(8);
-            nameLabel.setPrefHeight(36);
-            nameLabel.setPrefWidth(250);
-            nameLabel.setStyle("-fx-font-size: 25");
-            AnchorPane.setLeftAnchor(nameLabel, 220.0);
-
-            Label scoreLabel = new Label(String.valueOf(player.getPoints()));
-            scoreLabel.setLayoutX(718);
-            scoreLabel.setLayoutY(9);
-            scoreLabel.setStyle("-fx-font-size: 25");
-            AnchorPane.setRightAnchor(scoreLabel, 220.0);
-
-            anchorPane.getChildren().addAll(nameLabel, scoreLabel);
-            playerPositions.getChildren().add(anchorPane);
-            VBox.setMargin(anchorPane, new Insets(25, 0, 25, 0));
-        }
-    }
-
 
     // <---------------------------------------  Menus ---------------------------------------->
     public void startMenu(MouseEvent event){
@@ -694,6 +666,34 @@ public class GameDriver extends Application {
             case "Main Menu" -> sceneChanger(pauseGameScene);
         }
         event.consume();
+    }
+
+    private void addLeaderboard() {
+        List<Player> players = this.game.getSortedPlayers();
+
+        for (Player player : players) {
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.setMaxWidth(800);
+            anchorPane.setPrefHeight(44);
+
+            Label nameLabel = new Label(player.toString());
+            nameLabel.setLayoutX(446);
+            nameLabel.setLayoutY(8);
+            nameLabel.setPrefHeight(36);
+            nameLabel.setPrefWidth(250);
+            nameLabel.setStyle("-fx-font-size: 25");
+            AnchorPane.setLeftAnchor(nameLabel, 220.0);
+
+            Label scoreLabel = new Label(String.valueOf(player.getPoints()));
+            scoreLabel.setLayoutX(718);
+            scoreLabel.setLayoutY(9);
+            scoreLabel.setStyle("-fx-font-size: 25");
+            AnchorPane.setRightAnchor(scoreLabel, 220.0);
+
+            anchorPane.getChildren().addAll(nameLabel, scoreLabel);
+            playerPositions.getChildren().add(anchorPane);
+            VBox.setMargin(anchorPane, new Insets(25, 0, 25, 0));
+        }
     }
 
     public void backButton(){
