@@ -126,6 +126,11 @@ public class GameDriver extends Application {
     @FXML
     private BorderPane mainBorderPane;
 
+    // <------------------ Leaderboard -------------------->
+    @FXML
+    private VBox playerPositions;
+
+
     // <-------------------- Game Over---------------------->
     @FXML
     private Label winnerLabel;
@@ -482,7 +487,7 @@ public class GameDriver extends Application {
             ImageView imageView = new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png")))));
             imageView.setFitHeight(180);
             imageView.setFitWidth(130);
-            imageView.setTranslateX((i - (totalImages - 1) / 2) * 25);
+            imageView.setTranslateX((i - (double) (totalImages - 1) / 2) * 25);
             imageView.setOnMouseEntered(e -> {
                 imageView.setFitHeight(200);
                 imageView.setFitWidth(140);
@@ -514,7 +519,7 @@ public class GameDriver extends Application {
             mainPlayerCardImages.getChildren().add(imageView);
         }
     }
-    
+
     private void imageViewAction(Card finalCard) {
         if (playerSelected == null) {
             this.showPopupMessage("Please select a Player", 35, 0, Color.CYAN, 2);
@@ -526,6 +531,7 @@ public class GameDriver extends Application {
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(ev -> {
                     Card card1 = this.game.getDeck().draw();
+                    this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
                     this.game.getCurrentPlayer().addToHand(card1);
                     this.displayCard(card1);
                     this.addCardImages();
@@ -534,10 +540,11 @@ public class GameDriver extends Application {
             }
             else {
                 this.game.getCurrentPlayer().addToHand(card);
-                this.showPopupMessage("You received " + card.size() + " Cards from " + playerSelected, 35, 0, Color.CYAN, 2);
+                this.showPopupMessage("You received " + card.size() + " Cards from " + playerSelected.getText(), 35, 0, Color.CYAN, 2);
+                this.cardNumberChanger(Integer.parseInt(String.valueOf(playerSelected.getText().charAt(playerSelected.getText().length()-1))), -card.size());
                 this.addCardImages();
             }
-            playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30");
+            this.playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30");
             this.playerSelected = null;
         }
     }
@@ -558,7 +565,7 @@ public class GameDriver extends Application {
         anchorPane.setMaxWidth(200);
         anchorPane.setPrefWidth(200);
 
-        deckCardsLeft = new Label("27 cards left");
+        deckCardsLeft = new Label("27 Cards Left");
         deckCardsLeft.setAlignment(javafx.geometry.Pos.CENTER);
         deckCardsLeft.setLayoutX(-3);
         deckCardsLeft.setLayoutY(-5);
@@ -585,6 +592,34 @@ public class GameDriver extends Application {
 
         game.roundStart();
         game.startTurn();
+    }
+
+    private void addLeaderboard() {
+        List<Player> players = this.game.getSortedPlayers();
+
+        for (Player player : players) {
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.setMaxWidth(800);
+            anchorPane.setPrefHeight(44);
+
+            Label nameLabel = new Label(player.toString());
+            nameLabel.setLayoutX(446);
+            nameLabel.setLayoutY(8);
+            nameLabel.setPrefHeight(36);
+            nameLabel.setPrefWidth(250);
+            nameLabel.setStyle("-fx-font-size: 25");
+            AnchorPane.setLeftAnchor(nameLabel, 220.0);
+
+            Label scoreLabel = new Label(String.valueOf(player.getPoints()));
+            scoreLabel.setLayoutX(718);
+            scoreLabel.setLayoutY(9);
+            scoreLabel.setStyle("-fx-font-size: 25");
+            AnchorPane.setRightAnchor(scoreLabel, 220.0);
+
+            anchorPane.getChildren().addAll(nameLabel, scoreLabel);
+            playerPositions.getChildren().add(anchorPane);
+            VBox.setMargin(anchorPane, new Insets(25, 0, 25, 0));
+        }
     }
 
 

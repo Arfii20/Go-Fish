@@ -9,9 +9,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/GameEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/MidGame/mainPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/MidGame/mainPage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/base/dark_theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/base/dark_theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PostGame/1leaderboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PostGame/1leaderboard.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +90,7 @@
       <workItem from="1690106348852" duration="1410000" />
       <workItem from="1690109976110" duration="607000" />
       <workItem from="1690217125901" duration="9519000" />
-      <workItem from="1690299771955" duration="8985000" />
+      <workItem from="1690299771955" duration="16005000" />
     </task>
     <servers />
   </component>

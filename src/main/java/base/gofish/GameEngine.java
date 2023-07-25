@@ -232,7 +232,7 @@ public class GameEngine {
         return player;
     }
 
-    public List<Player> sortedPlayers() {
+    public List<Player> getSortedPlayers() {
         List<Player> tempPlayers = new ArrayList<>(players);
         Collections.sort(tempPlayers);
         return tempPlayers;

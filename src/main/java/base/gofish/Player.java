@@ -2,10 +2,7 @@ package base.gofish;
 
 import base.gofish.deck.Card;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Player implements Comparable<Player>{
     private String name;
@@ -49,11 +46,12 @@ public class Player implements Comparable<Player>{
 
     public List<Card> clearCardFromHand(int val) {
         List<Card> tempCards = new ArrayList<>();
-        for (Card card: cards) {
+        Iterator<Card> iterator = cards.iterator();
+        while (iterator.hasNext()) {
+            Card card = iterator.next();
             if (card.getValue() == val) {
                 tempCards.add(card);
-                this.cards.remove(card);
-                break;
+                iterator.remove();
             }
         }
         return tempCards;
