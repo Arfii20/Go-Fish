@@ -333,7 +333,7 @@ public class GameDriver extends Application {
     }
 
 
-    // Add players to the game
+    // <-------------------------------------  Main Game--------------------------------------->
     public void addPlayers(){
         if(getPlayerFromInput.getText().isEmpty()){
             getPlayerFromInput.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 5px;");
@@ -363,7 +363,6 @@ public class GameDriver extends Application {
         }
     }
 
-    // The rotating display of cards
     private void displayCard(Card card){
         mainPageScene.getRoot().setEffect(blur);
         displayCardImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + card.getType() + "/" + card.getFullName() + ".png"))));
@@ -457,20 +456,6 @@ public class GameDriver extends Application {
             case 3 -> player3Cards.setText((Integer.parseInt(player3Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
             case 4 -> player4Cards.setText((Integer.parseInt(player4Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
             case 5 -> player5Cards.setText((Integer.parseInt(player5Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
-        }
-    }
-
-    public void playerSelected(MouseEvent event) {
-        if (game.getCurrentPlayer() == game.getRealPlayer()){
-            if (playerSelected != null) {
-                playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30");
-                playerSelected = (Label) event.getSource();
-                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30");
-            }
-            else {
-                playerSelected = (Label) event.getSource();
-                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30");
-            }
         }
     }
 
@@ -592,6 +577,33 @@ public class GameDriver extends Application {
 
         game.roundStart();
         game.startTurn();
+    }
+
+
+    // <----------------------------------  Selected Label ----------------------------------->
+    @FXML
+    public void playerSelected(MouseEvent event) {
+        if (game.getCurrentPlayer() == game.getRealPlayer()){
+            if (playerSelected != null) {
+                playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
+                playerSelected = (Label) event.getSource();
+                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
+            }
+            else {
+                playerSelected = (Label) event.getSource();
+                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
+            }
+        }
+    }
+
+    @FXML
+    private void handleMouseEntered(MouseEvent event) {
+        ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-text-fill: cyan; -fx-background-color: rgba(66, 66, 66, 0.3);");
+    }
+
+    @FXML
+    private void handleMouseExited(MouseEvent event) {
+        if (playerSelected == null) ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
     }
 
 

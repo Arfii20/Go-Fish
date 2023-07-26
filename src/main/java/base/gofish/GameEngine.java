@@ -32,7 +32,7 @@ public class GameEngine {
         this.random = new Random(seed);
         this.deck = new Deck();
         this.deck.shuffle(random);
-        this.maxPoints = 1000;
+        this.deck.shuffle(random);
         this.difficulty = 2;
     }
 
