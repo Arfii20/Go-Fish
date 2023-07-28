@@ -7,6 +7,8 @@ public class PlayerProbs {
     private Map<Integer, Map<Player, Double>> numberProbabilities;
     public PlayerProbs(List<Player> playersIn) {
         this.playerList = playersIn;
+        this.numberProbabilities = new HashMap<>();
+        addProbForEachNumber();
     }
 
     public Map<Integer, Map<Player, Double>> numberProbabilities() {

@@ -161,21 +161,12 @@
     -fx-background-radius: 10;
 }
 
-/* Set hover color for buttons */
 .start-buttons:hover {
     -fx-background-color: #424242;
     -fx-font-size: 20pt;
     -fx-padding: 0px 10px 0px 10px;
     -fx-background-radius: 10;
 }
-
-/*!* Set pressed color for buttons *!*/
-/*.start-buttons:pressed {*/
-/*    -fx-background-color: #2F2F2F;*/
-/*    -fx-font-size: 20pt;*/
-/*    -fx-padding: 0px 10px 0px 10px;*/
-/*    -fx-background-radius: 10;*/
-/*}*/
 
 .slider .thumb {
     -fx-background-color: #FFFFFF;

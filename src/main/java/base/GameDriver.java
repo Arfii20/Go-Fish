@@ -28,6 +28,7 @@ import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.awt.*;
 import java.io.*;
@@ -47,6 +48,9 @@ public class GameDriver extends Application {
     private String saveLocation;
     private Label deckCardsLeft;
     private Label playerSelected;
+    private final Duration MESSAGE_DELAY = Duration.seconds(2);
+    private final Duration TRANSITION_DELAY = Duration.seconds(2.5);
+    private final Duration POPUP_MESSAGE_DURATION = Duration.seconds(2);
 
 
     // All the scenes
@@ -383,6 +387,8 @@ public class GameDriver extends Application {
                 window.requestFocus();
                 mainPageScene.getRoot().setEffect(null);
                 overlayStage.close();
+                this.game.endTurn();
+                this.botTurn();
             });
             delay.play();
         });
@@ -510,7 +516,7 @@ public class GameDriver extends Application {
             this.showPopupMessage("Please select a Player", 35, 0, Color.CYAN, 2);
         }
         else {
-            List<Card> card = this.game.singleTurnForPlayer(playerSelected.getText(), finalCard.getFullName());
+            List<Card> card = this.game.singleTurn(playerSelected.getText(), finalCard.getFullName());
             if (card == null) {
                 this.showPopupMessage("WRONG! GO FISH", 35, 0, Color.CYAN, 2);
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
@@ -577,6 +583,54 @@ public class GameDriver extends Application {
 
         game.roundStart();
         game.startTurn();
+    }
+
+    private void botTurn() {
+        this.game.startTurn();
+
+        this.showPopupMessage(this.game.getCurrentPlayer() + "'s Turn", 35, Color.RED);
+        PauseTransition delay2 = new PauseTransition(Duration.seconds(2));
+        delay2.setOnFinished(ee -> {
+            Pair<Player, Card> playerCard = this.game.getPlayerCardForBots();
+            Player player = playerCard.getKey();
+            Card card = playerCard.getValue();
+
+            this.showPopupMessage(this.game.getCurrentPlayer() + " asked card number " + card.getValue() + " from " + player, 35, Color.CYAN);
+            PauseTransition delay1 = new PauseTransition(Duration.seconds(2.5));
+            delay1.setOnFinished(e -> {
+                List<Card> cards = this.game.singleTurn(player.toString(), card.getFullName());
+                if (cards == null) {
+                    this.showPopupMessage("WRONG! GO FISH", 35, Color.CYAN);
+                    PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                    delay.setOnFinished(ev -> {
+                        Card card1 = this.game.getDeck().draw();
+                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                        this.game.getCurrentPlayer().addToHand(card1);
+                        this.game.endTurn();
+                        this.game.startTurn();
+                        if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                    });
+                    delay.play();
+                }
+                else {
+                    this.game.getCurrentPlayer().addToHand(cards);
+                    this.showPopupMessage(this.game.getCurrentPlayer() + " received " + cards.size() + " Cards from " + player, 35, 0, Color.CYAN, 2);
+                    try {
+                        this.cardNumberChanger(Integer.parseInt(String.valueOf(player.toString().charAt(player.toString().length()-1))), -cards.size());
+                    }
+                    catch (NumberFormatException ev) {
+                        // Do nothing
+                    }
+                    PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                    delay.setOnFinished(ev -> {
+                        if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                    });
+                    delay.play();
+                }
+            });
+            delay1.play();
+        });
+        delay2.play();
     }
 
 
@@ -1143,6 +1197,27 @@ public class GameDriver extends Application {
         popup.setAutoHide(true);
         popup.setOnShown(e -> {
             timeline = new Timeline(new KeyFrame(Duration.seconds(duration), ev -> popup.hide()));
+            timeline.play();
+        });
+
+        popup.show(window);
+    }
+
+    private void showPopupMessage(String message, int fontSize, Color textColor){
+        Label label = new Label(message);
+        label.setTextFill(textColor);
+        label.setFont(new Font(fontSize));
+        label.setPadding(new Insets(10));
+        label.setStyle("-fx-font-family: 'MV Boli';");
+        label.setTranslateX(0);
+        label.setTranslateY(150);
+
+        Popup popup = new Popup();
+        popup.getContent().add(label);
+
+        popup.setAutoHide(true);
+        popup.setOnShown(e -> {
+            timeline = new Timeline(new KeyFrame(Duration.seconds(2), ev -> popup.hide()));
             timeline.play();
         });
 

@@ -12,6 +12,7 @@ public class GameEngine {
     private Deck deck;
     private boolean started;
     private boolean roundOn;
+    private boolean turnOn;
     private List<Player> players;
     private Player currentPlayer;
     private Map<String, Player> playerMap;
@@ -134,12 +135,20 @@ public class GameEngine {
         this.roundOn = roundOn;
     }
 
+    public void setTurnOn(boolean turnOn) {
+        this.turnOn = turnOn;
+    }
+
     public boolean isStarted(){
         return this.started;
     }
 
     public boolean isRoundOn(){
         return this.roundOn;
+    }
+
+    public boolean isTurnOn() {
+        return turnOn;
     }
 
     public void roundStart() {
@@ -164,6 +173,7 @@ public class GameEngine {
     }
 
     public void startTurn() {
+        this.turnOn = true;
         if (currentPlayer == null) {
             this.currentPlayer = this.players.remove(0);
         }
@@ -172,24 +182,10 @@ public class GameEngine {
     public void endTurn() {
         this.players.add(this.currentPlayer);
         this.currentPlayer = null;
+        this.turnOn = false;
     }
 
-    public Card singleTurn(String playerIn, String cardIn) {
-        Player player = this.playerMap.get(playerIn);
-        Card card = this.deck.getCardMap().get(cardIn);
-        Card drawnCard = null;
-        if (player.hasCard(card)){
-            List<Card> cards = player.clearCardFromHand(card.getValue());
-            this.currentPlayer.addToHand(cards);
-        }
-        else {
-            drawnCard = deck.draw();
-            currentPlayer.addToHand(drawnCard);
-        }
-        return drawnCard;
-    }
-
-    public List<Card> singleTurnForPlayer(String playerIn, String cardIn) {
+    public List<Card> singleTurn(String playerIn, String cardIn) {
         Player player = this.playerMap.get(playerIn);
         Card card = this.deck.getCardMap().get(cardIn);
         if (player.hasCard(card)){
