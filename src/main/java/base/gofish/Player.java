@@ -7,10 +7,12 @@ import java.util.*;
 public class Player implements Comparable<Player>{
     private String name;
     private List<Card> cards;
+    private int value;
     private int points;
 
-    public Player(String name){
+    public Player(String name, int value){
         this.name = name;
+        this.value = value;
         this.cards = new ArrayList<>();
         this.points = 0;
     }
@@ -78,6 +80,10 @@ public class Player implements Comparable<Player>{
 
     public boolean cardFinished() {
         return (cards.size() == 0);
+    }
+
+    public int getValue(){
+        return this.value;
     }
 
     @Override

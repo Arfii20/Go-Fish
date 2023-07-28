@@ -38,11 +38,11 @@ public class GameEngine {
     }
 
     public void addPlayers(String name) {
-        this.players.add(new Player(name));
-        this.players.add(new Player("Player2"));
-        this.players.add(new Player("Player3"));
-        this.players.add(new Player("Player4"));
-        this.players.add(new Player("Player5"));
+        this.players.add(new Player(name, 1));
+        this.players.add(new Player("Player2", 2));
+        this.players.add(new Player("Player3", 3));
+        this.players.add(new Player("Player4", 4));
+        this.players.add(new Player("Player5", 5));
 
         this.realPlayer = players.get(0);
 

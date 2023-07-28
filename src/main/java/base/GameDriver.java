@@ -120,7 +120,7 @@ public class GameDriver extends Application {
 
     // <-------------------- Main Page --------------------->
     @FXML
-    private Label mainPlayerLabel, playerTurn;
+    private Label mainPlayerLabel, playerTurnLabel;
     @FXML
     private Label player2Cards, player3Cards, player4Cards, player5Cards;
     @FXML
@@ -232,11 +232,9 @@ public class GameDriver extends Application {
 
         // Set title and first scene of the game
         window.setTitle("Go Fish");
-        if (window.getScene() != null){
-            sceneChanger(OpeningScene);
-        } else {
-            window.setScene(OpeningScene);
-        }
+        if (window.getScene() != null) sceneChanger(OpeningScene);
+        else window.setScene(OpeningScene);
+
         window.setMinWidth(1280);
         window.setMinHeight(720);
 
@@ -261,9 +259,7 @@ public class GameDriver extends Application {
 
         // Add listener to the enter key so that player is added when enter pressed
         getPlayerFromInput.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER){
-                addPlayers();
-            }
+            if (event.getCode() == KeyCode.ENTER) addPlayers();
         });
 
         // Get number of players and set scene to get player names from players
@@ -282,15 +278,11 @@ public class GameDriver extends Application {
 //        pauseStage.setOpacity(0.9);
 
         mainPageScene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE){
-                sceneChanger(pauseGameScene);
-            }
+            if (event.getCode() == KeyCode.ESCAPE) sceneChanger(pauseGameScene);
         });
 
         pauseGameScene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE){
-                sceneChanger(game.isRoundOn() ? mainPageScene : leaderboardScene);
-            }
+            if (event.getCode() == KeyCode.ESCAPE) sceneChanger(game.isRoundOn() ? mainPageScene : leaderboardScene);
         });
 
 //        showCardScene.setOnKeyPressed(event -> {
@@ -388,6 +380,7 @@ public class GameDriver extends Application {
                 mainPageScene.getRoot().setEffect(null);
                 overlayStage.close();
                 this.game.endTurn();
+                this.game.startTurn();
                 this.botTurn();
             });
             delay.play();
@@ -401,7 +394,7 @@ public class GameDriver extends Application {
         cardImageView.setFitHeight(180);
         cardImageView.setFitWidth(115);
         centerDeck.getChildren().add(cardImageView);
-        playerTurn.setText("Distributing");
+        playerTurnLabel.setText("Distributing");
 
         for (int i = 0; i < 25; i++) {
             double targetX, targetY;
@@ -436,7 +429,7 @@ public class GameDriver extends Application {
                 transition.setOnFinished(e -> {
                     centerDeck.getChildren().remove(cardImageView);
                     cardNumberChanger(5, 1);
-                    playerTurn.setText("Your Turn");
+                    playerTurnLabel.setText("Your Turn");
                     PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
                     delay.setOnFinished(ev -> {
                         this.addDeck();
@@ -480,15 +473,19 @@ public class GameDriver extends Application {
             imageView.setFitWidth(130);
             imageView.setTranslateX((i - (double) (totalImages - 1) / 2) * 25);
             imageView.setOnMouseEntered(e -> {
-                imageView.setFitHeight(200);
-                imageView.setFitWidth(140);
+                if (game.getRealPlayer() == game.getCurrentPlayer()){
+                    imageView.setFitHeight(200);
+                    imageView.setFitWidth(140);
+                }
             });
             imageView.setOnMouseExited(e -> {
-                imageView.setFitHeight(180);
-                imageView.setFitWidth(130);
+                if (game.getRealPlayer() == game.getCurrentPlayer()) {
+                    imageView.setFitHeight(180);
+                    imageView.setFitWidth(130);
+                }
             });
             imageView.setOnMousePressed(e -> {
-                imageViewAction(finalCard);
+                if (game.getRealPlayer() == game.getCurrentPlayer()) imageViewAction(finalCard);
             });
 
             RotateTransition rotate1 = new RotateTransition(Duration.seconds(0.5), imageView);
@@ -512,13 +509,11 @@ public class GameDriver extends Application {
     }
 
     private void imageViewAction(Card finalCard) {
-        if (playerSelected == null) {
-            this.showPopupMessage("Please select a Player", 35, 0, Color.CYAN, 2);
-        }
+        if (playerSelected == null) this.showPopupMessage("Please select a Player", 35, Color.CYAN);
         else {
             List<Card> card = this.game.singleTurn(playerSelected.getText(), finalCard.getFullName());
             if (card == null) {
-                this.showPopupMessage("WRONG! GO FISH", 35, 0, Color.CYAN, 2);
+                this.showPopupMessage("WRONG! GO FISH", 35, Color.ORANGERED);
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(ev -> {
                     Card card1 = this.game.getDeck().draw();
@@ -531,7 +526,7 @@ public class GameDriver extends Application {
             }
             else {
                 this.game.getCurrentPlayer().addToHand(card);
-                this.showPopupMessage("You received " + card.size() + " Cards from " + playerSelected.getText(), 35, 0, Color.CYAN, 2);
+                this.showPopupMessage("You received " + card.size() + " Cards from " + playerSelected.getText(), 35, Color.CYAN);
                 this.cardNumberChanger(Integer.parseInt(String.valueOf(playerSelected.getText().charAt(playerSelected.getText().length()-1))), -card.size());
                 this.addCardImages();
             }
@@ -586,51 +581,52 @@ public class GameDriver extends Application {
     }
 
     private void botTurn() {
-        this.game.startTurn();
+        createAndPlaySplashTransition(playerTurnLabel);
+        playerTurnLabel.setText(game.getCurrentPlayer() + "'s Turn");
+        Pair<Player, Card> playerCard = this.game.getPlayerCardForBots();
+        Player player = playerCard.getKey();
+        Card card = playerCard.getValue();
 
-        this.showPopupMessage(this.game.getCurrentPlayer() + "'s Turn", 35, Color.RED);
-        PauseTransition delay2 = new PauseTransition(Duration.seconds(2));
-        delay2.setOnFinished(ee -> {
-            Pair<Player, Card> playerCard = this.game.getPlayerCardForBots();
-            Player player = playerCard.getKey();
-            Card card = playerCard.getValue();
-
-            this.showPopupMessage(this.game.getCurrentPlayer() + " asked card number " + card.getValue() + " from " + player, 35, Color.CYAN);
-            PauseTransition delay1 = new PauseTransition(Duration.seconds(2.5));
-            delay1.setOnFinished(e -> {
-                List<Card> cards = this.game.singleTurn(player.toString(), card.getFullName());
-                if (cards == null) {
-                    this.showPopupMessage("WRONG! GO FISH", 35, Color.CYAN);
-                    PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                    delay.setOnFinished(ev -> {
-                        Card card1 = this.game.getDeck().draw();
-                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
-                        this.game.getCurrentPlayer().addToHand(card1);
-                        this.game.endTurn();
-                        this.game.startTurn();
+        this.showPopupMessage(this.game.getCurrentPlayer() + " asked " + card.getName() + " from " + player, 35, Color.ORANGE);
+        PauseTransition delay1 = new PauseTransition(Duration.seconds(2.5));
+        delay1.setOnFinished(e -> {
+            List<Card> cards = this.game.singleTurn(player.toString(), card.getFullName());
+            if (cards == null) {
+                this.showPopupMessage("WRONG! GO FISH", 35, Color.ORANGERED);
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(ev -> {
+                    Card card1 = this.game.getDeck().draw();
+                    this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                    this.game.getCurrentPlayer().addToHand(card1);
+                    this.cardNumberChanger(player.getValue(), 1);
+                    this.game.endTurn();
+                    this.game.startTurn();
+                    PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                    pause.setOnFinished(eee -> {
                         if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
                     });
-                    delay.play();
+                    pause.play();
+                });
+                delay.play();
+            }
+            else {
+                this.game.getCurrentPlayer().addToHand(cards);
+                this.showPopupMessage(this.game.getCurrentPlayer() + " received " + cards.size() + " Cards from " + player, 35, Color.CYAN);
+                try {
+                    this.cardNumberChanger(player.getValue(), -cards.size());
                 }
-                else {
-                    this.game.getCurrentPlayer().addToHand(cards);
-                    this.showPopupMessage(this.game.getCurrentPlayer() + " received " + cards.size() + " Cards from " + player, 35, 0, Color.CYAN, 2);
-                    try {
-                        this.cardNumberChanger(Integer.parseInt(String.valueOf(player.toString().charAt(player.toString().length()-1))), -cards.size());
-                    }
-                    catch (NumberFormatException ev) {
-                        // Do nothing
-                    }
-                    PauseTransition delay = new PauseTransition(Duration.seconds(2));
-                    delay.setOnFinished(ev -> {
-                        if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
-                    });
-                    delay.play();
+                catch (NumberFormatException ev) {
+                    // Do nothing
                 }
-            });
-            delay1.play();
+                this.cardNumberChanger(game.getCurrentPlayer().getValue(), cards.size());
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(ev -> {
+                    if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                });
+                delay.play();
+            }
         });
-        delay2.play();
+        delay1.play();
     }
 
 
@@ -652,12 +648,12 @@ public class GameDriver extends Application {
 
     @FXML
     private void handleMouseEntered(MouseEvent event) {
-        ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-text-fill: cyan; -fx-background-color: rgba(66, 66, 66, 0.3);");
+        if (playerSelected == null && game.getCurrentPlayer() == game.getRealPlayer()) ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-text-fill: cyan; -fx-background-color: rgba(66, 66, 66, 0.3);");
     }
 
     @FXML
     private void handleMouseExited(MouseEvent event) {
-        if (playerSelected == null) ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
+        if (playerSelected == null && game.getCurrentPlayer() == game.getRealPlayer()) ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
     }
 
 
@@ -773,9 +769,7 @@ public class GameDriver extends Application {
     private void loadSaveFiles(){
         File folder = new File(saveLocation);
         File[] listOfFiles = folder.listFiles();
-        if (listOfFiles != null){
-            Arrays.sort(listOfFiles, Comparator.comparing(File::getName));
-        }
+        if (listOfFiles != null) Arrays.sort(listOfFiles, Comparator.comparing(File::getName));
         loadGameVbox.getChildren().clear();
 
         String count;
@@ -792,9 +786,7 @@ public class GameDriver extends Application {
                     hbox.setPrefHeight(120);
 
                     Button loadGameButton;
-                    if (fileName.equals("save.obj")){
-                        loadGameButton = new Button("AutoSave");
-                    }
+                    if (fileName.equals("save.obj")) loadGameButton = new Button("AutoSave");
                     else {
                         loadGameButton = new Button("Save " + count);
                         loadGameButton.setPrefWidth(120);
@@ -1070,9 +1062,7 @@ public class GameDriver extends Application {
                 System.out.println("There was an error writing to the file");
             }
             saveLocation = selectedDirectory.getAbsolutePath() + File.separator;
-        } else {
-            System.out.println("No folder selected.");
-        }
+        } else System.out.println("No folder selected.");
     }
 
 
@@ -1091,8 +1081,8 @@ public class GameDriver extends Application {
             game.setDifficulty(difficulty);
             sceneChanger(preGameScene);
             switchDifficulty();
-            showPopupMessage("LET THE GAME BEGIN", 40, 50, Color.CYAN, 3);
-            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            showPopupMessage("LET THE GAME BEGIN", 40, 50, Color.CYAN, 2);
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(ev -> {
                 game.setStarted(true);
                 sceneChanger(mainPageScene);
@@ -1135,8 +1125,31 @@ public class GameDriver extends Application {
         window.setScene(scene);
     }
 
-    private void showErrorInLabel(Label label, String message){
-        label.setText(message);
+    private void createAndPlaySplashTransition(Label label) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), label);
+        scaleTransition.setFromX(1.0);
+        scaleTransition.setFromY(1.0);
+        scaleTransition.setToX(1.5);
+        scaleTransition.setToY(1.5);
+
+        ScaleTransition scaleTransition1 = new ScaleTransition(Duration.seconds(0.5), label);
+        scaleTransition1.setFromX(1.5);
+        scaleTransition1.setFromY(1.5);
+        scaleTransition1.setToX(1.0);
+        scaleTransition1.setToY(1.0);
+
+        SequentialTransition splashTransition = new SequentialTransition(scaleTransition, scaleTransition1);
+        splashTransition.setOnFinished(e -> {
+            label.setOpacity(1.0);
+            label.setScaleX(1.0);
+            label.setScaleY(1.0);
+        });
+
+        splashTransition.play();
+    }
+
+    private void showErrorInLabel(Label label, String prevMessage, String newMessage){
+        label.setText(newMessage);
         label.setStyle("-fx-text-fill: red; -fx-font-size: 22");
 
         PauseTransition delay = new PauseTransition(Duration.seconds(1));
@@ -1145,7 +1158,7 @@ public class GameDriver extends Application {
             fadeIn.setFromValue(1);
             fadeIn.setToValue(0);
             fadeIn.setOnFinished(ev -> {
-                label.setText("If it applies to any player, select the player");
+                label.setText(prevMessage);
                 label.setStyle("-fx-text-fill: white; -fx-font-size: 22");
             });
 
@@ -1210,7 +1223,7 @@ public class GameDriver extends Application {
         label.setPadding(new Insets(10));
         label.setStyle("-fx-font-family: 'MV Boli';");
         label.setTranslateX(0);
-        label.setTranslateY(150);
+        label.setTranslateY(220);
 
         Popup popup = new Popup();
         popup.getContent().add(label);
