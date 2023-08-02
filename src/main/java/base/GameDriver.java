@@ -552,23 +552,15 @@ public class GameDriver extends Application {
         overlayStage.initStyle(StageStyle.TRANSPARENT);
         overlayStage.setScene(displayCard);
         overlayStage.setOpacity(0.95);
-//        overlayStage.show();
+        overlayStage.show();
 
-        double width = window.getScene().getWidth();
-        double height = window.getScene().getHeight();
-        ((StackPane) displayCard.getRoot()).setPrefSize(width, height);
-        window.setScene(displayCard);
 
         displayCard.setFill(null);
         ParallelTransition parallel = getParallelTransition(displayCard);
         parallel.setOnFinished(e -> {
             PauseTransition delay = new PauseTransition(Duration.seconds(3));
             delay.setOnFinished(ev -> {
-
-                sceneChanger(mainPageScene);
-
                 window.requestFocus();
-
                 mainPageScene.getRoot().setEffect(null);
                 overlayStage.close();
                 PauseTransition delay2 = new PauseTransition(Duration.seconds(1));
