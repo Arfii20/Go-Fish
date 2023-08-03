@@ -26,7 +26,7 @@ public class Player implements Comparable<Player>{
         return cards;
     }
 
-    public Card getRandomCard(Random random) {
+    public Card getRandomCard(Random random) throws IllegalArgumentException {
         return this.cards.get(random.nextInt(0, this.cards.size()));
     }
 
@@ -76,6 +76,10 @@ public class Player implements Comparable<Player>{
             }
         }
         return count;
+    }
+
+    public int totalCards() {
+        return this.cards.size();
     }
 
     public boolean cardFinished() {

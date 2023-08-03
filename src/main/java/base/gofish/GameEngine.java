@@ -14,6 +14,7 @@ public class GameEngine {
     private boolean roundOn;
     private boolean turnOn;
     private List<Player> players;
+    private List<Player> playersCopy;
     private Player currentPlayer;
     private Map<String, Player> playerMap;
     private int maxPoints;
@@ -51,6 +52,10 @@ public class GameEngine {
         }
 
         this.playerProbabilities = new PlayerProbs(players);
+    }
+
+    public PlayerProbs getPlayerProbabilities() {
+        return playerProbabilities;
     }
 
     public void setMaxPoints(int points) {
@@ -194,7 +199,7 @@ public class GameEngine {
         return null;
     }
 
-    public Pair<Player, Card> getPlayerCardForBots() {
+    public Pair<Player, Card> getPlayerCardForBots() throws IllegalArgumentException {
         Player player;
         for (Card card : this.currentPlayer.getCards()) {
             if (this.currentPlayer.cardCount(card.getValue()) == 3) {

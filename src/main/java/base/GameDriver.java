@@ -469,7 +469,7 @@ public class GameDriver extends Application {
         mainPlayerCardImages.getChildren().clear();
         mainPlayerCardImages.setAlignment(Pos.CENTER);
 
-        List<Card> cards = this.game.getCurrentPlayer().getCards();
+        List<Card> cards = this.game.getRealPlayer().getCards();
         int totalImages = cards.size();
 
         for (int i = 0; i < totalImages; i++) {
@@ -492,7 +492,7 @@ public class GameDriver extends Application {
                 }
             });
             imageView.setOnMousePressed(e -> {
-                if (game.getRealPlayer() == game.getCurrentPlayer()) imageViewAction(finalCard);
+                if (game.getRealPlayer() == game.getCurrentPlayer()) playerMove(finalCard);
             });
 
             RotateTransition rotate1 = new RotateTransition(Duration.seconds(0.5), imageView);
@@ -515,10 +515,11 @@ public class GameDriver extends Application {
         }
     }
 
-    private void imageViewAction(Card finalCard) {
+    private void playerMove(Card finalCard) {
         if (playerSelected == null) this.showPopupMessage("Please select a Player", 35, Color.CYAN, 1);
         else {
             List<Card> card = this.game.singleTurn(playerSelected.getText(), finalCard.getFullName());
+            this.game.getPlayerProbabilities().updateProbabilitiesToOne(finalCard.getValue(), this.game.getCurrentPlayer());
             if (card == null) {
                 this.showPopupMessage("WRONG! GO FISH", 35, Color.ORANGERED, 1);
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
@@ -578,9 +579,22 @@ public class GameDriver extends Application {
 
     private void botTurn() {
         createAndPlaySplashTransition(playerTurnLabel, game.getCurrentPlayer() + "'s Turn");
-        Pair<Player, Card> playerCard = this.game.getPlayerCardForBots();
+
+        Pair<Player, Card> playerCard;
+        try {
+            playerCard = this.game.getPlayerCardForBots();
+        }
+        catch (IllegalArgumentException e) {
+            this.game.endTurn();
+            this.game.startTurn();
+            if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+            else playerTurnLabel.setText("Your Turn");
+            return;
+        }
+
         Player player = playerCard.getKey();
         Card card = playerCard.getValue();
+        this.game.getPlayerProbabilities().updateProbabilitiesToOne(card.getValue(), this.game.getCurrentPlayer());
 
         this.showPopupMessage(this.game.getCurrentPlayer() + " asked " + card.getName() + " from " + player, 35, Color.ORANGE, 3);
         PauseTransition delay1 = new PauseTransition(Duration.seconds(3.2));
@@ -591,14 +605,21 @@ public class GameDriver extends Application {
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(ee -> {
                     Card card1 = this.game.getDeck().draw();
-                    this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
-                    this.game.getCurrentPlayer().addToHand(card1);
-                    this.cardNumberChanger(player.getValue(), 1);
+                    if (card1 != null) {
+                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                        this.game.getCurrentPlayer().addToHand(card1);
+                        this.cardNumberChanger(this.game.getCurrentPlayer());
+                    }
                     this.game.endTurn();
                     this.game.startTurn();
                     PauseTransition pause = new PauseTransition(Duration.seconds(2));
                     pause.setOnFinished(eee -> {
                         if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                        else if (game.getRealPlayer().totalCards() == 0) {
+                            this.game.endTurn();
+                            this.game.startTurn();
+                            botTurn();
+                        }
                         else playerTurnLabel.setText("Your Turn");
                     });
                     pause.play();
@@ -608,13 +629,8 @@ public class GameDriver extends Application {
             else {
                 this.game.getCurrentPlayer().addToHand(cards);
                 this.showPopupMessage(this.game.getCurrentPlayer() + " received " + cards.size() + " Card(s) from " + player, 35, Color.CYAN, 3);
-                try {
-                    this.cardNumberChanger(player.getValue(), -cards.size());
-                }
-                catch (NumberFormatException ee) {
-                    addCardImages();
-                }
-                this.cardNumberChanger(game.getCurrentPlayer().getValue(), cards.size());
+                this.cardNumberChanger(player);
+                this.cardNumberChanger(game.getCurrentPlayer());
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));
                 delay.setOnFinished(ee -> {
                     if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
@@ -1127,6 +1143,16 @@ public class GameDriver extends Application {
             case 3 -> player3Cards.setText((Integer.parseInt(player3Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
             case 4 -> player4Cards.setText((Integer.parseInt(player4Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
             case 5 -> player5Cards.setText((Integer.parseInt(player5Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
+        }
+    }
+
+    private void cardNumberChanger(Player player) {
+        switch (player.getValue()) {
+            case 2 -> player2Cards.setText(player.totalCards() + " Cards");
+            case 3 -> player3Cards.setText(player.totalCards() + " Cards");
+            case 4 -> player4Cards.setText(player.totalCards() + " Cards");
+            case 5 -> player5Cards.setText(player.totalCards() + " Cards");
+            default -> addCardImages();
         }
     }
 
