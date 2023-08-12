@@ -239,6 +239,16 @@ public class GameEngine {
         return tempPlayers;
     }
 
+    public boolean allEmpty(){
+        int count = 0;
+        for (Player player: players) {
+            if (player.cardFinished()) {
+                count++;
+            }
+        }
+        return count == 4;
+    }
+
     public Player getRealPlayer() {
         return this.realPlayer;
     }

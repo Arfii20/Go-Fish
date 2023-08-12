@@ -525,10 +525,33 @@ public class GameDriver extends Application {
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(ev -> {
                     Card card1 = this.game.getDeck().draw();
-                    this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
-                    this.game.getCurrentPlayer().addToHand(card1);
-                    this.displayCard(card1);
-                    this.addCardImages();
+                    if (card1 != null && card1.getValue() == finalCard.getValue()) {
+                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                        this.game.getCurrentPlayer().addToHand(card1);
+                        this.displayCard2(card1);
+                        PauseTransition delay1 = new PauseTransition(Duration.seconds(4));
+                        delay1.setOnFinished(e -> {
+                            this.showPopupMessage("You got the card you asked for. Ask again", 35, Color.ORANGERED, 1);
+                        });
+                        delay1.play();
+                        this.addCardImages();
+                    }
+                    else if (card1 != null) {
+                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                        this.game.getCurrentPlayer().addToHand(card1);
+                        this.displayCard(card1);
+                        this.addCardImages();
+                    }
+                    else {
+                        if (!this.game.allEmpty()) {
+                            this.game.endTurn();
+                            this.game.startTurn();
+                            this.botTurn();
+                        }
+                        if (this.game.roundOver()) {
+                            this.sceneChanger(leaderboardScene);
+                        }
+                    }
                 });
                 delay.play();
             }
@@ -566,11 +589,44 @@ public class GameDriver extends Application {
                 overlayStage.close();
                 PauseTransition delay2 = new PauseTransition(Duration.seconds(1));
                 delay2.setOnFinished(ee -> {
-                    this.game.endTurn();
-                    this.game.startTurn();
-                    this.botTurn();
+                    if (this.game.roundOver()) {
+                        this.sceneChanger(leaderboardScene);
+                        this.game.setRoundOn(false);
+                    }
+                    else if (!this.game.allEmpty()) {
+                        this.game.endTurn();
+                        this.game.startTurn();
+                        this.botTurn();
+                    }
                 });
                 delay2.play();
+            });
+            delay.play();
+        });
+        parallel.play();
+    }
+
+    private void displayCard2(Card card){
+        mainPageScene.getRoot().setEffect(blur);
+        displayCardImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + card.getType() + "/" + card.getFullName() + ".png"))));
+
+        Stage overlayStage = new Stage();
+        overlayStage.initStyle(StageStyle.UNDECORATED);
+        overlayStage.initModality(Modality.APPLICATION_MODAL);
+        overlayStage.initStyle(StageStyle.TRANSPARENT);
+        overlayStage.setScene(displayCard);
+        overlayStage.setOpacity(0.95);
+        overlayStage.show();
+
+
+        displayCard.setFill(null);
+        ParallelTransition parallel = getParallelTransition(displayCard);
+        parallel.setOnFinished(e -> {
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(ev -> {
+                window.requestFocus();
+                mainPageScene.getRoot().setEffect(null);
+                overlayStage.close();
             });
             delay.play();
         });
@@ -605,24 +661,51 @@ public class GameDriver extends Application {
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(ee -> {
                     Card card1 = this.game.getDeck().draw();
-                    if (card1 != null) {
+                    if (card1 != null && card1.getValue() == card.getValue()){
+                        this.showPopupMessage(this.game.getCurrentPlayer() + " received the same number. Ask again", 35, Color.CYAN, 3);
+                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                        this.cardNumberChanger(game.getCurrentPlayer());
+                        this.game.getCurrentPlayer().addToHand(card1);
+                        PauseTransition delay2 = new PauseTransition(Duration.seconds(4));
+                        delay2.setOnFinished(eee -> {
+                            if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                        });
+                        delay2.play();
+                        return;
+                    }
+                    else if (card1 != null) {
                         this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
                         this.game.getCurrentPlayer().addToHand(card1);
                         this.cardNumberChanger(this.game.getCurrentPlayer());
                     }
                     this.game.endTurn();
-                    this.game.startTurn();
-                    PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                    pause.setOnFinished(eee -> {
-                        if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
-                        else if (game.getRealPlayer().totalCards() == 0) {
-                            this.game.endTurn();
-                            this.game.startTurn();
-                            botTurn();
+                    if (!this.game.roundOver()){
+                        this.game.startTurn();
+                        if (this.game.allEmpty()) {
+                            while (!this.game.getDeck().isEmpty()) {
+                                this.game.getCurrentPlayer().addToHand(this.game.getDeck().draw());
+                            }
+                            this.game.setRoundOn(false);
+                            this.sceneChanger(leaderboardScene);
                         }
-                        else playerTurnLabel.setText("Your Turn");
-                    });
-                    pause.play();
+                        else {
+                            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                            pause.setOnFinished(eee -> {
+                                if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                                else if (game.getRealPlayer().totalCards() == 0) {
+                                    this.game.endTurn();
+                                    this.game.startTurn();
+                                    botTurn();
+                                }
+                                else playerTurnLabel.setText("Your Turn");
+                            });
+                            pause.play();
+                        }
+                    }
+                    else {
+                        this.game.setRoundOn(false);
+                        this.sceneChanger(leaderboardScene);
+                    }
                 });
                 delay.play();
             }

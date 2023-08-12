@@ -8,8 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/PlayerProbs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/PlayerProbs.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +91,12 @@
       <workItem from="1690299771955" duration="16005000" />
       <workItem from="1690533555424" duration="15753000" />
       <workItem from="1690714953937" duration="2918000" />
-      <workItem from="1690969441107" duration="19500000" />
+      <workItem from="1690969441107" duration="19541000" />
+      <workItem from="1691326332202" duration="599000" />
+      <workItem from="1691557957428" duration="255000" />
+      <workItem from="1691653383956" duration="1388000" />
+      <workItem from="1691774725751" duration="10436000" />
+      <workItem from="1691839004942" duration="1202000" />
     </task>
     <servers />
   </component>
