@@ -29,7 +29,7 @@ public class SavesLocation {
         )
         {
             String userHome = System.getProperty("user.home");
-            String documentsFolder = userHome + File.separator + "Documents" + File.separator + "Selfish" + File.separator;
+            String documentsFolder = userHome + File.separator + "Documents" + File.separator + "GoFish" + File.separator;
             saveWriter.println(documentsFolder);
             saveLocation = documentsFolder;
             File file = new File(documentsFolder);

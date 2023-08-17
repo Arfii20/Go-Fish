@@ -7,14 +7,13 @@ import javafx.util.Pair;
 import java.io.*;
 import java.util.*;
 
-public class GameEngine {
+public class GameEngine implements Serializable {
     private Random random;
     private Deck deck;
     private boolean started;
     private boolean roundOn;
     private boolean turnOn;
     private List<Player> players;
-    private List<Player> playersCopy;
     private Player currentPlayer;
     private Map<String, Player> playerMap;
     private int maxPoints;
@@ -23,6 +22,8 @@ public class GameEngine {
     private PlayerProbs playerProbabilities;
     private int difficulty;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private GameEngine(){
         // Left empty intentionally
@@ -107,7 +108,7 @@ public class GameEngine {
             inFile = new FileInputStream(path);
             inStream = new ObjectInputStream(inFile);
 
-            loadGame =  (GameEngine) inStream.readObject();
+            loadGame = (GameEngine) inStream.readObject();
         } catch (IOException e) {
             System.out.println("Failed to load game state");
         } catch (ClassNotFoundException e) {
@@ -235,6 +236,7 @@ public class GameEngine {
 
     public List<Player> getSortedPlayers() {
         List<Player> tempPlayers = new ArrayList<>(players);
+        if (currentPlayer != null) tempPlayers.add(currentPlayer);
         Collections.sort(tempPlayers);
         return tempPlayers;
     }

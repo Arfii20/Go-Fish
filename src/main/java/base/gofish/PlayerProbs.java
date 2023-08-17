@@ -4,15 +4,12 @@ import java.util.*;
 
 public class PlayerProbs {
     private final List<Player> playerList;
-    private Map<Integer, Map<Player, Double>> numberProbabilities;
+    private final Map<Integer, Map<Player, Double>> numberProbabilities;
+
     public PlayerProbs(List<Player> playersIn) {
         this.playerList = playersIn;
         this.numberProbabilities = new HashMap<>();
         addProbForEachNumber();
-    }
-
-    public Map<Integer, Map<Player, Double>> numberProbabilities() {
-        return numberProbabilities;
     }
 
     public Map<Player, Double> makePlayerProbabilities() {
@@ -31,6 +28,12 @@ public class PlayerProbs {
 
     public void updateProbabilitiesToOne(Integer value, Player player) {
         this.numberProbabilities.get(value).put(player, 1.0);
+    }
+
+    public void resetProbabilities() {
+        for (Map<Player, Double> playerProbabilities : numberProbabilities.values()) {
+            playerProbabilities.replaceAll((p, v) -> 0.25);
+        }
     }
 
     public Player getPlayer(Integer cardValue, Player curr) {
