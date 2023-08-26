@@ -2,13 +2,17 @@ package base.gofish;
 
 import base.gofish.deck.Card;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
-public class Player implements Comparable<Player>{
+public class Player implements Comparable<Player>, Serializable {
     private String name;
     private List<Card> cards;
     private int value;
     private int points;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public Player(String name, int value){
         this.name = name;

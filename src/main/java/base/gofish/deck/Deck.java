@@ -10,7 +10,7 @@ public class Deck implements Serializable {
     private List<Card> deck = new ArrayList<>();
     private Map<String, Card> cardMap = new HashMap<>();
     @Serial
-    private static final long serialVersionUID = 5;
+    private static final long serialVersionUID = 4L;
 
 
     public Deck(){

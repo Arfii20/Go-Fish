@@ -23,7 +23,7 @@ public class GameEngine implements Serializable {
     private int difficulty;
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 0L;
 
     private GameEngine(){
         // Left empty intentionally
@@ -76,57 +76,28 @@ public class GameEngine implements Serializable {
     }
 
     public void saveState(String path) {
-        FileOutputStream outFile = null;
-        ObjectOutputStream outStream = null;
-        try {
-            outFile = new FileOutputStream(path);
-            outStream = new ObjectOutputStream(outFile);
+        try (FileOutputStream outFile = new FileOutputStream(path);
+             ObjectOutputStream outStream = new ObjectOutputStream(outFile)) {
 
             outStream.writeObject(this);
 
+            System.out.println("Game state saved successfully");
+
         } catch (IOException e) {
-            System.out.println("Failed to save game state");
-        } finally {
-            try {
-                if (outStream != null) {
-                    outStream.close();
-                }
-                if (outFile != null) {
-                    outFile.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error while cleaning up");
-            }
+            System.err.println("Failed to save game state: " + e.getMessage());
         }
     }
 
     public static GameEngine loadState(String path) {
-        GameEngine loadGame = new GameEngine();
-        FileInputStream inFile = null;
-        ObjectInputStream inStream = null;
-        try {
-            inFile = new FileInputStream(path);
-            inStream = new ObjectInputStream(inFile);
+        try (FileInputStream inFile = new FileInputStream(path);
+             ObjectInputStream inStream = new ObjectInputStream(inFile)) {
 
-            loadGame = (GameEngine) inStream.readObject();
-        } catch (IOException e) {
-            System.out.println("Failed to load game state");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Class not found");
+            return (GameEngine) inStream.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Failed to load game state: " + e.getMessage());
         }
-        finally {
-            try {
-                if (inStream != null) {
-                    inStream.close();
-                }
-                if (inFile != null) {
-                    inFile.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error while cleaning up");
-            }
-        }
-        return loadGame;
+        return null;
     }
 
     public Deck getDeck(){

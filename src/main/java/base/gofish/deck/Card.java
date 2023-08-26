@@ -9,7 +9,7 @@ public class Card implements Comparable<Card>, Serializable {
     private final Name name;
     private final int value;
     @Serial
-    private static final long serialVersionUID = 0;
+    private static final long serialVersionUID = 3L;
 
     public Card (String fullName, Suit suit, Name name, int value) {
         this.fullName = fullName;
