@@ -405,6 +405,9 @@ public class GameDriver extends Application {
                     delay.setOnFinished(ev -> {
                         this.addDeck();
                         this.addCardImages();
+                        deckCardsLeft.setText("27 Cards Left");
+                        game.roundStart();
+                        game.startTurn();
                     });
                     delay.play();
                 });
@@ -421,6 +424,8 @@ public class GameDriver extends Application {
     }
 
     private void addDeck() {
+        centerDeck.getChildren().clear();
+
         Region region1 = new Region();
         region1.setPrefSize(222, 200);
         BorderPane.setAlignment(region1, Pos.CENTER);
@@ -436,8 +441,8 @@ public class GameDriver extends Application {
         anchorPane.setMaxWidth(200);
         anchorPane.setPrefWidth(200);
 
-        deckCardsLeft = new Label("27 Cards Left");
-        deckCardsLeft.setAlignment(javafx.geometry.Pos.CENTER);
+        deckCardsLeft = new Label();
+        deckCardsLeft.setAlignment(Pos.CENTER);
         deckCardsLeft.setLayoutX(-3);
         deckCardsLeft.setLayoutY(-5);
         deckCardsLeft.setPrefHeight(28);
@@ -460,9 +465,6 @@ public class GameDriver extends Application {
         }
 
         centerDeck.getChildren().add(anchorPane);
-
-        game.roundStart();
-        game.startTurn();
     }
 
     private void addCardImages() {
@@ -980,6 +982,10 @@ public class GameDriver extends Application {
                 System.out.println(e.getMessage());
             }
         }
+
+        addDeck();
+        deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
+
         sceneChanger(mainPageScene);
         addCardImages();
     }
