@@ -16,7 +16,7 @@ public class GameEngine implements Serializable {
     private List<Player> players;
     private Player currentPlayer;
     private Map<String, Player> playerMap;
-    private int maxPoints;
+//    private int maxPoints;
     private Player winner;
     private Player realPlayer;
     private PlayerProbs playerProbabilities;
@@ -59,13 +59,13 @@ public class GameEngine implements Serializable {
         return playerProbabilities;
     }
 
-    public void setMaxPoints(int points) {
-        this.maxPoints = points;
-    }
+//    public void setMaxPoints(int points) {
+//        this.maxPoints = points;
+//    }
 
-    public int getMaxPoints() {
-        return this.maxPoints;
-    }
+//    public int getMaxPoints() {
+//        return this.maxPoints;
+//    }
     
     public void setDifficulty(int diff){
         this.difficulty = diff;

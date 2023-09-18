@@ -56,7 +56,7 @@ public class GameDriver extends Application {
     // All the scenes
     private Scene OpeningScene;
     private Scene playerNameScene;
-    private Scene totalPointsScene;
+//    private Scene totalPointsScene;
     private Scene difficultyLevelScene;
 
     private Scene startMenuScene;
@@ -183,9 +183,9 @@ public class GameDriver extends Application {
         playerNameXML.setController(this);
         playerNameScene = new Scene(playerNameXML.load());
 
-        FXMLLoader totalPointsXML = new FXMLLoader(getClass().getResource("/PreGame/3totalPoints.fxml"));
-        totalPointsXML.setController(this);
-        totalPointsScene = new Scene(totalPointsXML.load());
+//        FXMLLoader totalPointsXML = new FXMLLoader(getClass().getResource("/PreGame/3totalPoints.fxml"));
+//        totalPointsXML.setController(this);
+//        totalPointsScene = new Scene(totalPointsXML.load());
 
         FXMLLoader difficultyLevelXML = new FXMLLoader(getClass().getResource("/PreGame/4difficultyLevel.fxml"));
         difficultyLevelXML.setController(this);
@@ -263,11 +263,11 @@ public class GameDriver extends Application {
         });
 
         // Get number of players and set scene to get player names from players
-        setMaxValueButton.setOnAction(actionEvent -> {
-            Music.playButtonSoundEffect();
-            game.setMaxPoints(this.pointsCombobox.getValue());
-            sceneChanger(difficultyLevelScene);
-        });
+//        setMaxValueButton.setOnAction(actionEvent -> {
+//            Music.playButtonSoundEffect();
+//            game.setMaxPoints(this.pointsCombobox.getValue());
+//            sceneChanger(difficultyLevelScene);
+//        });
 
 //        // Add listener on escape key for pausing the game
 //        pauseStage = new Stage();
@@ -354,7 +354,8 @@ public class GameDriver extends Application {
             fadeOut.setToValue(0);
 
             SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-            fadeSequence.setOnFinished(event -> sceneChanger(totalPointsScene));
+//            fadeSequence.setOnFinished(event -> sceneChanger(totalPointsScene));
+            fadeSequence.setOnFinished(event -> sceneChanger(difficultyLevelScene));
             fadeSequence.play();
         }
     }
