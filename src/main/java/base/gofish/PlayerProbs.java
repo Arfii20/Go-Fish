@@ -2,7 +2,12 @@ package base.gofish;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class PlayerProbs implements Serializable {
     private final List<Player> playerList;

@@ -3,16 +3,25 @@ package base.gofish;
 import base.gofish.deck.Card;
 import base.gofish.deck.Deck;
 import javafx.util.Pair;
-
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class GameEngine implements Serializable {
     private Random random;
     private Deck deck;
     private boolean started;
     private boolean roundOn;
-    private boolean turnOn;
     private List<Player> players;
     private Player currentPlayer;
     private Map<String, Player> playerMap;
@@ -112,20 +121,12 @@ public class GameEngine implements Serializable {
         this.roundOn = roundOn;
     }
 
-    public void setTurnOn(boolean turnOn) {
-        this.turnOn = turnOn;
-    }
-
     public boolean isStarted(){
         return this.started;
     }
 
     public boolean isRoundOn(){
         return this.roundOn;
-    }
-
-    public boolean isTurnOn() {
-        return turnOn;
     }
 
     public void roundStart() {
@@ -150,7 +151,6 @@ public class GameEngine implements Serializable {
     }
 
     public void startTurn() {
-        this.turnOn = true;
         if (currentPlayer == null) {
             this.currentPlayer = this.players.remove(0);
         }
@@ -159,7 +159,6 @@ public class GameEngine implements Serializable {
     public void endTurn() {
         this.players.add(this.currentPlayer);
         this.currentPlayer = null;
-        this.turnOn = false;
     }
 
     public List<Card> singleTurn(String playerIn, String cardIn) {
@@ -239,10 +238,10 @@ public class GameEngine implements Serializable {
         return this.winner;
     }
 
-    public void printPlayerCards() {
-        for (Player player: getSortedPlayers()) {
-            System.out.println(player + " total cards: " + player.totalCards());
-        }
-        System.out.println();
-    }
+//    public void printPlayerCards() {
+//        for (Player player: getSortedPlayers()) {
+//            System.out.println(player + " total cards: " + player.totalCards());
+//        }
+//        System.out.println();
+//    }
 }

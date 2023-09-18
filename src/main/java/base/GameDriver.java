@@ -5,7 +5,16 @@ import base.gofish.Player;
 import base.gofish.deck.Card;
 import base.gofish.saveAndMusic.Music;
 import base.gofish.saveAndMusic.SavesLocation;
-import javafx.animation.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,44 +23,56 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.control.*;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
-import javafx.stage.*;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.util.Pair;
-
-import java.awt.*;
-import java.io.*;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class GameDriver extends Application {
-    private ArrayList<String> names = new ArrayList<String>();
     private static Stage window;
     private GameEngine game;
     private Timeline timeline;
-    private Stage pauseStage;
     private BoxBlur blur;
     private String saveLocation;
     private Label deckCardsLeft;
     private Label playerSelected;
-    private final Duration MESSAGE_DELAY = Duration.seconds(2);
-    private final Duration TRANSITION_DELAY = Duration.seconds(2.5);
-    private final Duration POPUP_MESSAGE_DURATION = Duration.seconds(2);
-
 
     // All the scenes
     private Scene OpeningScene;
@@ -592,7 +613,6 @@ public class GameDriver extends Application {
         overlayStage.setOpacity(0.95);
         overlayStage.show();
 
-
         displayCard.setFill(null);
         ParallelTransition parallel = getParallelTransition(displayCard);
         parallel.setOnFinished(e -> {
@@ -633,7 +653,6 @@ public class GameDriver extends Application {
         overlayStage.setOpacity(0.95);
         overlayStage.show();
 
-
         displayCard.setFill(null);
         ParallelTransition parallel = getParallelTransition(displayCard);
         parallel.setOnFinished(e -> {
@@ -649,8 +668,6 @@ public class GameDriver extends Application {
     }
 
     private void botTurn() {
-        this.game.printPlayerCards();
-
         if (this.game.allEmpty()) {
             while (!this.game.getDeck().isEmpty()) {
                 this.game.getCurrentPlayer().addToHand(this.game.getDeck().draw());
@@ -747,7 +764,6 @@ public class GameDriver extends Application {
         delay1.play();
     }
 
-
     private void addAllCardsToHand() {
         playerTurnLabel.setText("Your Turn");
         if (this.game.allEmpty()) {
@@ -784,6 +800,7 @@ public class GameDriver extends Application {
 
 
     // <---------------------------------------  Menus ---------------------------------------->
+    @FXML
     public void startMenu(MouseEvent event){
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
@@ -801,6 +818,7 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+    @FXML
     public void pauseMenu(MouseEvent event) throws IOException {
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
@@ -842,6 +860,7 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+    @FXML
     public void leaderboardMenu(MouseEvent event) {
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
@@ -864,6 +883,7 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+    @FXML
     public void gameOverMenu(MouseEvent event) throws IOException {
         Music.playButtonSoundEffect();
         String text = ((Button) event.getSource()).getText();
@@ -872,6 +892,13 @@ public class GameDriver extends Application {
             case "Main Menu" -> sceneChanger(startMenuScene);
         }
         event.consume();
+    }
+
+    @FXML
+    public void backButton() {
+        Music.playButtonSoundEffect();
+        sceneChanger(game.isStarted() ? pauseGameScene : startMenuScene);
+        Music.saveVolume();
     }
 
     private void addLeaderboard() {
@@ -902,13 +929,6 @@ public class GameDriver extends Application {
             VBox.setMargin(anchorPane, new Insets(10, 0, 10, 0));
         }
     }
-
-    public void backButton() {
-        Music.playButtonSoundEffect();
-        sceneChanger(game.isStarted() ? pauseGameScene : startMenuScene);
-        Music.saveVolume();
-    }
-
 
 
     // <--------------------------------- Loading and saving ---------------------------------->
@@ -1136,6 +1156,7 @@ public class GameDriver extends Application {
 
 
     // <--------------------------------- Rules and Settings ---------------------------------->
+    @FXML
     public void youtubeLink(){
         Music.playButtonSoundEffect();
         try {
@@ -1143,6 +1164,7 @@ public class GameDriver extends Application {
         } catch (IOException | URISyntaxException ignored){}
     }
 
+    @FXML
     public void restoreToDefault(MouseEvent event) {
         buttonVolumeSlider.setValue(50);
         volumeSlider.setValue(50);
@@ -1155,6 +1177,7 @@ public class GameDriver extends Application {
         changeLocLabel.setText(saveLocation);
     }
 
+    @FXML
     public void changeLoc(){
         Music.playButtonSoundEffect();
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -1267,30 +1290,30 @@ public class GameDriver extends Application {
         }
     }
 
-    private void showErrorInLabel(Label label, int fontSize, String prevMessage, String newMessage){
-        label.setText(newMessage);
-        label.setStyle("-fx-text-fill: red; -fx-font-size: " + fontSize);
-
-        PauseTransition delay = new PauseTransition(Duration.seconds(1));
-        delay.setOnFinished(e -> {
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), label);
-            fadeIn.setFromValue(1);
-            fadeIn.setToValue(0);
-            fadeIn.setOnFinished(ev -> {
-                label.setText(prevMessage);
-                label.setStyle("-fx-text-fill: white; -fx-font-size: " + fontSize);
-            });
-
-            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), label);
-            fadeOut.setFromValue(0);
-            fadeOut.setToValue(1);
-            fadeOut.setDelay(Duration.millis(10));
-
-            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-            fadeSequence.play();
-        });
-        delay.play();
-    }
+//    private void showErrorInLabel(Label label, int fontSize, String prevMessage, String newMessage){
+//        label.setText(newMessage);
+//        label.setStyle("-fx-text-fill: red; -fx-font-size: " + fontSize);
+//
+//        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+//        delay.setOnFinished(e -> {
+//            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), label);
+//            fadeIn.setFromValue(1);
+//            fadeIn.setToValue(0);
+//            fadeIn.setOnFinished(ev -> {
+//                label.setText(prevMessage);
+//                label.setStyle("-fx-text-fill: white; -fx-font-size: " + fontSize);
+//            });
+//
+//            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), label);
+//            fadeOut.setFromValue(0);
+//            fadeOut.setToValue(1);
+//            fadeOut.setDelay(Duration.millis(10));
+//
+//            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
+//            fadeSequence.play();
+//        });
+//        delay.play();
+//    }
 
     private void createAndPlaySplashTransition(Label label, String message) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), label);
@@ -1338,6 +1361,8 @@ public class GameDriver extends Application {
         return new ParallelTransition(rotate, scale);
     }
 
+
+    // <-------------------------------------- Popups ---------------------------------------->
     private void showPopupMessage(){
         Label label = new Label("LET THE GAME BEGIN");
         label.setTextFill(Color.CYAN);
