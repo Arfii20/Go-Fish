@@ -12,6 +12,7 @@ import java.util.Random;
 public class PlayerProbs implements Serializable {
     private final List<Player> playerList;
     private final Map<Integer, Map<Player, Double>> numberProbabilities;
+
     @Serial
     private static final long serialVersionUID = 2L;
 

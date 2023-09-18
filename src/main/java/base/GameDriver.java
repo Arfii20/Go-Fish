@@ -100,10 +100,10 @@ public class GameDriver extends Application {
     private Label pressAnyKeyLabel;
 
     // <--------------------- Max points --------------------->
-    @FXML
-    private ComboBox<Integer> pointsCombobox;
-    @FXML
-    private Button setMaxValueButton;
+//    @FXML
+//    private ComboBox<Integer> pointsCombobox;
+//    @FXML
+//    private Button setMaxValueButton;
 
     // <------------------- Player number -------------------->
     @FXML
@@ -781,6 +781,7 @@ public class GameDriver extends Application {
     // <----------------------------------  Selected Label ----------------------------------->
     @FXML
     public void playerSelected(MouseEvent event) {
+        Music.playButtonSoundEffect();
         if (game.getCurrentPlayer() == game.getRealPlayer()){
             if (playerSelected != null) playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
             playerSelected = (Label) event.getSource();
@@ -1166,6 +1167,7 @@ public class GameDriver extends Application {
 
     @FXML
     public void restoreToDefault(MouseEvent event) {
+        Music.playButtonSoundEffect();
         buttonVolumeSlider.setValue(50);
         volumeSlider.setValue(50);
         Music.saveVolume();

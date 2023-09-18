@@ -1,32 +1,41 @@
 package base.gofish.saveAndMusic;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
-
-import javax.sound.sampled.*;
-import java.io.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Music {
     private static Clip audioClip, buttonClick;
     private static double musicVolume, buttonVolume;
 
     public static void playButtonSoundEffect() {
-        if (buttonClick == null) {
-            File file = new File("./src/main/resources/base/click2.wav");
-            try {
-                buttonClick = AudioSystem.getClip();
-                buttonClick.open(AudioSystem.getAudioInputStream(file));
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | IllegalArgumentException e) {
-                e.printStackTrace();
-                System.out.println("Cannot Play sound");
-                buttonClick = null;
-            }
-        }
         if (buttonClick != null) {
             setButtonVolume(buttonVolume);
             buttonClick.setFramePosition(0);
             buttonClick.start();
+            return;
+        }
+        try {
+            File file = new File("./src/main/resources/base/click2.wav");
+            buttonClick = AudioSystem.getClip();
+            buttonClick.open(AudioSystem.getAudioInputStream(file));
+
+            setButtonVolume(buttonVolume);
+            buttonClick.setFramePosition(0);
+            buttonClick.start();
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+            System.out.println("Cannot Play sound");
         }
     }
 

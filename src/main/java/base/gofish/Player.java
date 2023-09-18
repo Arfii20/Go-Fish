@@ -4,13 +4,18 @@ import base.gofish.deck.Card;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class Player implements Comparable<Player>, Serializable {
     private String name;
     private List<Card> cards;
     private int value;
     private int points;
+
     @Serial
     private static final long serialVersionUID = 1L;
 

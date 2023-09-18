@@ -8,6 +8,7 @@ public class Card implements Comparable<Card>, Serializable {
     private final Suit suit;
     private final Name name;
     private final int value;
+
     @Serial
     private static final long serialVersionUID = 3L;
 

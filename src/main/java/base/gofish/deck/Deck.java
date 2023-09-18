@@ -1,9 +1,7 @@
 package base.gofish.deck;
 
-
 import java.io.Serial;
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +12,7 @@ import java.util.Random;
 public class Deck implements Serializable {
     private final List<Card> deck = new ArrayList<>();
     private final Map<String, Card> cardMap = new HashMap<>();
+
     @Serial
     private static final long serialVersionUID = 4L;
 
