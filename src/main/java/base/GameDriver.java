@@ -403,11 +403,11 @@ public class GameDriver extends Application {
                     playerTurnLabel.setText("Your Turn");
                     PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
                     delay.setOnFinished(ev -> {
-                        this.addDeck();
-                        this.addCardImages();
+                        addDeck();
                         deckCardsLeft.setText("27 Cards Left");
                         game.roundStart();
                         game.startTurn();
+                        addCardImages();
                     });
                     delay.play();
                 });
@@ -568,6 +568,7 @@ public class GameDriver extends Application {
                         this.sceneChanger(leaderboardScene);
                         this.addLeaderboard();
                     }
+                    else if (this.game.getCurrentPlayer().cardFinished()) botTurn();
                 });
                 delay.play();
             }
@@ -644,7 +645,18 @@ public class GameDriver extends Application {
     }
 
     private void botTurn() {
-        createAndPlaySplashTransition(playerTurnLabel, game.getCurrentPlayer() + "'s Turn");
+        this.game.printPlayerCards();
+
+        if (this.game.allEmpty()) {
+            while (!this.game.getDeck().isEmpty()) {
+                this.game.getCurrentPlayer().addToHand(this.game.getDeck().draw());
+                this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
+            }
+            this.game.endTurn();
+            this.sceneChanger(leaderboardScene);
+            this.addLeaderboard();
+            return;
+        }
 
         Pair<Player, Card> playerCard;
         try {
@@ -654,9 +666,13 @@ public class GameDriver extends Application {
             this.game.endTurn();
             this.game.startTurn();
             if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
-            else playerTurnLabel.setText("Your Turn");
+            else {
+                addAllCardsToHand();
+            }
             return;
         }
+
+        createAndPlaySplashTransition(playerTurnLabel, game.getCurrentPlayer() + "'s Turn");
 
         Player player = playerCard.getKey();
         Card card = playerCard.getValue();
@@ -671,9 +687,9 @@ public class GameDriver extends Application {
                     Card card1 = this.game.getDeck().draw();
                     if (card1 != null && card1.getValue() == card.getValue()){
                         PauseTransition delay2 = this.showPopupMessage(this.game.getCurrentPlayer() + " received the same number. Ask again", Color.CYAN, 3);
-                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
-                        this.cardNumberChanger(game.getCurrentPlayer());
+                        this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
                         this.game.getCurrentPlayer().addToHand(card1);
+                        this.cardNumberChanger(game.getCurrentPlayer());
                         new PauseTransition(Duration.seconds(4));
                         delay2.setOnFinished(eee -> {
                             if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
@@ -682,34 +698,26 @@ public class GameDriver extends Application {
                         return;
                     }
                     else if (card1 != null) {
-                        this.deckCardsLeft.setText((Integer.parseInt(deckCardsLeft.getText().split(" ")[0]) - 1) + " Cards Left");
+                        this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
                         this.game.getCurrentPlayer().addToHand(card1);
                         this.cardNumberChanger(this.game.getCurrentPlayer());
                     }
                     this.game.endTurn();
                     if (!this.game.roundOver()){
                         this.game.startTurn();
-                        if (this.game.allEmpty()) {
-                            while (!this.game.getDeck().isEmpty()) {
-                                this.game.getCurrentPlayer().addToHand(this.game.getDeck().draw());
+                        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                        pause.setOnFinished(eee -> {
+                            if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                            else if (game.getRealPlayer().totalCards() == 0) {
+                                this.game.endTurn();
+                                this.game.startTurn();
+                                botTurn();
                             }
-                            this.game.endTurn();
-                            this.sceneChanger(leaderboardScene);
-                            this.addLeaderboard();
-                        }
-                        else {
-                            PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                            pause.setOnFinished(eee -> {
-                                if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
-                                else if (game.getRealPlayer().totalCards() == 0) {
-                                    this.game.endTurn();
-                                    this.game.startTurn();
-                                    botTurn();
-                                }
-                                else playerTurnLabel.setText("Your Turn");
-                            });
-                            pause.play();
-                        }
+                            else {
+                                addAllCardsToHand();
+                            }
+                        });
+                        pause.play();
                     }
                     else {
                         this.sceneChanger(leaderboardScene);
@@ -730,6 +738,18 @@ public class GameDriver extends Application {
             }
         });
         delay1.play();
+    }
+
+    private void addAllCardsToHand() {
+        playerTurnLabel.setText("Your Turn");
+        if (this.game.allEmpty()) {
+            while (!this.game.getDeck().isEmpty()) {
+                this.game.getCurrentPlayer().addToHand(this.game.getDeck().draw());
+                this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
+            }
+            sceneChanger(leaderboardScene);
+            addLeaderboard();
+        }
     }
 
 
@@ -839,6 +859,7 @@ public class GameDriver extends Application {
     }
 
     private void addLeaderboard() {
+        playerPositions.getChildren().clear();
         List<Player> players = this.game.getSortedPlayers();
 
         for (Player player : players) {
@@ -862,7 +883,7 @@ public class GameDriver extends Application {
 
             anchorPane.getChildren().addAll(nameLabel, scoreLabel);
             playerPositions.getChildren().add(anchorPane);
-            VBox.setMargin(anchorPane, new Insets(25, 0, 25, 0));
+            VBox.setMargin(anchorPane, new Insets(10, 0, 10, 0));
         }
     }
 
@@ -971,6 +992,7 @@ public class GameDriver extends Application {
             return;
         }
 
+        mainPlayerLabel.setText(this.game.getRealPlayer().toString());
         this.playerTurnLabel.setText(game.getCurrentPlayer() + "'s Turn");
         createAndPlaySplashTransition(playerTurnLabel, game.getCurrentPlayer() + "'s Turn");
 
@@ -982,7 +1004,6 @@ public class GameDriver extends Application {
                 System.out.println(e.getMessage());
             }
         }
-
         addDeck();
         deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
 

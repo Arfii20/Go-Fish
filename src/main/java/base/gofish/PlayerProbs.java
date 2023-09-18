@@ -71,11 +71,13 @@ public class PlayerProbs implements Serializable {
 
     public Player getRandomPlayer(Player curr) {
         Random random = new Random();
-        int randint = random.nextInt(0, playerList.size());
         Player player;
+        for (Player value : playerList) {
+            System.out.println(value);
+        }
         do {
-            player = playerList.get(randint);
-        } while (player == curr);
+            player = playerList.get(random.nextInt(0, playerList.size()));
+        } while (player == curr || player.totalCards() == 0);
         return player;
     }
 }

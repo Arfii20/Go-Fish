@@ -165,6 +165,9 @@ public class GameEngine implements Serializable {
     public List<Card> singleTurn(String playerIn, String cardIn) {
         Player player = this.playerMap.get(playerIn);
         Card card = this.deck.getCardMap().get(cardIn);
+
+        System.out.println(player + ": " + card.getValue());
+
         if (player.hasCard(card)){
             return player.clearCardFromHand(card.getValue());
         }
@@ -214,11 +217,7 @@ public class GameEngine implements Serializable {
 
     public boolean allEmpty(){
         int count = 0;
-        for (Player player: players) {
-            if (player.cardFinished()) {
-                count++;
-            }
-        }
+        for (Player player: players) if (player.cardFinished()) count++;
         return count == 4;
     }
 
@@ -238,5 +237,12 @@ public class GameEngine implements Serializable {
             }
         }
         return this.winner;
+    }
+
+    public void printPlayerCards() {
+        for (Player player: getSortedPlayers()) {
+            System.out.println(player + " total cards: " + player.totalCards());
+        }
+        System.out.println();
     }
 }
