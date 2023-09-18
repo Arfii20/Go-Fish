@@ -552,6 +552,7 @@ public class GameDriver extends Application {
                         else if (this.game.roundOver()) {
                             this.game.endTurn();
                             this.sceneChanger(leaderboardScene);
+                            this.game.setRoundOn(false);
                             this.addLeaderboard();
                         }
                     }
@@ -566,6 +567,7 @@ public class GameDriver extends Application {
                 delay.setOnFinished(e -> {
                     if (this.game.roundOver()) {
                         this.sceneChanger(leaderboardScene);
+                        this.game.setRoundOn(false);
                         this.addLeaderboard();
                     }
                     else if (this.game.getCurrentPlayer().cardFinished()) botTurn();
@@ -602,6 +604,7 @@ public class GameDriver extends Application {
                 delay2.setOnFinished(ee -> {
                     if (this.game.roundOver()) {
                         this.sceneChanger(leaderboardScene);
+                        this.game.setRoundOn(false);
                         this.addLeaderboard();
                     }
                     else if (!this.game.allEmpty()) {
@@ -652,8 +655,10 @@ public class GameDriver extends Application {
                 this.game.getCurrentPlayer().addToHand(this.game.getDeck().draw());
                 this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
             }
+            this.cardNumberChanger(this.game.getCurrentPlayer());
             this.game.endTurn();
             this.sceneChanger(leaderboardScene);
+            this.game.setRoundOn(false);
             this.addLeaderboard();
             return;
         }
@@ -721,6 +726,7 @@ public class GameDriver extends Application {
                     }
                     else {
                         this.sceneChanger(leaderboardScene);
+                        this.game.setRoundOn(false);
                         this.addLeaderboard();
                     }
                 });
@@ -749,6 +755,7 @@ public class GameDriver extends Application {
                 this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
             }
             sceneChanger(leaderboardScene);
+            this.game.setRoundOn(false);
             addLeaderboard();
         }
     }
@@ -842,6 +849,10 @@ public class GameDriver extends Application {
             case "Start Next Round" -> {
                 this.game.setRoundOn(true);
                 sceneChanger(mainPageScene);
+                centerDeck.getChildren().clear();
+                this.game.getDeck().restockDeck();
+                this.game.getPlayerProbabilities().resetProbabilities();
+                distributeCards();
             }
             case "End Game" -> {
                 Player winner = game.getWinner();

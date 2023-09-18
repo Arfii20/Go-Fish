@@ -27,6 +27,16 @@ public class Deck implements Serializable {
         }
     }
 
+    public void restockDeck(){
+        int count;
+        for (Suit suit: Suit.values()) {
+            count = 2;
+            for (Name name: Name.values()) {
+                deck.add(new Card(suit.name() + "_" + name.name(), suit, name, count++));
+            }
+        }
+    }
+
     public Card draw(){
         Card lastCard = null;
         if (!deck.isEmpty()) {
