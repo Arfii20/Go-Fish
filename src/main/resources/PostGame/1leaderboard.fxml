@@ -35,8 +35,5 @@
 <!--      </AnchorPane>-->
    </VBox>
     <Button mnemonicParsing="false" onMousePressed="#leaderboardMenu" prefHeight="40.0" prefWidth="375.0" style="-fx-font-size: 24" text="Start Next Round" />
-   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="1240.0" spacing="25.0">
-      <Button mnemonicParsing="false" onMousePressed="#leaderboardMenu" prefHeight="40.0" prefWidth="175.0" style="-fx-font-size: 24" text="End Game" />
-      <Button mnemonicParsing="false" onMousePressed="#leaderboardMenu" prefHeight="40.0" prefWidth="175.0" style="-fx-font-size: 24" text="Main Menu" />
-   </HBox>
+   <Button mnemonicParsing="false" onMousePressed="#leaderboardMenu" prefHeight="40.0" prefWidth="375.0" style="-fx-font-size: 24" text="End Game" />
 </VBox>

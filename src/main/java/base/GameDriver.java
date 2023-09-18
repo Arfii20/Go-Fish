@@ -658,6 +658,8 @@ public class GameDriver extends Application {
             return;
         }
 
+        createAndPlaySplashTransition(playerTurnLabel, game.getCurrentPlayer() + "'s Turn");
+
         Pair<Player, Card> playerCard;
         try {
             playerCard = this.game.getPlayerCardForBots();
@@ -666,13 +668,9 @@ public class GameDriver extends Application {
             this.game.endTurn();
             this.game.startTurn();
             if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
-            else {
-                addAllCardsToHand();
-            }
+            else addAllCardsToHand();
             return;
         }
-
-        createAndPlaySplashTransition(playerTurnLabel, game.getCurrentPlayer() + "'s Turn");
 
         Player player = playerCard.getKey();
         Card card = playerCard.getValue();
@@ -685,7 +683,7 @@ public class GameDriver extends Application {
                 PauseTransition delay = this.showPopupMessage("WRONG! GO FISH", Color.ORANGERED, 1.5);
                 delay.setOnFinished(ee -> {
                     Card card1 = this.game.getDeck().draw();
-                    if (card1 != null && card1.getValue() == card.getValue()){
+                    if (card1 != null && card1.getValue() == card.getValue()) {
                         PauseTransition delay2 = this.showPopupMessage(this.game.getCurrentPlayer() + " received the same number. Ask again", Color.CYAN, 3);
                         this.deckCardsLeft.setText(this.game.getDeck().size() + " Cards Left");
                         this.game.getCurrentPlayer().addToHand(card1);
@@ -703,11 +701,13 @@ public class GameDriver extends Application {
                         this.cardNumberChanger(this.game.getCurrentPlayer());
                     }
                     this.game.endTurn();
-                    if (!this.game.roundOver()){
+                    if (!this.game.roundOver()) {
                         this.game.startTurn();
                         PauseTransition pause = new PauseTransition(Duration.seconds(2));
                         pause.setOnFinished(eee -> {
-                            if (game.getCurrentPlayer() != game.getRealPlayer()) botTurn();
+                            if (game.getCurrentPlayer() != game.getRealPlayer()) {
+                                botTurn();
+                            }
                             else if (game.getRealPlayer().totalCards() == 0) {
                                 this.game.endTurn();
                                 this.game.startTurn();
@@ -740,6 +740,7 @@ public class GameDriver extends Application {
         delay1.play();
     }
 
+
     private void addAllCardsToHand() {
         playerTurnLabel.setText("Your Turn");
         if (this.game.allEmpty()) {
@@ -757,15 +758,9 @@ public class GameDriver extends Application {
     @FXML
     public void playerSelected(MouseEvent event) {
         if (game.getCurrentPlayer() == game.getRealPlayer()){
-            if (playerSelected != null) {
-                playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
-                playerSelected = (Label) event.getSource();
-                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
-            }
-            else {
-                playerSelected = (Label) event.getSource();
-                playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
-            }
+            if (playerSelected != null) playerSelected.setStyle("-fx-text-fill: WHITE; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
+            playerSelected = (Label) event.getSource();
+            playerSelected.setStyle("-fx-text-fill: CYAN; -fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
         }
     }
 
@@ -853,7 +848,16 @@ public class GameDriver extends Application {
                 winnerLabel.setText(winner + " has won");
                 sceneChanger(gameOverScene);
             }
-            case "Main Menu" -> sceneChanger(pauseGameScene);
+        }
+        event.consume();
+    }
+
+    public void gameOverMenu(MouseEvent event) throws IOException {
+        Music.playButtonSoundEffect();
+        String text = ((Button) event.getSource()).getText();
+        switch (text) {
+            case "Restart" -> this.restartGame();
+            case "Main Menu" -> sceneChanger(startMenuScene);
         }
         event.consume();
     }
@@ -887,11 +891,12 @@ public class GameDriver extends Application {
         }
     }
 
-    public void backButton(){
+    public void backButton() {
         Music.playButtonSoundEffect();
         sceneChanger(game.isStarted() ? pauseGameScene : startMenuScene);
         Music.saveVolume();
     }
+
 
 
     // <--------------------------------- Loading and saving ---------------------------------->
