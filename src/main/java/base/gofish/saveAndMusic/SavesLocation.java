@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * The {@code SavesLocation} class manages the save location path for game data.
+ * The SavesLocation class manages the save location path for game data.
  * It provides methods to load the save location from a text file, retrieve the default save location,
  * and set a new save location.
  *
@@ -37,6 +37,7 @@ public class SavesLocation {
         }
         return (saveLocation == null) ? getLocation(null) : saveLocation;
     }
+
 
     /**
      * Default save location string.

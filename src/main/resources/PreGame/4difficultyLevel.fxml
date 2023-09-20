@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <Label style="-fx-font-size: 36" text="Choose Difficulty Level" />
    <RadioButton fx:id="easyRadio" mnemonicParsing="false" text="Easy" />
    <RadioButton fx:id="mediumRadio" mnemonicParsing="false" text="Medium" />

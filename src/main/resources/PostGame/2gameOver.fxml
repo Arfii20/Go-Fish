@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" style="-fx-padding: 20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <Region prefHeight="134.0" prefWidth="1240.0" />
    <Label style="-fx-font-size: 96" text="Game Over" />
    <Label fx:id="winnerLabel" style="-fx-font-size: 22; -fx-text-fill: cyan" text="Sayali has won" />

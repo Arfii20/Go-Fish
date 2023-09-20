@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <Label style="-fx-font-size: 72" text="Go Fish" />
    <Region prefHeight="0" prefWidth="1281" />
    <Button mnemonicParsing="false" onMousePressed="#startMenu" prefWidth="200" styleClass="start-buttons" text="START" />

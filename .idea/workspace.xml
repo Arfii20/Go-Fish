@@ -6,10 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="cde70aa8-c8b5-46d9-9cdd-96e41bcb3a97" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Name.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Name.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Suit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Suit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/Music.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/Music.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/PlayerProbs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/PlayerProbs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Deck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/SavesLocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/SavesLocation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Menus/MenuItems/rules.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Menus/MenuItems/rules.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Menus/MenuItems/settings.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Menus/MenuItems/settings.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Menus/startMenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Menus/startMenu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/MidGame/displayCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/MidGame/displayCard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/MidGame/mainPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/MidGame/mainPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PostGame/1leaderboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PostGame/1leaderboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PostGame/2gameOver.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PostGame/2gameOver.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PreGame/1openingScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PreGame/1openingScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PreGame/2playerName.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PreGame/2playerName.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PreGame/3totalPoints.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PreGame/3totalPoints.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PreGame/4difficultyLevel.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PreGame/4difficultyLevel.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PreGame/5preGame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PreGame/5preGame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/blank.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/blank.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +82,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GameDriver" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -102,7 +121,7 @@
       <workItem from="1694984485765" duration="20275000" />
       <workItem from="1695047973787" duration="3504000" />
       <workItem from="1695175119218" duration="20000" />
-      <workItem from="1695175157239" duration="1232000" />
+      <workItem from="1695175157239" duration="2384000" />
     </task>
     <servers />
   </component>

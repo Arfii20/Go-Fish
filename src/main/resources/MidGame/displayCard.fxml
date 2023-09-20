@@ -4,7 +4,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane prefHeight="290.0" prefWidth="200" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/19"
+<StackPane prefHeight="290.0" prefWidth="200" stylesheets="@../base/dark_theme.css" xmlns="http://javafx.com/javafx/17"
            xmlns:fx="http://javafx.com/fxml/1">
    <ImageView fx:id="displayCardImage" fitHeight="290.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../Cards/SPADES/SPADES_ACE.png"/>

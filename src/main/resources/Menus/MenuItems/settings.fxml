@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@../../base/dark_theme.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20" stylesheets="@../../base/dark_theme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <Label alignment="CENTER" style="-fx-font-size: 48" text="Settings" />
    <VBox alignment="CENTER" prefHeight="325" prefWidth="1281" spacing="20" stylesheets="@../../base/dark_theme.css">
       <Region prefHeight="24" prefWidth="1281" />
