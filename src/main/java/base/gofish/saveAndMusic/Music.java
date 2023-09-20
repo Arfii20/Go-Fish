@@ -14,10 +14,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
+/**
+ * The Music class manages audio-related functionality for the application,
+ * including background music and button click sound effects.
+ *
+ * @author Arefin Ahammed
+ * @version 1.0
+ */
 public class Music {
     private static Clip audioClip, buttonClick;
     private static double musicVolume, buttonVolume;
 
+
+    /**
+     * Plays a button click sound effect.
+     * If the sound effect clip is not initialized, it loads the sound effect file and then plays it.
+     */
     public static void playButtonSoundEffect() {
         if (buttonClick != null) {
             setButtonVolume(buttonVolume);
@@ -39,6 +52,12 @@ public class Music {
         }
     }
 
+
+    /**
+     * Sets the volume of the button click sound effect to the specified percentage.
+     *
+     * @param percent The desired volume level as a percentage (0.0 to 100.0).
+     */
     public static void setButtonVolume(double percent){
         buttonVolume = percent;
         if (buttonClick != null) {
@@ -53,6 +72,13 @@ public class Music {
         }
     }
 
+
+    /**
+     * Initializes and manages the background music for the application.
+     *
+     * @param musicVolumeSlider A slider used to control the music volume.
+     * @param buttonVolumeSlider A slider used to control the button click sound volume.
+     */
     public static void getMusic(Slider musicVolumeSlider, Slider buttonVolumeSlider) {
         loadVolume(musicVolumeSlider, buttonVolumeSlider);
         if (audioClip == null){
@@ -78,6 +104,13 @@ public class Music {
         }
     }
 
+
+    /**
+     * Loads the saved music and button click sound volume settings from files and updates the corresponding sliders.
+     *
+     * @param musicVolumeSlider The slider used to control the music volume.
+     * @param buttonVolumeSlider The slider used to control the button click sound volume.
+     */
     public static void loadVolume(Slider musicVolumeSlider, Slider buttonVolumeSlider) {
         try (
                 FileReader savedLocFile = new FileReader("./settings/musicVolume.txt");
@@ -103,6 +136,12 @@ public class Music {
         buttonVolumeSlider.setValue(buttonVolume*100);
     }
 
+
+    /**
+     * Sets the music volume to the specified percentage and updates the background music accordingly.
+     *
+     * @param percent The desired music volume as a percentage.
+     */
     public static void setMusicVolume(double percent){
         musicVolume = percent;
         if (audioClip != null) {
@@ -122,6 +161,10 @@ public class Music {
         }
     }
 
+
+    /**
+     * Saves the current music and button click sound volume settings to files.
+     */
     public static void saveVolume() {
         try (
                 FileWriter saveMusicFile = new FileWriter("./settings/musicVolume.txt");

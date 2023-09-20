@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cde70aa8-c8b5-46d9-9cdd-96e41bcb3a97" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/PlayerProbs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/PlayerProbs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Name.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Name.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Suit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Suit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/Music.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/Music.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/SavesLocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/saveAndMusic/SavesLocation.java" afterDir="false" />
     </list>
@@ -41,22 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Languages/GitHub/Go-Fish&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "extract.method.default.visibility": "private",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Languages/GitHub/Go-Fish",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="GameDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="base.GameDriver" />
@@ -71,11 +68,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.GameDriver" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -108,11 +100,24 @@
       <workItem from="1692297213922" duration="1981000" />
       <workItem from="1693074303325" duration="11850000" />
       <workItem from="1694984485765" duration="20275000" />
-      <workItem from="1695047973787" duration="2905000" />
+      <workItem from="1695047973787" duration="3504000" />
+      <workItem from="1695175119218" duration="20000" />
+      <workItem from="1695175157239" duration="1232000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
