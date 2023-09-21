@@ -11,11 +11,10 @@ import java.util.Random;
 
 /**
  * Represents the probabilities associated with players having specific card values in a Go Fish game.
- * <p>
  * This class manages and updates the probabilities of each player having a specific card value.
  * It provides methods to manipulate and retrieve these probabilities during the game.
- * </p>
- * @since 1.0
+ *
+ * @author Arefin Ahammed
  * @version 1.0
  */
 public class PlayerProbs implements Serializable {

@@ -65,6 +65,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * The GameDriver class serves as the main entry point for the card game application.
+ * It manages the game's scenes, user interface elements, and game engine interactions.
+ * This class extends the JavaFX Application class and sets up the graphical user interface.
+ *
+ * @author Arefin Ahammed
+ * @version 2.6
+ */
 public class GameDriver extends Application {
     private static Stage window;
     private GameEngine game;
@@ -77,7 +85,7 @@ public class GameDriver extends Application {
     // All the scenes
     private Scene OpeningScene;
     private Scene playerNameScene;
-//    private Scene totalPointsScene;
+    // private Scene totalPointsScene;
     private Scene difficultyLevelScene;
 
     private Scene startMenuScene;
@@ -100,10 +108,10 @@ public class GameDriver extends Application {
     private Label pressAnyKeyLabel;
 
     // <--------------------- Max points --------------------->
-//    @FXML
-//    private ComboBox<Integer> pointsCombobox;
-//    @FXML
-//    private Button setMaxValueButton;
+    // @FXML
+    // private ComboBox<Integer> pointsCombobox;
+    // @FXML
+    // private Button setMaxValueButton;
 
     // <------------------- Player number -------------------->
     @FXML
@@ -163,12 +171,23 @@ public class GameDriver extends Application {
     private Button restartGameButton;
 
 
-
     // <-----------------------------------  Start Restart ------------------------------------->
+    /**
+     * The main entry point for launching the Go Fish game application.
+     *
+     * @param args Command-line arguments (unused).
+     */
     public static void main(String[] args){
         launch();
     }
 
+
+    /**
+     * Initializes the JavaFX application and sets up the game's graphical user interface.
+     *
+     * @param stage The primary stage for this application.
+     * @throws IOException If there's an error while loading FXML files.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         window = stage;
@@ -204,9 +223,9 @@ public class GameDriver extends Application {
         playerNameXML.setController(this);
         playerNameScene = new Scene(playerNameXML.load());
 
-//        FXMLLoader totalPointsXML = new FXMLLoader(getClass().getResource("/PreGame/3totalPoints.fxml"));
-//        totalPointsXML.setController(this);
-//        totalPointsScene = new Scene(totalPointsXML.load());
+        // FXMLLoader totalPointsXML = new FXMLLoader(getClass().getResource("/PreGame/3totalPoints.fxml"));
+        // totalPointsXML.setController(this);
+        // totalPointsScene = new Scene(totalPointsXML.load());
 
         FXMLLoader difficultyLevelXML = new FXMLLoader(getClass().getResource("/PreGame/4difficultyLevel.fxml"));
         difficultyLevelXML.setController(this);
@@ -283,21 +302,6 @@ public class GameDriver extends Application {
             if (event.getCode() == KeyCode.ENTER) addPlayers();
         });
 
-        // Get number of players and set scene to get player names from players
-//        setMaxValueButton.setOnAction(actionEvent -> {
-//            Music.playButtonSoundEffect();
-//            game.setMaxPoints(this.pointsCombobox.getValue());
-//            sceneChanger(difficultyLevelScene);
-//        });
-
-//        // Add listener on escape key for pausing the game
-//        pauseStage = new Stage();
-//        pauseStage.initStyle(StageStyle.UNDECORATED);
-//        pauseStage.initModality(Modality.APPLICATION_MODAL);
-//        pauseStage.initStyle(StageStyle.TRANSPARENT);
-//        pauseStage.setScene(pauseGameScene);
-//        pauseStage.setOpacity(0.9);
-
         mainPageScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) sceneChanger(pauseGameScene);
         });
@@ -305,14 +309,6 @@ public class GameDriver extends Application {
         pauseGameScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) sceneChanger(game.isRoundOn() ? mainPageScene : leaderboardScene);
         });
-
-//        showCardScene.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ESCAPE){
-//                Stage overlayStage = (Stage) showCardScene.getWindow();
-//                mainGamePageScene.getRoot().setEffect(null);
-//                overlayStage.close();
-//            }
-//        });
 
         // ToggleGroup of Difficulty
         ToggleGroup difficultyPageToggle = new ToggleGroup();
@@ -334,23 +330,28 @@ public class GameDriver extends Application {
 
         // Music and Button clicks
         Music.getMusic(volumeSlider, buttonVolumeSlider);
-        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Music.setMusicVolume(newValue.doubleValue() / 100);
-        });
-
-        buttonVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Music.setButtonVolume(newValue.doubleValue() / 100);
-        });
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> Music.setMusicVolume(newValue.doubleValue() / 100));
+        buttonVolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> Music.setButtonVolume(newValue.doubleValue() / 100));
 
         window.show();
     }
 
+
+    /**
+     * Restarts the Go Fish game by reinitializing the game state and graphical user interface.
+     *
+     * @throws IOException If there's an error during the game restart.
+     */
     public void restartGame() throws IOException {
         this.start(window);
     }
 
 
     // <-------------------------------------  Main Game--------------------------------------->
+    /**
+     * Adds a new player to the Go Fish game based on the input provided by the user.
+     * This method is called when the user enters their name in the input field and confirms it.
+     */
     public void addPlayers(){
         if(getPlayerFromInput.getText().isEmpty()){
             getPlayerFromInput.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 5px;");
@@ -381,6 +382,13 @@ public class GameDriver extends Application {
         }
     }
 
+
+    /**
+     * Animates the distribution of cards at the beginning of a Go Fish game round.
+     * Cards are distributed to players' hands and the center deck.
+     * This method sets up a sequential transition to animate the card distribution process.
+     * Once all cards are distributed, it updates the game state to start turns.
+     */
     private void distributeCards() {
         SequentialTransition sequentialTransition = new SequentialTransition();
         ImageView cardImageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/cardBack.png"))));
@@ -445,6 +453,13 @@ public class GameDriver extends Application {
         sequentialTransition.play();
     }
 
+
+    /**
+     * Adds a deck of cards to the center of the game interface.
+     * This method clears the center deck, which is a visual representation of the game deck.
+     * It then creates a new deck with a label indicating the number of cards left in the deck.
+     * Seven card backs are displayed face down on the deck.
+     */
     private void addDeck() {
         centerDeck.getChildren().clear();
 
@@ -489,6 +504,14 @@ public class GameDriver extends Application {
         centerDeck.getChildren().add(anchorPane);
     }
 
+
+    /**
+     * Adds card images to the main player's card display.
+     * This method clears the existing card images from the main player's display and replaces them with the player's current cards.
+     * Each card image is represented as an ImageView with mouse interactions for hover and click events.
+     * Card images are rotated to reveal the front when displayed.
+     * The method also handles card interactions when the real player clicks on a card.
+     */
     private void addCardImages() {
         mainPlayerCardImages.getChildren().clear();
         mainPlayerCardImages.setAlignment(Pos.CENTER);
@@ -539,6 +562,21 @@ public class GameDriver extends Application {
         }
     }
 
+
+    /**
+     * Handles a player's move when they select a card to play.
+     * <p>
+     * This method first checks if a player has been selected to ask for a card.
+     * If not, it displays a message prompting the player to select a player.
+     * If a player is selected, it attempts to play the selected card.
+     * - If the move is invalid (no such card with the selected player), it shows a "Go Fish" message.
+     * - If a valid move is made, it updates the game state, displays relevant messages, and handles card animations.
+     * </p>
+     * After the move is processed, it resets the selected player for the next turn.
+     *
+     * @param finalCard The card the player wants to play.
+     *
+     */
     private void playerMove(Card finalCard) {
         if (playerSelected == null) this.showPopupMessage("Please select a Player", Color.CYAN);
         else {
@@ -601,6 +639,19 @@ public class GameDriver extends Application {
         }
     }
 
+
+    /**
+     * Displays the selected card with a pop-up effect on the game screen.
+     * <p>
+     * This method creates a pop-up window to display the selected card image with a blur effect on the main game screen.
+     * It uses JavaFX animations to create a smooth transition when showing and hiding the card pop-up.
+     * </p>
+     * After displaying the card for a few seconds, it closes the pop-up and checks the game state:
+     * - If the round is over, it transitions to the leaderboard scene.
+     * - If not, and there are still cards in the deck, it ends the player's turn and starts the next player's turn (for human and AI players).
+     *
+     * @param card The card to be displayed.
+     */
     private void displayCard(Card card){
         mainPageScene.getRoot().setEffect(blur);
         displayCardImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + card.getType() + "/" + card.getFullName() + ".png"))));
@@ -641,6 +692,18 @@ public class GameDriver extends Application {
         parallel.play();
     }
 
+
+    /**
+     * Displays the selected card with a pop-up effect on the game screen.
+     * <p>
+     * This method creates a pop-up window to display the selected card image with a blur effect on the main game screen.
+     * It uses JavaFX animations to create a smooth transition when showing and hiding the card pop-up.
+     * </p>
+     * After displaying the card for a few seconds, it closes the pop-up and restores the main game screen's focus.
+     * This method is typically used when the player draws a card from the deck, providing a visual representation of the card.
+     *
+     * @param card The card to be displayed.
+     */
     private void displayCard2(Card card){
         mainPageScene.getRoot().setEffect(blur);
         displayCardImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Cards/" + card.getType() + "/" + card.getFullName() + ".png"))));
@@ -667,6 +730,16 @@ public class GameDriver extends Application {
         parallel.play();
     }
 
+
+    /**
+     * Simulates a bot player's turn in the game.
+     * <p>
+     * This method represents the actions taken by a bot player during their turn in the game.
+     * It handles bot player decisions such as asking for a card, responding to card requests, and managing the game state.
+     * The bot player's actions are animated and displayed using JavaFX animations and pop-up messages.
+     * </p>
+     * If the game round is over or the deck is empty, it ends the turn and proceeds to the next phase of the game.
+     */
     private void botTurn() {
         if (this.game.allEmpty()) {
             while (!this.game.getDeck().isEmpty()) {
@@ -764,6 +837,15 @@ public class GameDriver extends Application {
         delay1.play();
     }
 
+
+    /**
+     * Handles the case where the current player is the real player and there are no more moves for bots.
+     * <p>
+     * This method is called when it's the real player's turn, and there are no more available moves for the bot players.
+     * It transfers all remaining cards from the deck to the real player's hand and proceeds to the next phase of the game.
+     * </p>
+     * If the game round is over after this action, it triggers the leaderboard display.
+     */
     private void addAllCardsToHand() {
         playerTurnLabel.setText("Your Turn");
         if (this.game.allEmpty()) {
@@ -779,6 +861,15 @@ public class GameDriver extends Application {
 
 
     // <----------------------------------  Selected Label ----------------------------------->
+    /**
+     * Handles the selection of a player label by the real player.
+     * <p>
+     * This method is called when a player label is clicked by the real player during their turn.
+     * It highlights the selected player label and stores it for the player's turn action.
+     * </p>
+     *
+     * @param event The MouseEvent triggered by the player label click.
+     */
     @FXML
     public void playerSelected(MouseEvent event) {
         Music.playButtonSoundEffect();
@@ -789,11 +880,30 @@ public class GameDriver extends Application {
         }
     }
 
+
+    /**
+     * Handles the mouse entering a player label by the real player.
+     * <p>
+     * This method is called when the mouse pointer enters a player label during the real player's turn.
+     * It provides a visual indication that the player label can be selected for an action.
+     *
+     * @param event The MouseEvent triggered when the mouse enters the player label area.
+     */
     @FXML
     private void handleMouseEntered(MouseEvent event) {
         if (playerSelected == null && game.getCurrentPlayer() == game.getRealPlayer()) ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-text-fill: cyan; -fx-background-color: rgba(66, 66, 66, 0.3);");
     }
 
+
+    /**
+     * Handles the mouse exiting a player label by the real player.
+     * <p>
+     * This method is called when the mouse pointer exits a player label during the real player's turn.
+     * It reverts the visual style of the player label to its normal state when not selected.
+     * </p>
+     *
+     * @param event The MouseEvent triggered when the mouse exits the player label area.
+     */
     @FXML
     private void handleMouseExited(MouseEvent event) {
         if (playerSelected == null && game.getCurrentPlayer() == game.getRealPlayer()) ((Label) event.getSource()).setStyle("-fx-font-size: 30; -fx-background-color: rgba(66, 66, 66, 0.3);");
@@ -801,6 +911,15 @@ public class GameDriver extends Application {
 
 
     // <---------------------------------------  Menus ---------------------------------------->
+    /**
+     * Handles events triggered by buttons in the start menu.
+     * This method plays a button sound effect and performs actions
+     * based on the button clicked, such as changing scenes, loading
+     * saved game files, displaying settings, showing rules, or quitting
+     * the application.
+     *
+     * @param event The MouseEvent triggered by the button click.
+     */
     @FXML
     public void startMenu(MouseEvent event){
         Music.playButtonSoundEffect();
@@ -819,6 +938,19 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+
+    /**
+     * Handles events triggered by buttons in the pause menu.
+     * This method plays a button sound effect and performs actions
+     * based on the button clicked, such as resuming the game,
+     * restarting the game, saving the game state, loading saved
+     * game files, displaying rules, showing settings, or quitting
+     * the game.
+     * If quitting, it also attempts to save the game state before exiting.
+     *
+     * @param event The MouseEvent triggered by the button click.
+     * @throws IOException If there is an error related to input/output.
+     */
     @FXML
     public void pauseMenu(MouseEvent event) throws IOException {
         Music.playButtonSoundEffect();
@@ -861,6 +993,16 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+
+    /**
+     * Handles events triggered by buttons in the leaderboard menu.
+     * This method plays a button sound effect and performs actions
+     * based on the button clicked.
+     * It allows the user to either start the next round of the game or end the entire game,
+     * displaying the winner's name if the game ends.
+     *
+     * @param event The MouseEvent triggered by the button click.
+     */
     @FXML
     public void leaderboardMenu(MouseEvent event) {
         Music.playButtonSoundEffect();
@@ -884,6 +1026,15 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+
+    /**
+     * Handles events triggered by buttons in the game over menu.
+     * This method plays a button sound effect and performs actions based on the button clicked.
+     * It allows the user to either restart the game or return to the main menu.
+     *
+     * @param event The MouseEvent triggered by the button click.
+     * @throws IOException If there is an error related to input/output
+     */
     @FXML
     public void gameOverMenu(MouseEvent event) throws IOException {
         Music.playButtonSoundEffect();
@@ -895,6 +1046,12 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+
+    /**
+     * Handles events triggered by the back button in various menus.
+     * If the game is started, it returns to the pause menu; otherwise, it returns to the start menu.
+     * It also saves the current volume settings for the game's background music.
+     */
     @FXML
     public void backButton() {
         Music.playButtonSoundEffect();
@@ -902,6 +1059,14 @@ public class GameDriver extends Application {
         Music.saveVolume();
     }
 
+
+    /**
+     * Populates and displays the leaderboard with player rankings and scores.
+     * This method clears the existing leaderboard display and creates entries
+     * for each player in sorted order based on their scores.
+     * Each entry includes the player's name and score.
+     * The leaderboard is then updated to reflect the current game state.
+     */
     private void addLeaderboard() {
         playerPositions.getChildren().clear();
         List<Player> players = this.game.getSortedPlayers();
@@ -933,6 +1098,14 @@ public class GameDriver extends Application {
 
 
     // <--------------------------------- Loading and saving ---------------------------------->
+    /**
+     * Loads and displays saved game files from the specified save location.
+     * This method scans the save location directory for save files, populates
+     * the UI with loadable game options, including the option to delete saved games,
+     * and presents them to the player for loading.
+     * If no saved games are found, a message is displayed indicating that there
+     * are no saved games available.
+     */
     private void loadSaveFiles(){
         File folder = new File(saveLocation);
         File[] listOfFiles = folder.listFiles();
@@ -1013,6 +1186,13 @@ public class GameDriver extends Application {
         sceneChanger(loadGameMenuScene);
     }
 
+
+    /**
+     * Loads a saved game based on the button pressed by the player.
+     * The loaded game state replaces the current game state, allowing the player to continue from where they left off.
+     *
+     * @param event The MouseEvent triggered by clicking a load game button.
+     */
     public void loadGame(MouseEvent event){
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
@@ -1049,6 +1229,12 @@ public class GameDriver extends Application {
         addCardImages();
     }
 
+
+    /**
+     * Deletes a saved game file based on the button pressed by the player.
+     *
+     * @param event The MouseEvent triggered by clicking delete saved game button.
+     */
     public void deleteSavedGame(MouseEvent event){
         Music.playButtonSoundEffect();
         Button pressedButton = (Button) event.getSource();
@@ -1064,6 +1250,11 @@ public class GameDriver extends Application {
         event.consume();
     }
 
+
+    /**
+     * Saves the current game state to a specified location and displays saved game slots.
+     * Allows the player to save their progress or overwrite existing saved games.
+     */
     private void saveGame(){
         saveLocation = SavesLocation.loadSaveLocation();
         File folder = new File(saveLocation);
@@ -1157,6 +1348,10 @@ public class GameDriver extends Application {
 
 
     // <--------------------------------- Rules and Settings ---------------------------------->
+    /**
+     * Opens a web browser and navigates to a YouTube link.
+     * This method is triggered when the player clicks a button to visit a specific YouTube link.
+     */
     @FXML
     public void youtubeLink(){
         Music.playButtonSoundEffect();
@@ -1165,6 +1360,16 @@ public class GameDriver extends Application {
         } catch (IOException | URISyntaxException ignored){}
     }
 
+
+    /**
+     * Restores various settings to their default values:
+     * - Sets the button volume and main volume sliders to 50%.
+     * - Sets the game difficulty to the default (2).
+     * - Changes the save location to the default location.
+     * This method is triggered when the player clicks a button to restore settings to default.
+     *
+     * @param event The mouse event that triggered this action.
+     */
     @FXML
     public void restoreToDefault(MouseEvent event) {
         Music.playButtonSoundEffect();
@@ -1179,6 +1384,11 @@ public class GameDriver extends Application {
         changeLocLabel.setText(saveLocation);
     }
 
+
+    /**
+     * Allows the player to change the save location by selecting a folder through a file chooser dialog.
+     * This method is triggered when the player clicks a button to change the save location.
+     */
     @FXML
     public void changeLoc(){
         Music.playButtonSoundEffect();
@@ -1214,6 +1424,14 @@ public class GameDriver extends Application {
 
 
     // <-------------------------------- Difficulty Selection --------------------------------->
+    /**
+     * Handles the player's selection of the game difficulty during game setup.
+     * Sets the game's difficulty level and transitions to the pre-game scene.
+     * Shows a popup message briefly to confirm the difficulty selection.
+     * Finally, starts the game when the popup message disappears.
+     *
+     * @param toggleGroup The toggle group containing the difficulty radio buttons.
+     */
     private void handleDifficultySelection(ToggleGroup toggleGroup) {
         this.game.setRoundOn(true);
         Music.playButtonSoundEffect();
@@ -1240,6 +1458,14 @@ public class GameDriver extends Application {
         }
     }
 
+
+    /**
+     * Handles the player's selection of the game difficulty in the settings menu.
+     * Sets the game's difficulty level without transitioning to another scene.
+     * This method is used specifically for adjusting difficulty settings in the settings menu.
+     *
+     * @param toggleGroup The toggle group containing the difficulty radio buttons.
+     */
     private void handleDifficultySelectionForSettings(ToggleGroup toggleGroup) {
         Music.playButtonSoundEffect();
         RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
@@ -1255,6 +1481,11 @@ public class GameDriver extends Application {
         switchDifficulty();
     }
 
+
+    /**
+     * Switches the selected radio button in the settings menu to match the current game difficulty.
+     * Used to ensure that the correct difficulty level is visually displayed in the settings menu.
+     */
     private void switchDifficulty() {
         switch(game.getDifficulty()) {
             case 1 -> easyRadioSettings.setSelected(true);
@@ -1266,6 +1497,12 @@ public class GameDriver extends Application {
 
 
     // <-------------------------------------- Random ---------------------------------------->
+    /**
+     * Changes the current scene in the application's main window.
+     * Adjusts the size of the new scene to match the dimensions of the window's current scene.
+     *
+     * @param scene The scene to set as the new current scene.
+     */
     public void sceneChanger(Scene scene) {
         double width = window.getScene().getWidth();
         double height = window.getScene().getHeight();
@@ -1273,6 +1510,14 @@ public class GameDriver extends Application {
         window.setScene(scene);
     }
 
+
+    /**
+     * Updates the displayed card count for a specific player.
+     * This method is used to change the card count for computer players during the game.
+     *
+     * @param player     The player for whom to update the card count.
+     * @param cardNumber The new card count to display for the player.
+     */
     private void cardNumberChanger(int player, int cardNumber) {
         switch (player) {
             case 2 -> player2Cards.setText((Integer.parseInt(player2Cards.getText().split(" ")[0]) + cardNumber) + " Cards");
@@ -1282,6 +1527,13 @@ public class GameDriver extends Application {
         }
     }
 
+
+    /**
+     * Updates the displayed card count for a specific player.
+     * This method is used to change the card count for computer players during the game.
+     *
+     * @param player The player for whom to update the card count.
+     */
     private void cardNumberChanger(Player player) {
         switch (player.getValue()) {
             case 2 -> player2Cards.setText(player.totalCards() + " Cards");
@@ -1292,31 +1544,13 @@ public class GameDriver extends Application {
         }
     }
 
-//    private void showErrorInLabel(Label label, int fontSize, String prevMessage, String newMessage){
-//        label.setText(newMessage);
-//        label.setStyle("-fx-text-fill: red; -fx-font-size: " + fontSize);
-//
-//        PauseTransition delay = new PauseTransition(Duration.seconds(1));
-//        delay.setOnFinished(e -> {
-//            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), label);
-//            fadeIn.setFromValue(1);
-//            fadeIn.setToValue(0);
-//            fadeIn.setOnFinished(ev -> {
-//                label.setText(prevMessage);
-//                label.setStyle("-fx-text-fill: white; -fx-font-size: " + fontSize);
-//            });
-//
-//            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), label);
-//            fadeOut.setFromValue(0);
-//            fadeOut.setToValue(1);
-//            fadeOut.setDelay(Duration.millis(10));
-//
-//            SequentialTransition fadeSequence = new SequentialTransition(fadeIn, fadeOut);
-//            fadeSequence.play();
-//        });
-//        delay.play();
-//    }
 
+    /**
+     * Creates and plays a splash transition for a label, providing a visual effect by scaling the label and displaying a message.
+     *
+     * @param label   The label to apply the splash transition to.
+     * @param message The message to set in the label after the transition.
+     */
     private void createAndPlaySplashTransition(Label label, String message) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), label);
         scaleTransition.setFromX(1.0);
@@ -1341,6 +1575,13 @@ public class GameDriver extends Application {
         splashTransition.play();
     }
 
+
+    /**
+     * Retrieves a parallel transition that combines rotation and scaling effects for a given scene's root node.
+     *
+     * @param scene The scene whose root node will undergo the parallel transition.
+     * @return A ParallelTransition object combining rotation and scaling effects.
+     */
     private ParallelTransition getParallelTransition(Scene scene){
         RotateTransition rotate = new RotateTransition();
         rotate.setNode(scene.getRoot());
@@ -1365,6 +1606,9 @@ public class GameDriver extends Application {
 
 
     // <-------------------------------------- Popups ---------------------------------------->
+    /**
+     * Displays a popup message that shows let the game begin.
+     */
     private void showPopupMessage(){
         Label label = new Label("LET THE GAME BEGIN");
         label.setTextFill(Color.CYAN);
@@ -1386,6 +1630,13 @@ public class GameDriver extends Application {
         popup.show(window);
     }
 
+
+    /**
+     * Displays a popup message with a specified text color.
+     *
+     * @param message    The message to display in the popup.
+     * @param textColor  The color of the text in the popup.
+     */
     private void showPopupMessage(String message, Color textColor){
         Label label = new Label(message);
         label.setTextFill(textColor);
@@ -1407,6 +1658,15 @@ public class GameDriver extends Application {
         popup.show(window);
     }
 
+
+    /**
+     * Displays a popup message with a specified text color and duration.
+     *
+     * @param message    The message to display in the popup.
+     * @param textColor  The color of the text in the popup.
+     * @param duration   The duration in seconds for which the popup is displayed.
+     * @return A PauseTransition object representing the duration of the popup display.
+     */
     private PauseTransition showPopupMessage(String message, Color textColor, double duration){
         Label label = new Label(message);
         label.setTextFill(textColor);
@@ -1429,6 +1689,12 @@ public class GameDriver extends Application {
         return new PauseTransition(Duration.seconds(duration + 0.5));
     }
 
+
+    /**
+     * Displays a popup message with a default style and automatically hides it.
+     *
+     * @param message The message to display in the popup.
+     */
     private void showPopupMessage(String message){
         Label label = new Label(message);
         label.setTextFill(Color.WHITE);

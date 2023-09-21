@@ -10,10 +10,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents a player in the card game.
+ * Each player has a name, a collection of cards, a value, and earned points.
+ * Implements the Comparable interface to compare players based on points.
+ *
+ * @see Comparable
+ * @see java.io.Serializable
+ *
+ * @author Arefin Ahammed
+ * @version 1.4
+ */
 public class Player implements Comparable<Player>, Serializable {
-    private String name;
-    private List<Card> cards;
-    private int value;
+    private final String name;
+    private final List<Card> cards;
+    private final int value;
     private int points;
 
     @Serial
