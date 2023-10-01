@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cde70aa8-c8b5-46d9-9cdd-96e41bcb3a97" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/base/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings/buttonVolume.txt" beforeDir="false" afterPath="$PROJECT_DIR$/settings/buttonVolume.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/gofish/deck/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Menus/MenuItems/loadGame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Menus/MenuItems/loadGame.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,22 +37,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Languages/GitHub/Go-Fish&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "extract.method.default.visibility": "private",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Languages/GitHub/Go-Fish/src/main/resources/base",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Languages\GitHub\Go-Fish\src\main\resources\base" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="GameDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="base.GameDriver" />
@@ -112,6 +116,11 @@
       <workItem from="1695263454034" duration="3365000" />
       <workItem from="1695300583776" duration="7000" />
       <workItem from="1695331716418" duration="426000" />
+      <workItem from="1695401688439" duration="17000" />
+      <workItem from="1695401804896" duration="462000" />
+      <workItem from="1695640117722" duration="1190000" />
+      <workItem from="1695782872219" duration="115000" />
+      <workItem from="1696120850338" duration="5243000" />
     </task>
     <servers />
   </component>

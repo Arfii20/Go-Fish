@@ -270,6 +270,9 @@ public class GameDriver extends Application {
         gameOverXML.setController(this);
         gameOverScene = new Scene(gameOverXML.load());
 
+        // Add logo to the application
+        window.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/base/logo.png"))));
+
         // Set title and first scene of the game
         window.setTitle("Go Fish");
         if (window.getScene() != null) sceneChanger(OpeningScene);
