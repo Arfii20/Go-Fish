@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cde70aa8-c8b5-46d9-9cdd-96e41bcb3a97" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/base/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Snippets/gameOver.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/GameDriver.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +43,7 @@
     "WebServerToolWindowFactoryState": "false",
     "extract.method.default.visibility": "private",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Languages/GitHub/Go-Fish/src/main/resources/base",
+    "last_opened_file_path": "D:/Languages/GitHub/Go-Fish/src/main/resources/Snippets",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,6 +54,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Languages\GitHub\Go-Fish\src\main\resources\Snippets" />
       <recent name="D:\Languages\GitHub\Go-Fish\src\main\resources\base" />
     </key>
   </component>
@@ -120,7 +120,7 @@
       <workItem from="1695401804896" duration="462000" />
       <workItem from="1695640117722" duration="1190000" />
       <workItem from="1695782872219" duration="115000" />
-      <workItem from="1696120850338" duration="5243000" />
+      <workItem from="1696120850338" duration="8171000" />
     </task>
     <servers />
   </component>
